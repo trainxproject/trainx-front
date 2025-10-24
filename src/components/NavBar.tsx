@@ -1,12 +1,13 @@
-import { Dumbbell, Bell, User, LogOut, LogIn } from "lucide-react";
+import { Dumbbell, Bell, User, LogOut, LogIn, UserPlus } from "lucide-react";
 
 interface HeaderProps {
   userEmail?: string;
   onLogout?: () => void;
   onOpenLogin?: () => void;
+  onOpenRegister?: () => void;
 }
 
-export function NavBar({ userEmail, onLogout, onOpenLogin }: HeaderProps) {
+export function NavBar({ userEmail, onLogout, onOpenLogin, onOpenRegister }: HeaderProps) {
   const isLoggedIn = !!userEmail;
 
   return (
@@ -68,14 +69,25 @@ export function NavBar({ userEmail, onLogout, onOpenLogin }: HeaderProps) {
               )}
             </>
           ) : (
+            <>
             <button
               onClick={onOpenLogin}
-              className="flex items-center gap-2 px-4 py-2 rounded"
+              className="flex items-center gap-2 px-4 py-2 rounded-lg"
               style={{ backgroundColor: "var(--primary)", color: "var(--background)" }}
             >
               <LogIn className="w-4 h-4" />
               Iniciar Sesión
             </button>
+            <button
+                onClick={onOpenRegister}
+                className="hidden sm:flex items-center gap-2 px-4 py-2 rounded-lg border transition-colors
+             border-[var(--primary)] text-[var(--primary)] bg-[var(--background)] 
+             hover:bg-[var(--primary)] hover:text-[var(--background)]"
+              >
+                <UserPlus className="w-4 h-4" />
+                Registrarse
+              </button>
+            </>
           )}
         </div>
       </div>
