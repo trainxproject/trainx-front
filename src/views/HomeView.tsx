@@ -3,6 +3,7 @@ import { useState } from "react";
 import { ArrowRight, CheckCircle, Calendar, Clock, Users, Trophy, Zap } from "lucide-react";
 import Image from "next/image";
 import { toast } from "sonner";
+import {LoginForm} from "../components/LoginForm";
 
 
 
@@ -21,17 +22,16 @@ const quickStats = [
 ];
 
 export default function HomeView() {
-  const [showLoginDialog, setShowLoginDialog] = useState(false);
+  const [showLogin, setShowLogin] = useState(false);
 
   const handleOpenLogin = () => {
-    setShowLoginDialog(true);
+    setShowLogin(true);
     toast.info("Inicia sesión", { description: "Debes iniciar sesión para acceder a esta función" });
   };
 
   return (
     <div className="space-y-16 bg-(--background) text-(--foreground) px-6 md:px-12 py-12">
 
-      {/* Hero Section */}
       <section className="relative max-w-7xl mx-auto h-72 md:h-96 lg:h-[32rem] rounded-2xl overflow-hidden">
         <div className="absolute inset-0">
           <Image
@@ -62,8 +62,8 @@ export default function HomeView() {
           </div>
         </div>
       </section>
-
-      {/* Quick Stats */}
+      
+    
       <section className="grid grid-cols-2 md:grid-cols-4 gap-6 md:gap-8">
         {quickStats.map((stat, index) => (
           <div
@@ -77,7 +77,7 @@ export default function HomeView() {
         ))}
       </section>
 
-      {/* Benefits Section */}
+     
       <section>
         <div className="text-center mb-10">
           <h2 className="text-[36px] font-bold mb-3">
@@ -177,9 +177,6 @@ export default function HomeView() {
     </div>
   </div>
 </section>
-
-
-      {/* CTA Section */}
       
         <section>
           <div
@@ -201,6 +198,8 @@ export default function HomeView() {
           </div>
           </div>
         </section>
+
+        {showLogin && <LoginForm onClose={() => setShowLogin(false)} />}
     
     </div>
   );
