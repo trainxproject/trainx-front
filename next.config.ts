@@ -1,6 +1,9 @@
 import type { NextConfig } from "next";
 
 const nextConfig: NextConfig = {
+  turbopack: {
+    root: __dirname, // fuerza a que Turbopack use esta carpeta como raíz
+  },
    images: {
     remotePatterns: [
       {
