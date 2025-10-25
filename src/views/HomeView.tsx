@@ -3,7 +3,7 @@ import { useState } from "react";
 import { ArrowRight, CheckCircle, Calendar, Clock, Users, Trophy, Zap } from "lucide-react";
 import Image from "next/image";
 import { toast } from "sonner";
-import {LoginForm} from "../components/LoginForm";
+import LoginForm from "../components/LoginForm";
 
 
 

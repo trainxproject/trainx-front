@@ -1,3 +1,7 @@
+import RegisterForm from "@/components/RegisterForm";
+
 export default function RegisterView() {
-    return <div>RegisterView</div>;
+    return (
+        <RegisterForm />
+    )
 }
