@@ -3,15 +3,18 @@ import { useState } from "react";
 import { X } from "lucide-react";
 import Image from "next/image";
 import { FcGoogle } from "react-icons/fc";
+import { useFormik } from "formik";
+import * as Yup from "yup";
+import { LoginInitialValues, LoginFormValues, LoginValidationSchema } from "@/validators/LoginSchema";
 
 export function LoginForm({ onClose }: { onClose?: () => void }) {
-  const [email, setEmail] = useState("");
-  const [password, setPassword] = useState("");
-
-  const handleLogin = (e: React.FormEvent) => {
-    e.preventDefault();
-    alert(`Login mock: ${email}`);
-  };
+  const formik = useFormik<LoginFormValues>({
+    initialValues: LoginInitialValues,
+    validationSchema: LoginValidationSchema,
+    onSubmit: (values) => {
+      alert(`Login mock: ${values.email}`);
+    },
+  });
 
   const handleGoogleLogin = () => {
     alert("Google login mock");
@@ -72,35 +75,63 @@ className="w-full flex items-center justify-center gap-2 py-2.5 border rounded-x
         </div>
 
         {/* Formulario */}
-        <form onSubmit={handleLogin} className="space-y-4">
+        <form onSubmit={formik.handleSubmit} className="space-y-4">
+          {/* Campo Email */}
           <div className="flex flex-col">
-            <label htmlFor="email" className="text-sm text-[var(--muted-foreground)] mb-1">
+            <label
+              htmlFor="email"
+              className="text-sm text-[var(--muted-foreground)] mb-1"
+            >
               Email
             </label>
             <input
               id="email"
+              name="email"
               type="email"
               placeholder="usuario@ejemplo.com"
-              value={email}
-              onChange={(e) => setEmail(e.target.value)}
-              required
-              className="p-2 rounded-xl bg-[var(--background)] border border-[var(--border)] text-[var(--foreground)] focus:outline-none focus:ring-2 focus:ring-[var(--primary)]"
+              value={formik.values.email}
+              onChange={formik.handleChange}
+              onBlur={formik.handleBlur}
+              className={`p-2 rounded-xl bg-[var(--background)] border text-[var(--foreground)] focus:outline-none focus:ring-2 ${
+                formik.touched.email && formik.errors.email
+                  ? "border-red-500 focus:ring-red-500"
+                  : "border-[var(--border)] focus:ring-[var(--primary)]"
+              }`}
             />
+            {formik.touched.email && formik.errors.email && (
+              <span className="text-red-500 text-xs mt-1">
+                {formik.errors.email}
+              </span>
+            )}
           </div>
 
+          {/* Campo Contraseña */}
           <div className="flex flex-col">
-            <label htmlFor="password" className="text-sm text-[var(--muted-foreground)] mb-1">
+            <label
+              htmlFor="password"
+              className="text-sm text-[var(--muted-foreground)] mb-1"
+            >
               Contraseña
             </label>
             <input
               id="password"
+              name="password"
               type="password"
               placeholder="••••••••"
-              value={password}
-              onChange={(e) => setPassword(e.target.value)}
-              required
-              className="p-2 rounded-xl bg-[var(--background)] border border-[var(--border)] text-[var(--foreground)] focus:outline-none focus:ring-2 focus:ring-[var(--primary)]"
+              value={formik.values.password}
+              onChange={formik.handleChange}
+              onBlur={formik.handleBlur}
+              className={`p-2 rounded-xl bg-[var(--background)] border text-[var(--foreground)] focus:outline-none focus:ring-2 ${
+                formik.touched.password && formik.errors.password
+                  ? "border-red-500 focus:ring-red-500"
+                  : "border-[var(--border)] focus:ring-[var(--primary)]"
+              }`}
             />
+            {formik.touched.password && formik.errors.password && (
+              <span className="text-red-500 text-xs mt-1">
+                {formik.errors.password}
+              </span>
+            )}
           </div>
 
           <button
