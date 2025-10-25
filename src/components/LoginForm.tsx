@@ -42,11 +42,11 @@ const { openRegister } = useAuthModal();
           <Image
             src="/TrainX.svg"
             alt="Logo TrainX"
-            width={72}
-            height={72}
-            className="rounded-full bg-[#1a1a1a] p-3 shadow-md"
+            width={50}
+            height={50}
+            className="w-10 h-10"
           />
-          <h1 className="text-4xl font-bold text-[var(--primary)] mt-3">
+          <h1 className="text-3xl font-bold text-[var(--primary)] mt-3">
             TrainX
           </h1>
           <p className="text-sm text-[var(--muted-foreground)]">
