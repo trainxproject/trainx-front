@@ -1,32 +1,38 @@
-import { Dumbbell, Bell, User, LogOut, LogIn, UserPlus } from "lucide-react";
+'use client';
+import { Bell, User, LogOut, LogIn, UserPlus } from "lucide-react";
+import Image from "next/image";
+import { useAuthModal } from "@/context/AuthModalContext";
 
 interface HeaderProps {
   userEmail?: string;
   onLogout?: () => void;
-  onOpenLogin?: () => void;
-  onOpenRegister?: () => void;
 }
 
-export function NavBar({ userEmail, onLogout, onOpenLogin, onOpenRegister }: HeaderProps) {
+export function NavBar({ userEmail, onLogout }: HeaderProps) {
+  const { openLogin, openRegister } = useAuthModal(); // context
   const isLoggedIn = !!userEmail;
 
   return (
-    <header className="border-b sticky top-0 z-50" style={{ backgroundColor: "var(--card)", borderColor: "var(--border)" }} >
+    <header
+      className="border-b sticky top-0 z-50"
+      style={{ backgroundColor: "var(--card)", borderColor: "var(--border)" }}
+    >
       <div className="container mx-auto px-6 py-4 flex items-center justify-between">
-        
         {/* Logo */}
         <div className="flex items-center gap-3">
-          <div
-            className="w-10 h-10 rounded-lg flex items-center justify-center"
-            style={{ backgroundColor: "var(--primary)" }}
-          >
-            <Dumbbell className="w-6 h-6" style={{ color: "var(--background)" }} />
-          </div>
+          <Image
+                      src="/TrainX.svg"
+                      alt="Logo TrainX"
+                      width={50}
+                      height={50}
+                      className="w-10 h-10"
+                      
+                    />
           <div>
-            <h1 className="text-[24px] font-bold" style={{ color: "var(--primary)" }}>
+            <h1 className="text-3xl font-bold" style={{ color: "var(--primary)" }}>
               TrainX
             </h1>
-            <p className="text-[12px] text-muted-foreground">
+            <p className="text-sm text-muted-foreground">
               Entrená sin límites
             </p>
           </div>
@@ -70,16 +76,16 @@ export function NavBar({ userEmail, onLogout, onOpenLogin, onOpenRegister }: Hea
             </>
           ) : (
             <>
-            <button
-              onClick={onOpenLogin}
-              className="flex items-center gap-2 px-4 py-2 rounded-lg"
-              style={{ backgroundColor: "var(--primary)", color: "var(--background)" }}
-            >
-              <LogIn className="w-4 h-4" />
-              Iniciar Sesión
-            </button>
-            <button
-                onClick={onOpenRegister}
+              <button
+                onClick={openLogin} // context
+                className="flex items-center gap-2 px-4 py-2 rounded-lg"
+                style={{ backgroundColor: "var(--primary)", color: "var(--background)" }}
+              >
+                <LogIn className="w-4 h-4" />
+                Iniciar Sesión
+              </button>
+              <button
+                onClick={openRegister} // context
                 className="hidden sm:flex items-center gap-2 px-4 py-2 rounded-lg border transition-colors
              border-[var(--primary)] text-[var(--primary)] bg-[var(--background)] 
              hover:bg-[var(--primary)] hover:text-[var(--background)]"

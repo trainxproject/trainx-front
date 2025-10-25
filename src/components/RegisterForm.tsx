@@ -23,26 +23,26 @@ const formik = useFormik<RegisterFormValues>({
     
       return (
              <div
-      className="fixed inset-0 z-50 flex items-center justify-center bg-black/60 backdrop-blur-sm p-4"
+      className="fixed inset-0 z-50 flex items-center justify-center bg-black/60 backdrop-blur-sm"
     >
-      <div className="bg-[var(--card)] rounded-3xl shadow-2xl w-full max-w-md max-h-[90vh] overflow-y-auto p-8 animate-fadeIn scrollbar-thin">
-        {/* Botón cerrar */}
-        <button
-          onClick={onClose}
-          className="absolute top-4 right-4 text-[var(--muted-foreground)] hover:text-[var(--foreground)] transition"
-          aria-label="Cerrar"
-        >
-          <X className="w-5 h-5" />
-        </button>
+      <div className="bg-[var(--card)] rounded-3xl shadow-2xl w-full max-w-md max-h-[90vh] overflow-y-auto p-8 animate-fadeIn scrollbar-thin relative">
+  {/* Botón cerrar */}
+  <button
+    onClick={onClose}
+    className="absolute top-4 right-4 text-[var(--muted-foreground)] hover:text-[var(--foreground)] transition z-10"
+    aria-label="Cerrar"
+  >
+    <X className="w-5 h-5" />
+  </button>
 
         {/* Logo */}
         <div className="flex flex-col items-center mb-6">
           <Image
             src="/TrainX.svg"
             alt="Logo TrainX"
-            width={72}
-            height={72}
-            className="rounded-full bg-[#1a1a1a] p-3 shadow-md"
+            width={50}
+            height={50}
+            className="w-10 h-10"
           />
           <h1 className="text-3xl font-bold text-[var(--primary)] mt-3">TrainX</h1>
           <p className="text-sm text-[var(--muted-foreground)]">Entrená sin límites</p>
