@@ -1,13 +1,15 @@
-'use client';
-import { useState } from "react";
+ 'use client';
+ 
 import { X } from "lucide-react";
 import Image from "next/image";
 import { FcGoogle } from "react-icons/fc";
 import { useFormik } from "formik";
-import * as Yup from "yup";
 import { LoginInitialValues, LoginFormValues, LoginValidationSchema } from "@/validators/LoginSchema";
+import { useAuthModal } from "../context/AuthModalContext";
 
-export function LoginForm({ onClose }: { onClose?: () => void }) {
+export default function LoginForm({ onClose }: { onClose?: () => void }) {
+const { openRegister } = useAuthModal();
+
   const formik = useFormik<LoginFormValues>({
     initialValues: LoginInitialValues,
     validationSchema: LoginValidationSchema,
@@ -20,13 +22,9 @@ export function LoginForm({ onClose }: { onClose?: () => void }) {
     alert("Google login mock");
   };
 
-  const handleOverlayClick = (e: React.MouseEvent<HTMLDivElement>) => {
-    if (e.target === e.currentTarget && onClose) onClose();
-  };
 
   return (
     <div
-      onClick={handleOverlayClick}
       className="fixed inset-0 z-50 flex items-center justify-center bg-black/60 backdrop-blur-sm"
     >
       <div className="bg-[var(--card)] rounded-3xl shadow-2xl w-full max-w-md mx-4 p-8 relative animate-fadeIn">
@@ -146,7 +144,7 @@ className="w-full flex items-center justify-center gap-2 py-2.5 border rounded-x
         <p className="text-center text-sm text-[var(--muted-foreground)] mt-6">
           ¿Aún no tienes cuenta?{" "}
           <button
-            onClick={() => alert("Redirigir a registro")}
+            onClick={openRegister}
             className="text-[var(--primary)] hover:underline font-medium"
           >
             Regístrate
