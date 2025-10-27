@@ -1,29 +1,30 @@
-'use client';
-import { useState } from "react";
+ 'use client';
+ 
 import { X } from "lucide-react";
 import Image from "next/image";
 import { FcGoogle } from "react-icons/fc";
+import { useFormik } from "formik";
+import { LoginInitialValues, LoginFormValues, LoginValidationSchema } from "@/validators/LoginSchema";
+import { useAuthModal } from "../context/AuthModalContext";
 
-export function LoginForm({ onClose }: { onClose?: () => void }) {
-  const [email, setEmail] = useState("");
-  const [password, setPassword] = useState("");
+export default function LoginForm({ onClose }: { onClose?: () => void }) {
+const { openRegister } = useAuthModal();
 
-  const handleLogin = (e: React.FormEvent) => {
-    e.preventDefault();
-    alert(`Login mock: ${email}`);
-  };
+  const formik = useFormik<LoginFormValues>({
+    initialValues: LoginInitialValues,
+    validationSchema: LoginValidationSchema,
+    onSubmit: (values) => {
+      alert(`Login mock: ${values.email}`);
+    },
+  });
 
   const handleGoogleLogin = () => {
     alert("Google login mock");
   };
 
-  const handleOverlayClick = (e: React.MouseEvent<HTMLDivElement>) => {
-    if (e.target === e.currentTarget && onClose) onClose();
-  };
 
   return (
     <div
-      onClick={handleOverlayClick}
       className="fixed inset-0 z-50 flex items-center justify-center bg-black/60 backdrop-blur-sm"
     >
       <div className="bg-[var(--card)] rounded-3xl shadow-2xl w-full max-w-md mx-4 p-8 relative animate-fadeIn">
@@ -41,11 +42,11 @@ export function LoginForm({ onClose }: { onClose?: () => void }) {
           <Image
             src="/TrainX.svg"
             alt="Logo TrainX"
-            width={72}
-            height={72}
-            className="rounded-full bg-[#1a1a1a] p-3 shadow-md"
+            width={50}
+            height={50}
+            className="w-10 h-10"
           />
-          <h1 className="text-4xl font-bold text-[var(--primary)] mt-3">
+          <h1 className="text-3xl font-bold text-[var(--primary)] mt-3">
             TrainX
           </h1>
           <p className="text-sm text-[var(--muted-foreground)]">
@@ -72,35 +73,63 @@ className="w-full flex items-center justify-center gap-2 py-2.5 border rounded-x
         </div>
 
         {/* Formulario */}
-        <form onSubmit={handleLogin} className="space-y-4">
+        <form onSubmit={formik.handleSubmit} className="space-y-4">
+          {/* Campo Email */}
           <div className="flex flex-col">
-            <label htmlFor="email" className="text-sm text-[var(--muted-foreground)] mb-1">
+            <label
+              htmlFor="email"
+              className="text-sm text-[var(--muted-foreground)] mb-1"
+            >
               Email
             </label>
             <input
               id="email"
+              name="email"
               type="email"
               placeholder="usuario@ejemplo.com"
-              value={email}
-              onChange={(e) => setEmail(e.target.value)}
-              required
-              className="p-2 rounded-xl bg-[var(--background)] border border-[var(--border)] text-[var(--foreground)] focus:outline-none focus:ring-2 focus:ring-[var(--primary)]"
+              value={formik.values.email}
+              onChange={formik.handleChange}
+              onBlur={formik.handleBlur}
+              className={`p-2 rounded-xl bg-[var(--background)] border text-[var(--foreground)] focus:outline-none focus:ring-2 ${
+                formik.touched.email && formik.errors.email
+                  ? "border-red-500 focus:ring-red-500"
+                  : "border-[var(--border)] focus:ring-[var(--primary)]"
+              }`}
             />
+            {formik.touched.email && formik.errors.email && (
+              <span className="text-red-500 text-xs mt-1">
+                {formik.errors.email}
+              </span>
+            )}
           </div>
 
+          {/* Campo Contraseña */}
           <div className="flex flex-col">
-            <label htmlFor="password" className="text-sm text-[var(--muted-foreground)] mb-1">
+            <label
+              htmlFor="password"
+              className="text-sm text-[var(--muted-foreground)] mb-1"
+            >
               Contraseña
             </label>
             <input
               id="password"
+              name="password"
               type="password"
               placeholder="••••••••"
-              value={password}
-              onChange={(e) => setPassword(e.target.value)}
-              required
-              className="p-2 rounded-xl bg-[var(--background)] border border-[var(--border)] text-[var(--foreground)] focus:outline-none focus:ring-2 focus:ring-[var(--primary)]"
+              value={formik.values.password}
+              onChange={formik.handleChange}
+              onBlur={formik.handleBlur}
+              className={`p-2 rounded-xl bg-[var(--background)] border text-[var(--foreground)] focus:outline-none focus:ring-2 ${
+                formik.touched.password && formik.errors.password
+                  ? "border-red-500 focus:ring-red-500"
+                  : "border-[var(--border)] focus:ring-[var(--primary)]"
+              }`}
             />
+            {formik.touched.password && formik.errors.password && (
+              <span className="text-red-500 text-xs mt-1">
+                {formik.errors.password}
+              </span>
+            )}
           </div>
 
           <button
@@ -115,7 +144,7 @@ className="w-full flex items-center justify-center gap-2 py-2.5 border rounded-x
         <p className="text-center text-sm text-[var(--muted-foreground)] mt-6">
           ¿Aún no tienes cuenta?{" "}
           <button
-            onClick={() => alert("Redirigir a registro")}
+            onClick={openRegister}
             className="text-[var(--primary)] hover:underline font-medium"
           >
             Regístrate

@@ -1,25 +1,21 @@
 'use client';
 import { useState } from "react";
-import { ArrowRight, CheckCircle, Calendar, Clock, Users, Trophy, Zap } from "lucide-react";
+import { ArrowRight,Check, CheckCircle, Calendar, Clock, Users, Trophy, Zap } from "lucide-react";
 import Image from "next/image";
 import { toast } from "sonner";
-import {LoginForm} from "../components/LoginForm";
+import LoginForm from "../components/LoginForm";
+import { benefits } from "@/mocks/benefits";
+import { quickStats } from "@/mocks/quickStats";  
+import { plans } from "@/mocks/subscriptions";
 
+const Icons = {
+  Calendar,
+  Clock,
+  Users,
+  Trophy,
+  Zap,
+};
 
-
-const benefits = [
-  { icon: Clock, title: "Horarios Flexibles", description: "Clases desde las 6:00 AM hasta las 10:00 PM todos los días" },
-  { icon: Users, title: "Entrenadores Certificados", description: "Personal altamente capacitado y especializado" },
-  { icon: Trophy, title: "Resultados Garantizados", description: "Planes personalizados según tus objetivos" },
-  { icon: Zap, title: "Instalaciones Modernas", description: "Equipamiento de última generación" },
-];
-
-const quickStats = [
-  { label: "Socios Activos", value: "245+" },
-  { label: "Clases Semanales", value: "80+" },
-  { label: "Entrenadores", value: "12" },
-  { label: "Años de Experiencia", value: "15" },
-];
 
 export default function HomeView() {
   const [showLogin, setShowLogin] = useState(false);
@@ -90,7 +86,7 @@ export default function HomeView() {
 
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8">
           {benefits.map((benefit, index) => {
-            const Icon = benefit.icon;
+            const Icon = Icons[benefit.icon as keyof typeof Icons];
             return (
               <div
                 key={index}
@@ -175,6 +171,41 @@ export default function HomeView() {
         />
       </div>
     </div>
+  </div>
+</section>
+        <section>
+  <div className="text-center mb-10">
+    <h2 className="text-[32px] text-primary font-semibold mb-2">Planes de Suscripción</h2>
+    <p className="text-[16px] text-muted-foreground">
+      Elige el plan que mejor se adapte a tu rutina de entrenamiento
+    </p>
+  </div>
+
+  <div className="grid grid-cols-1 lg:grid-cols-2 gap-12">
+    {plans.map((plan, index) => (
+      <div
+        key={index}
+        className="p-6 rounded-2xl shadow-lg flex flex-col justify-between bg-[var(--card)] text-[var(--card-foreground)] transition-transform duration-300 ease-out hover:shadow-2xl hover:scale-105"
+      >
+        
+          <h3 className="text-xl font-bold mb-2">{plan.name}</h3>
+          <p className="text-[32px] font-semibold text-[var(--primary)] mb-1">
+            ${plan.price.toFixed(2)}
+          </p>
+          <p className="text-md text-muted-foreground mb-4">{plan.frequency}</p>
+
+          <ul className="mb-4 space-y-1 text-sm">
+            {plan.features.map((feature, idx) => (
+              <li key={idx} className="flex items-center gap-2">
+                 <CheckCircle className="w-5 h-5 text-primary" />
+                {feature}
+              </li>
+            ))}
+          </ul>
+       
+
+      </div>
+    ))}
   </div>
 </section>
       
