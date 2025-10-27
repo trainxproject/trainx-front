@@ -1,4 +1,5 @@
-import { Dumbbell, Mail, Phone, MapPin, Pin } from "lucide-react";
+import { Mail, Phone, MapPin, Pin } from "lucide-react";
+import Image from "next/image";
 
 export function Footer() {
   const currentYear = new Date().getFullYear();
@@ -10,12 +11,13 @@ export function Footer() {
           
           <div className="space-y-4">
             <div className="flex items-center gap-3">
-              <div
-                className="w-10 h-10 rounded-lg flex items-center justify-center"
-                style={{ backgroundColor: "var(--primary)" }}
-              >
-                <Dumbbell className="w-6 h-6" style={{ color: "var(--background)" }} />
-              </div>
+                <Image
+                            src="/TrainX.svg"
+                            alt="Logo TrainX"
+                            width={50}
+                            height={50}
+                            className="w-10 h-10"
+                          />
               <div>
                 <h2 className="text-[20px] font-bold text-primary">TrainX</h2>
                 <p className="text-[12px] text-muted-foreground">Entrená sin límites</p>
@@ -69,7 +71,7 @@ export function Footer() {
               </li>
               <li className="flex items-center gap-2">
                 <Mail className="w-4 h-4 flex-shrink-0" style={{ color: "var(--primary)" }} />
-                <span className="text-[14px] text-muted-foreground">info@trainx.com</span>
+                <span className="text-[14px] text-muted-foreground">trainxproject@gmail.com</span>
               </li>
               <li className="flex items-center gap-2">
                 <MapPin className="w-4 h-4 flex-shrink-0" style={{ color: "var(--primary)" }} />
