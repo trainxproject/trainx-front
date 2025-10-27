@@ -2,6 +2,11 @@
 
 import { useState } from "react";
 import ClasesView from "./ClassesView";
+import Reservas from "@/components/Reservations";
+import ChatBot from "@/components/ChatBot";
+// import MapView from "./MapView";
+import SubscriptionsView from "./SubscriptionsView";
+// import MapaLocal from "./MapView";
 
 export default function DashboardUserView() {
     
@@ -38,6 +43,10 @@ export default function DashboardUserView() {
             </div>
             <div>
                 {String(tabSelected) === "class" && <ClasesView />}
+                {String(tabSelected) === "reservations" && <Reservas/>}
+                {String(tabSelected) === "routines" && <ChatBot/>}
+                {String(tabSelected) === "location" && <MapView/>}
+                {String(tabSelected) === "subscription" && <SubscriptionsView/>}
             </div>
         </div>
     );
