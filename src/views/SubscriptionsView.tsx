@@ -13,9 +13,9 @@ const SubscriptionsView: React.FC = () => {
             </p>
           </div>
   
-          <div className="flex justify-around items-start mt-8">
+          <div className="flex justify-around items-center mt-8">
             {plans.map((plan, index) => (
-              <div key={index} className="flex flex-col bg-(--secondary) border-[1px] border p-6 rounded-xl hover:border-(--primary) w-sm">
+              <div key={index} className="flex flex-col bg-(--secondary) border-[1px] border p-6 rounded-xl hover:border-(--primary) w-sm h-[450px]">
                 
                 <h3 className="text-xl font-bold">{plan.name}</h3>
                 <div className="flex justify-baseline items-center p-2">
@@ -34,7 +34,7 @@ const SubscriptionsView: React.FC = () => {
                   ))}
                 </div>
   
-                <button className="bg-(--primary)/80 hover:bg-(--primary) px-2 py-2 mt-8 rounded-xl text-black font-semibold hover:shadow-2xl hover:shadow-(--muted-foreground)">
+                <button className="bg-(--primary)/80 hover:bg-(--primary) px-2 py-2 mt-12 rounded-xl text-black font-semibold hover:shadow-2xl hover:shadow-(--muted-foreground)">
                   Seleccionar plan
                 </button>
               </div>
