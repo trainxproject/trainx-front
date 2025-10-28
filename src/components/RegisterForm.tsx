@@ -16,9 +16,7 @@ const { register, loading, user } = useAuth();
 
 const router = useRouter();
 
- if (loading) return null;
-
-  // 🚫 Si ya está logueado, redirigir directamente al dashboard
+ if (loading) return null
   if (user) {
     router.push("/dashboard/user");
     return null;

@@ -167,7 +167,7 @@ className="w-full flex items-center justify-center gap-2 py-2.5 border rounded-x
             onClick={openRegister}
             className="text-[var(--primary)] hover:underline font-medium"
           >
-            Regístrate
+            Regístrate con email
           </button>
         </p>
       </div>
