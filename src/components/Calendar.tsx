@@ -128,7 +128,7 @@ interface CalendarViewProps {
   onSelectClass: (classData: CalendarClass) => void;
 }
 
-const weekDays = ["Lun", "Mar", "Mié", "Jue", "Vie", "Sáb", "Dom"];
+const weekDays = ["Lun", "Mar", "Mié", "Jue", "Vie"];
 
 const scheduleData: { [key: string]: CalendarClass[] } = {
   "Lun": [
@@ -156,14 +156,6 @@ const scheduleData: { [key: string]: CalendarClass[] } = {
     { id: "14", name: "CrossFit", time: "13:00", instructor: "Juan Pérez", booked: 19, capacity: 20 },
     { id: "15", name: "Zumba", time: "19:00", instructor: "Laura Martín", booked: 23, capacity: 25 },
   ],
-  "Sáb": [
-    { id: "16", name: "Yoga", time: "10:00", instructor: "María López", booked: 14, capacity: 15 },
-    { id: "17", name: "Spinning", time: "12:00", instructor: "Carlos Ruiz", booked: 21, capacity: 25 },
-  ],
-  "Dom": [
-    { id: "18", name: "Pilates", time: "10:00", instructor: "Ana García", booked: 9, capacity: 12 },
-    { id: "19", name: "Yoga", time: "11:00", instructor: "María López", booked: 12, capacity: 15 },
-  ],
 };
 
 
@@ -178,7 +170,7 @@ const CalendarView = ({ onSelectClass }: CalendarViewProps) => {
       </div>
 
       {/* Calendario */}
-      <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-4 lg:grid-cols-7 gap-5 px-2 md:px-6">
+      <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-4 lg:grid-cols-5 gap-5 px-2 md:px-6">
         {weekDays.map((day) => (
           <div key={day} className="space-y-3">
             {/* Día */}

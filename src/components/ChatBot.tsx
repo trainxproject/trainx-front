@@ -1,5 +1,3 @@
-'use client'
-
 import Script from "next/script";
 
 const routines = [
@@ -39,22 +37,22 @@ const routines = [
 
 const ChatBot = () => {
   return (
-    <div className="w-full max-w-[1600px] mx-auto p-6 md:p-12">
+    <div className="w-full max-w-[1600px] h-screen mx-auto p-6 md:p-12">
       {/* Rutinas */}
-      <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
+      <div className="grid grid-cols-1 h-72 sm:grid-cols-2 h-72 lg:grid-cols-3 h-72 gap-6">
         {routines.map((routine, index) => (
           <div
             key={index}
             className="flex flex-col bg-(--muted) p-6 rounded-2xl shadow-lg hover:shadow-2xl transition-shadow"
           >
-            <h2 className="text-[var(--primary)] text-xl md:text-2xl font-semibold mb-4 text-center">
+            <h2 className="text-(--primary) text-xl md:text-2xl font-semibold mb-4 text-center">
               {routine.title}
             </h2>
             <div className="flex flex-col gap-2">
               {routine.exercises.map((exercise, i) => (
                 <p
                   key={i}
-                  className="text-[var(--card-foreground)] text-sm md:text-base text-center"
+                  className="text-(--card-foreground) text-sm md:text-base text-center"
                 >
                   {exercise}
                 </p>
@@ -62,18 +60,16 @@ const ChatBot = () => {
             </div>
           </div>
         ))}
+        <div className="w-52 h-72">
+          <Script
+            src="https://cdn.botpress.cloud/webchat/v3.3/inject.js"
+            strategy="afterInteractive"
+          />
+          <Script
+            src="https://files.bpcontent.cloud/2025/10/23/02/20251023025900-6FW1NSKH.js"
+            strategy="afterInteractive"
+          />
       </div>
-
-      {/* ChatBot Scripts */}
-      <div className="mt-10 w-full h-[700px]">
-        <Script
-          src="https://cdn.botpress.cloud/webchat/v3.3/inject.js"
-          strategy="afterInteractive"
-        />
-        <Script
-          src="https://files.bpcontent.cloud/2025/10/23/02/20251023025900-6FW1NSKH.js"
-          strategy="afterInteractive"
-        />
       </div>
     </div>
   )
