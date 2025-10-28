@@ -21,23 +21,23 @@ export default function DashboardUserView() {
                     Clases
                 </button>
                 <button onClick={() => setTabSelected("reservations")}
-                className={`px-4 my-1 rounded-2xl hover:bg-(--background) hover:text-white ${tabSelected === "reservations" ? "bg-(--primary) text-black font-semibold" : "bg-(--secondary) font-semibold"}`}>
+                className={`px-4 my-2 rounded-2xl hover:bg-(--background) hover:text-white ${tabSelected === "reservations" ? "bg-(--primary) text-black font-semibold" : "bg-(--secondary) font-semibold"}`}>
                     Mis reservas
                 </button>
                 <button onClick={() => setTabSelected("subscription")}
-                className={`px-4 my-1 rounded-2xl hover:bg-(--background) hover:text-white ${tabSelected === "subscription" ? "bg-(--primary) text-black font-semibold" : "bg-(--secondary) font-semibold"}`}>
+                className={`px-4 my-2 rounded-2xl hover:bg-(--background) hover:text-white ${tabSelected === "subscription" ? "bg-(--primary) text-black font-semibold" : "bg-(--secondary) font-semibold"}`}>
                     Mi plan
                 </button>
                 <button onClick={() => setTabSelected("coach")}
-                className={`px-4 my-1 rounded-2xl hover:bg-(--background) hover:text-white ${tabSelected === "coach" ? "bg-(--primary) text-black font-semibold" : "bg-(--secondary) font-semibold"}`}>
+                className={`px-4 my-2 rounded-2xl hover:bg-(--background) hover:text-white ${tabSelected === "coach" ? "bg-(--primary) text-black font-semibold" : "bg-(--secondary) font-semibold"}`}>
                     Entrenador
                 </button>
                 <button onClick={() => setTabSelected("routines")}
-                className={`px-4 my-1 rounded-2xl hover:bg-(--background) hover:text-white ${tabSelected === "routines" ? "bg-(--primary) text-black font-semibold" : "bg-(--secondary) font-semibold"}`}>
+                className={`px-4 my-2 rounded-2xl hover:bg-(--background) hover:text-white ${tabSelected === "routines" ? "bg-(--primary) text-black font-semibold" : "bg-(--secondary) font-semibold"}`}>
                     Rutinas
                 </button>
                 <button onClick={() => setTabSelected("location")}
-                className={`px-4 my-1 rounded-2xl hover:bg-(--background) hover:text-white ${tabSelected === "location" ? "bg-(--primary) text-black font-semibold" : "bg-(--secondary) font-semibold"}`}>
+                className={`px-4 my-2 rounded-2xl hover:bg-(--background) hover:text-white ${tabSelected === "location" ? "bg-(--primary) text-black font-semibold" : "bg-(--secondary) font-semibold"}`}>
                     Ubicación
                 </button>
             </div>

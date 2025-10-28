@@ -2,25 +2,45 @@
 
 import { X } from "lucide-react";
 import Image from "next/image";
-import { FcGoogle } from "react-icons/fc";
 import { useFormik } from "formik";
 import { RegisterFormValues, RegisterInitialValues, RegisterValidationSchema } from "@/validators/RegisterSchema";
 import { useAuthModal } from "@/context/AuthModalContext";
+import { useAuth } from "@/context/AuthContext";
+import { useRouter } from "next/navigation";
+import { toast } from "sonner";
 
 export default function RegisterForm({ onClose }: { onClose?: () => void }) {
 const { openLogin } = useAuthModal();
+const { register} = useAuth();
+
+const router = useRouter();
+
 
 const formik = useFormik<RegisterFormValues>({
     initialValues: RegisterInitialValues,
     validationSchema: RegisterValidationSchema,
-    onSubmit: (values) => {
-      alert(`Register mock: ${values.email}`);
-    },
-})
- const handleGoogleRegister = () => {
-    alert("Google register mock");
-  };
-    
+    onSubmit: async (values) => {  
+    try {
+      await register({ 
+        name: values.name, 
+        email: values.email, 
+        password: values.password
+      });
+      toast.success("Registro exitoso");
+      onClose?.();
+       setTimeout(() => {
+        router.push("/login");
+      }, 100);
+    } catch (error: any) {
+      console.error(error.response?.data || error);
+      toast.error(
+        error.response?.data?.message || "Error en registro, revisa tus credenciales"
+      );
+    }
+  },
+});
+  
+
       return (
              <div
       className="fixed inset-0 z-50 flex items-center justify-center bg-black/60 backdrop-blur-sm"
@@ -48,23 +68,6 @@ const formik = useFormik<RegisterFormValues>({
           <p className="text-sm text-[var(--muted-foreground)]">Entrená sin límites</p>
         </div>
 
-        {/* Botón Google */}
-        <button
-          type="button"
-          onClick={() => alert("Google register mock")}
-          className="w-full flex items-center justify-center gap-2 py-2.5 border rounded-xl transition-colors border-[var(--muted)] text-[var(--foreground)] bg-[var(--background)] hover:bg-[var(--card)] hover:text-[var(--muted-foreground)] mb-4"
-        >
-          <FcGoogle className="w-4 h-4" />
-          Continuar con Google
-        </button>
-
-        {/* Separador */}
-        <div className="relative text-center my-5">
-          <hr className="border-[var(--border)]" />
-          <span className="absolute left-1/2 -translate-x-1/2 -translate-y-1/2 bg-[var(--card)] text-xs text-[var(--muted-foreground)] px-2">
-            o continúa con email
-          </span>
-        </div>
 
         {/* Formulario */}
         <form onSubmit={formik.handleSubmit} className="space-y-4">

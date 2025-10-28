@@ -1,10 +1,14 @@
 import axios from "axios"
 
-export const getAllClasses = async () => {
+const API_URL = process.env.NEXT_PUBLIC_API_URL || "http://localhost:3000";
+
+export const getAllClasses = async (): Promise<[]> => {
     try {
-        const response = await axios.get(`http://localhost:3000/activities`);
-        console.log(response);
+      const { data } = await axios.get(`${API_URL}/activities`)
+      console.log(data)
+      return data;
     } catch (error) {
-        console.error("Error al realizar la peticion", error)
+      console.error("Error al obtenre las clases: ", error);
+      return [];
     }
-}
+  };

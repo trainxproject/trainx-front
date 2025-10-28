@@ -6,20 +6,42 @@ import { FcGoogle } from "react-icons/fc";
 import { useFormik } from "formik";
 import { LoginInitialValues, LoginFormValues, LoginValidationSchema } from "@/validators/LoginSchema";
 import { useAuthModal } from "../context/AuthModalContext";
-
+import { useAuth } from "@/context/AuthContext";
+import { useRouter } from "next/navigation";
+import { toast } from "sonner";
+import { useEffect } from "react";
 export default function LoginForm({ onClose }: { onClose?: () => void }) {
 const { openRegister } = useAuthModal();
+const { login, loading, user, loginWithGoogle } = useAuth();
+const router = useRouter();
+ 
 
-  const formik = useFormik<LoginFormValues>({
+useEffect(() => {
+    // Solo redirige si user existe y ya pasó el login
+    if (user) {
+      router.push("/dashboard/user");
+    }
+  }, [user, router]);
+
+
+const formik = useFormik<LoginFormValues>({
     initialValues: LoginInitialValues,
     validationSchema: LoginValidationSchema,
-    onSubmit: (values) => {
-      alert(`Login mock: ${values.email}`);
+    onSubmit: async (values) => {
+      try {
+        await login({ email: values.email, password: values.password });
+       toast.success("Login exitoso");
+        onClose?.();
+        router.push("/dashboard/user"); 
+      } catch (error) {
+        console.error(error);
+       toast.error("Error en login, revisa tus credenciales");
+      }
     },
-  });
+  });;
 
   const handleGoogleLogin = () => {
-    alert("Google login mock");
+   loginWithGoogle();
   };
 
 
@@ -147,7 +169,7 @@ className="w-full flex items-center justify-center gap-2 py-2.5 border rounded-x
             onClick={openRegister}
             className="text-[var(--primary)] hover:underline font-medium"
           >
-            Regístrate
+            Regístrate con email
           </button>
         </p>
       </div>

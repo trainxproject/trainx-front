@@ -1,15 +1,16 @@
 'use client'
 
 import Script from "next/script";
+import { getAllClasses } from "@/services/classes";
 
 const ChatBot = () => {
     return(
         <div className="flex justify-baseline w-4xl h-20">
             <div>
                 <div className="grid grid-cols-3 w-4xl h-auto">
-                    <div className="flex flex-col items-center bg-(--primary)/75">
+                    <div className="flex flex-col items-center bg-(--primary)/75 m-5">
                         <h2>Rutina tren inferiror</h2>
-                        <div className="flex flex-col items-center">
+                        <div className="flex flex-col justify-start items-center items-center">
                             <p>Sentadilla con barra 4x12</p>
                             <p>Peso muerto rumano 3x12</p>
                             <p>Zancada con mancuerna 3x12</p>
@@ -17,9 +18,10 @@ const ChatBot = () => {
                             <p>Elevación de talones 4x15</p>
                         </div>
                     </div>
-                    <div className="flex flex-col justify-center items-center">
+
+                    <div className="flex flex-col justify-start items-center bg-(--primary)/75 m-5">
                         <h2>Rutina tren superiror</h2>
-                        <div className="flex justify-start items-center">
+                        <div className="flex items-center">
                             <p>Press de banca con barra 4x10</p>
                             <p>Remo con barra 3x12</p>
                             <p>Press militar conmancuuernas 3x12</p>
@@ -28,7 +30,8 @@ const ChatBot = () => {
                             <p>Fondos en paralelas 3x12</p>
                         </div>
                     </div>
-                    <div className="flex flex-col justify-center items-center">
+
+                    <div className="flex flex-col items-center bg-(--primary)/75 m-5">
                         <h2>Rutina cuerpo completo</h2>
                         <div className="flex justify-start items-center">
                             <p>Sentadilla con barra 3x12</p>
