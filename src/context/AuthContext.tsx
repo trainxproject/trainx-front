@@ -79,9 +79,8 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
 
   // 🔹 Register
   const register = async (data: IRegisterData) => {
-    const newUser = await registerUser(data);
-    const userData = mapToIUser(newUser);
-    setUser(userData);
+     await registerUser(data);
+
     // No hay token todavía; el usuario deberá loguearse
   };
 

@@ -2,7 +2,6 @@
 
 import { X } from "lucide-react";
 import Image from "next/image";
-import { FcGoogle } from "react-icons/fc";
 import { useFormik } from "formik";
 import { RegisterFormValues, RegisterInitialValues, RegisterValidationSchema } from "@/validators/RegisterSchema";
 import { useAuthModal } from "@/context/AuthModalContext";
@@ -12,17 +11,10 @@ import { toast } from "sonner";
 
 export default function RegisterForm({ onClose }: { onClose?: () => void }) {
 const { openLogin } = useAuthModal();
-const { register, loading, user } = useAuth();
+const { register} = useAuth();
 
 const router = useRouter();
 
- if (loading) return null;
-
-  // 🚫 Si ya está logueado, redirigir directamente al dashboard
-  if (user) {
-    router.push("/dashboard/user");
-    return null;
-  }
 
 const formik = useFormik<RegisterFormValues>({
     initialValues: RegisterInitialValues,
@@ -36,7 +28,9 @@ const formik = useFormik<RegisterFormValues>({
       });
       toast.success("Registro exitoso");
       onClose?.();
-      router.push("/login");
+       setTimeout(() => {
+        router.push("/login");
+      }, 100);
     } catch (error: any) {
       console.error(error.response?.data || error);
       toast.error(
@@ -45,7 +39,8 @@ const formik = useFormik<RegisterFormValues>({
     }
   },
 });
-    
+  
+
       return (
              <div
       className="fixed inset-0 z-50 flex items-center justify-center bg-black/60 backdrop-blur-sm"

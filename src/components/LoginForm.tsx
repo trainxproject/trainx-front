@@ -9,18 +9,20 @@ import { useAuthModal } from "../context/AuthModalContext";
 import { useAuth } from "@/context/AuthContext";
 import { useRouter } from "next/navigation";
 import { toast } from "sonner";
-
+import { useEffect } from "react";
 export default function LoginForm({ onClose }: { onClose?: () => void }) {
 const { openRegister } = useAuthModal();
 const { login, loading, user, loginWithGoogle } = useAuth();
 const router = useRouter();
  
-if (loading) return null; 
 
- if (user) {
-    router.push("/dashboard/user");
-    return null;
-  }
+useEffect(() => {
+    // Solo redirige si user existe y ya pasó el login
+    if (user) {
+      router.push("/dashboard/user");
+    }
+  }, [user, router]);
+
 
 const formik = useFormik<LoginFormValues>({
     initialValues: LoginInitialValues,
@@ -167,7 +169,7 @@ className="w-full flex items-center justify-center gap-2 py-2.5 border rounded-x
             onClick={openRegister}
             className="text-[var(--primary)] hover:underline font-medium"
           >
-            Regístrate
+            Regístrate con email
           </button>
         </p>
       </div>
