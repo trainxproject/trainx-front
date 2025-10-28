@@ -50,7 +50,7 @@ export function NavBar() {
 
               {/* Botón de usuario */}
               <button
-                onClick={() => router.push("/profile")}
+                
                 className="flex items-center gap-2 p-2 rounded hover:bg-gray-700 transition-colors"
               >
                 <User className="w-5 h-5 text-muted-foreground" />
