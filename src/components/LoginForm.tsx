@@ -6,20 +6,40 @@ import { FcGoogle } from "react-icons/fc";
 import { useFormik } from "formik";
 import { LoginInitialValues, LoginFormValues, LoginValidationSchema } from "@/validators/LoginSchema";
 import { useAuthModal } from "../context/AuthModalContext";
+import { useAuth } from "@/context/AuthContext";
+import { useRouter } from "next/navigation";
+import { toast } from "sonner";
 
 export default function LoginForm({ onClose }: { onClose?: () => void }) {
 const { openRegister } = useAuthModal();
+const { login, loading, user, loginWithGoogle } = useAuth();
+const router = useRouter();
+ 
+if (loading) return null; 
 
-  const formik = useFormik<LoginFormValues>({
+ if (user) {
+    router.push("/dashboard/user");
+    return null;
+  }
+
+const formik = useFormik<LoginFormValues>({
     initialValues: LoginInitialValues,
     validationSchema: LoginValidationSchema,
-    onSubmit: (values) => {
-      alert(`Login mock: ${values.email}`);
+    onSubmit: async (values) => {
+      try {
+        await login({ email: values.email, password: values.password });
+       toast.success("Login exitoso");
+        onClose?.();
+        router.push("/dashboard/user"); 
+      } catch (error) {
+        console.error(error);
+       toast.error("Error en login, revisa tus credenciales");
+      }
     },
-  });
+  });;
 
   const handleGoogleLogin = () => {
-    alert("Google login mock");
+   loginWithGoogle();
   };
 
 
