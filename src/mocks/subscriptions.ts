@@ -21,7 +21,6 @@ export const plans = [
       'Uso de instalaciones premium',
       'Entrenador personal asignado',
       'Rutinas personalizadas (chatbot)',
-      'Descuentos en productos',
     ],
   },
 ];

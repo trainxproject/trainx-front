@@ -1,3 +1,9 @@
+import DashboardUserView from "@/views/DashboardUserView";
+
 export default function DashboardUser() {
-    return <div>Dashboard User</div>
+    return(
+        <>
+            <DashboardUserView />
+        </>
+    )
 }
