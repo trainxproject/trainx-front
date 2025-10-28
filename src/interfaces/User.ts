@@ -2,36 +2,32 @@ export interface IUser {
   id: string;
   name: string;
   email: string;
-  password?: string;
-  profilePicture?: string;
-  status: string;
-  isAdmin: boolean;
-  subscription?: ISubscription | null;
-  payments?: IPayment[];
-  reservations?: IReservation[];
+  isAdmin?: boolean;
 }
 
+
+// Respuesta de login
 export interface IAuthResponse {
+  access_token: string;
   user: IUser;
-  token: string;
-}
-export interface ISubscription {
-  id: string;
-  planName: string;
-  startDate: string;
-  endDate: string;
 }
 
-export interface IPayment {
-  id: string;
-  amount: number;
-  date: string;
-  status: string;
+// Datos enviados al backend para login
+export interface ILoginData {
+  email: string;
+  password: string;
 }
 
-export interface IReservation {
-  id: string;
-  className: string;
-  date: string;
-  trainer: string;
+// Datos enviados al backend para register
+export interface IRegisterData {
+  name: string;
+  email: string;
+  password: string;
+}
+
+export interface JWTPayload {
+  sub: string;
+  email: string;
+  name?: string;
+  isAdmin?: boolean;
 }

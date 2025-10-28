@@ -1,16 +1,21 @@
-"use client";
+'use client';
 
 import { createContext, useContext, useEffect, useState, ReactNode } from "react";
-import { IUser, IAuthResponse } from "@/interfaces/User";
-import { loginUser, registerUser, logoutUser } from "@/services/authService";
+import { IUser, IAuthResponse, ILoginData, IRegisterData, JWTPayload } from "@/interfaces/User";
+import { loginUser, registerUser, loginWithPassport } from "@/services/authService";
+import { useRouter, useSearchParams } from "next/navigation";
+import { jwtDecode } from "jwt-decode";
+
+
 
 interface AuthContextProps {
   user: IUser | null;
   token: string | null;
   loading: boolean;
-  login: (email: string, password: string) => Promise<void>;
-  register: (name: string, email: string, password: string) => Promise<void>;
-  logout: () => Promise<void>;
+  login: (data: ILoginData) => Promise<void>;
+  register: (data: IRegisterData) => Promise<void>;
+  loginWithGoogle: () => void;
+  logout: () => void;
 }
 
 const AuthContext = createContext<AuthContextProps | undefined>(undefined);
@@ -19,51 +24,88 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
   const [user, setUser] = useState<IUser | null>(null);
   const [token, setToken] = useState<string | null>(null);
   const [loading, setLoading] = useState(true);
+  const router = useRouter();
+  const searchParams = useSearchParams();
 
-  // Recuperar usuario/token del localStorage al iniciar
+  // 🔹 Función para mapear el payload del JWT a IUser
+  const mapToIUser = (data: Partial<IUser> & Partial<JWTPayload>): IUser => ({
+    id: data.id || data.sub || "",
+    name: data.name || "Mi perfil",
+    email: data.email || "",
+    isAdmin: data.isAdmin ?? false,
+  });
+
+  // 🔹 Manejar sesión al iniciar (login normal, Google login o sesión guardada)
   useEffect(() => {
-    const storedUser = localStorage.getItem("user");
-    const storedToken = localStorage.getItem("token");
-    if (storedUser && storedToken) {
-      setUser(JSON.parse(storedUser));
-      setToken(storedToken);
+    const tokenFromURL = searchParams.get("token");
+
+    if (tokenFromURL) {
+      // flujo Google login
+      try {
+        const decoded = jwtDecode<JWTPayload>(tokenFromURL);
+        const userData = mapToIUser(decoded);
+        setUser(userData);
+        setToken(tokenFromURL);
+        localStorage.setItem("user", JSON.stringify(userData));
+        localStorage.setItem("token", tokenFromURL);
+
+        router.replace("/dashboard/user");
+      } catch (err) {
+        console.error("Error decodificando token de Google:", err);
+      }
+    } else {
+      // login tradicional o sesión guardada
+      const storedUser = localStorage.getItem("user");
+      const storedToken = localStorage.getItem("token");
+
+      if (storedUser && storedToken) {
+        setUser(JSON.parse(storedUser));
+        setToken(storedToken);
+      }
     }
+
     setLoading(false);
-  }, []);
+  }, [searchParams, router]);
 
-  // --- LOGIN ---
-  const login = async (email: string, password: string) => {
-    const data: IAuthResponse = await loginUser(email, password);
-    setUser(data.user);
-    setToken(data.token);
-    localStorage.setItem("user", JSON.stringify(data.user));
-    localStorage.setItem("token", data.token);
+  // 🔹 Login tradicional
+  const login = async (data: ILoginData) => {
+    const response: IAuthResponse = await loginUser(data);
+    const userData = mapToIUser(response.user);
+    setUser(userData);
+    setToken(response.access_token);
+    localStorage.setItem("user", JSON.stringify(userData));
+    localStorage.setItem("token", response.access_token);
   };
 
-  // --- REGISTER ---
-  const register = async (name: string, email: string, password: string) => {
-    const newUser: IUser = await registerUser(name, email, password);
-    setUser(newUser); // opcional, solo momentáneo
-    // no guardamos token, se hace login después
+  // 🔹 Register
+  const register = async (data: IRegisterData) => {
+    const newUser = await registerUser(data);
+    const userData = mapToIUser(newUser);
+    setUser(userData);
+    // No hay token todavía; el usuario deberá loguearse
   };
 
-  // --- LOGOUT ---
-  const logout = async () => {
-    if (token) await logoutUser(token);
-    setUser(null);
-    setToken(null);
-    localStorage.removeItem("user");
-    localStorage.removeItem("token");
+  // 🔹 Login con Google
+  const loginWithGoogle = () => {
+    loginWithPassport();
   };
+
+  // 🔹 Logout
+const logout = () => {
+  setUser(null);
+  setToken(null);
+  localStorage.removeItem("user");
+  localStorage.removeItem("token");
+  router.push("/");
+};
 
   return (
-    <AuthContext.Provider value={{ user, token, loading, login, register, logout }}>
+    <AuthContext.Provider value={{ user, token, loading, login, register, loginWithGoogle,logout }}>
       {children}
     </AuthContext.Provider>
   );
 };
 
-// Hook para usar el contexto
 export const useAuth = () => {
   const context = useContext(AuthContext);
   if (!context) throw new Error("useAuth must be used within AuthProvider");
