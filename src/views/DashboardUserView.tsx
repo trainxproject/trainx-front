@@ -64,7 +64,6 @@ import ChatBot from "@/components/ChatBot";
 import MapView from "./MapView";
 import SubscriptionsView from "./SubscriptionsView";
 import TrainerSelection from "./TrainerSelectionView";
-import Chat from "../components/Chat";
 
 export default function DashboardUserView() {
     const [tabSelected, setTabSelected] = useState("class");
