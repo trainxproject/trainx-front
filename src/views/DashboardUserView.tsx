@@ -4,7 +4,7 @@ import { useState } from "react";
 import ClasesView from "./ClassesView";
 import Reservas from "@/components/Reservations";
 import ChatBot from "@/components/ChatBot";
-// import MapView from "./MapView";
+import MapView from "./MapView";
 import SubscriptionsView from "./SubscriptionsView";
 // import MapaLocal from "./MapView";
 
