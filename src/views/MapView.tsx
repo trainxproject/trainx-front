@@ -22,7 +22,7 @@ const MapView: React.FC = () => {
             }}
             mapStyle="mapbox://styles/mapbox/streets-v11"
             mapboxAccessToken={mapboxToken}
-            className="rounded-2xl"
+            // className="rounded-2xl"
           >
             <Marker longitude={-60.5761448} latitude={-33.9038557} color="orange"/>
           </Map>
@@ -70,3 +70,39 @@ const MapView: React.FC = () => {
 };
 
 export default MapView;
+
+// 'use client';
+
+// import { useEffect } from 'react';
+// import { GoogleMap, useLoadScript } from '@react-google-maps/api';
+
+// const MapComponent = () => {
+//   const { isLoaded } = useLoadScript({
+//     googleMapsApiKey: process.env.NEXT_PUBLIC_GOOGLE_MAPS_API_KEY!,
+//     libraries: ['marker'], // OBLIGATORIO para AdvancedMarkerElement
+//   });
+
+//   useEffect(() => {
+//     if (!isLoaded) return;
+
+//     const map = new google.maps.Map(
+//       document.getElementById('map') as HTMLElement,
+//       {
+//         center: { lat: -33.9042644, lng: -60.5778215 },
+//         zoom: 15,
+//       }
+//     );
+
+//     // AdvancedMarkerElement
+//     const marker = new google.maps.marker.AdvancedMarkerElement({
+//       position: { lat: -33.9042644, lng: -60.5778215 },
+//       map,
+//       title: 'Ubicación',
+//     });
+//   }, [isLoaded]);
+
+//   if (!isLoaded) return <div>Cargando mapa...</div>;
+//   return <div id="map" style={{ width: '100%', height: '400px' }} />;
+// };
+
+// export default MapComponent;

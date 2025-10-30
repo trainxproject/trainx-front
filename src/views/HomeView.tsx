@@ -90,7 +90,7 @@ export default function HomeView() {
             return (
               <div
                 key={index}
-                className="p-6 border rounded-xl shadow-md transition-all hover:opacity-90 hover:[border-color:var(--primary)] min-h-[220px] text-center"
+                className="p-6 border rounded-xl shadow-md transition-all hover:opacity-90 hover:[border-color:var(--primary) min-h-[220px] text-center"
                 style={{ backgroundColor: 'var(--card)', color: 'var(--card-foreground)' }}
               >
                 <div className="w-12 h-12 rounded-lg flex items-center justify-center mb-4"  style={{ backgroundColor: 'rgba(255, 107, 0, 0.125)' }}>
@@ -185,11 +185,11 @@ export default function HomeView() {
     {plans.map((plan, index) => (
       <div
         key={index}
-        className="p-6 rounded-2xl shadow-lg flex flex-col justify-between bg-[var(--card)] text-[var(--card-foreground)] transition-transform duration-300 ease-out hover:shadow-2xl hover:scale-105"
+        className="p-6 rounded-2xl shadow-lg flex flex-col justify-between bg-(--card) text-(--card-foreground) transition-transform duration-300 ease-out hover:shadow-2xl hover:scale-105"
       >
         
           <h3 className="text-xl font-bold mb-2">{plan.name}</h3>
-          <p className="text-[32px] font-semibold text-[var(--primary)] mb-1">
+          <p className="text-[32px] font-semibold text-(--primary) mb-1">
             ${plan.price.toFixed(2)}
           </p>
           <p className="text-md text-muted-foreground mb-4">{plan.frequency}</p>
