@@ -45,11 +45,11 @@ const formik = useFormik<RegisterFormValues>({
              <div
       className="fixed inset-0 z-50 flex items-center justify-center bg-black/60 backdrop-blur-sm"
     >
-      <div className="bg-[var(--card)] rounded-3xl shadow-2xl w-full max-w-md max-h-[90vh] overflow-y-auto p-8 animate-fadeIn scrollbar-thin relative">
+      <div className="bg-(--card) rounded-3xl shadow-2xl w-full max-w-md max-h-[90vh] overflow-y-auto p-8 animate-fadeIn scrollbar-thin relative">
   {/* Botón cerrar */}
   <button
     onClick={onClose}
-    className="absolute top-4 right-4 text-[var(--muted-foreground)] hover:text-[var(--foreground)] transition z-10"
+    className="absolute top-4 right-4 text-(--muted-foreground) hover:text-(--foreground) transition z-10"
     aria-label="Cerrar"
   >
     <X className="w-5 h-5" />
@@ -64,8 +64,8 @@ const formik = useFormik<RegisterFormValues>({
             height={50}
             className="w-10 h-10"
           />
-          <h1 className="text-3xl font-bold text-[var(--primary)] mt-3">TrainX</h1>
-          <p className="text-sm text-[var(--muted-foreground)]">Entrená sin límites</p>
+          <h1 className="text-3xl font-bold text-(--primary) mt-3">TrainX</h1>
+          <p className="text-sm text-(--muted-foreground)">Entrená sin límites</p>
         </div>
 
 
@@ -73,7 +73,7 @@ const formik = useFormik<RegisterFormValues>({
         <form onSubmit={formik.handleSubmit} className="space-y-4">
           {/* Nombre */}
           <div className="flex flex-col">
-            <label htmlFor="name" className="text-sm text-[var(--muted-foreground)] mb-1">Nombre</label>
+            <label htmlFor="name" className="text-sm text-(--muted-foreground) mb-1">Nombre</label>
             <input
               id="name"
               name="name"
@@ -82,10 +82,10 @@ const formik = useFormik<RegisterFormValues>({
               value={formik.values.name}
               onChange={formik.handleChange}
               onBlur={formik.handleBlur}
-              className={`p-2 rounded-xl bg-[var(--background)] border text-[var(--foreground)] focus:outline-none focus:ring-2 ${
+              className={`p-2 rounded-xl bg-(--background) border text-(--foreground) focus:outline-none focus:ring-2 ${
                 formik.touched.name && formik.errors.name
                   ? "border-red-500 focus:ring-red-500"
-                  : "border-[var(--border)] focus:ring-[var(--primary)]"
+                  : "border-(--border) focus:ring-(--primary)"
               }`}
             />
             {formik.touched.name && formik.errors.name && (
@@ -95,7 +95,7 @@ const formik = useFormik<RegisterFormValues>({
 
           {/* Email */}
           <div className="flex flex-col">
-            <label htmlFor="email" className="text-sm text-[var(--muted-foreground)] mb-1">Email</label>
+            <label htmlFor="email" className="text-sm text-(--muted-foreground) mb-1">Email</label>
             <input
               id="email"
               name="email"
@@ -104,10 +104,10 @@ const formik = useFormik<RegisterFormValues>({
               value={formik.values.email}
               onChange={formik.handleChange}
               onBlur={formik.handleBlur}
-              className={`p-2 rounded-xl bg-[var(--background)] border text-[var(--foreground)] focus:outline-none focus:ring-2 ${
+              className={`p-2 rounded-xl bg-(--background) border text-(--foreground) focus:outline-none focus:ring-2 ${
                 formik.touched.email && formik.errors.email
                   ? "border-red-500 focus:ring-red-500"
-                  : "border-[var(--border)] focus:ring-[var(--primary)]"
+                  : "border-(--border) focus:ring-(--primary)"
               }`}
             />
             {formik.touched.email && formik.errors.email && (
@@ -117,7 +117,7 @@ const formik = useFormik<RegisterFormValues>({
 
           {/* Contraseña */}
           <div className="flex flex-col">
-            <label htmlFor="password" className="text-sm text-[var(--muted-foreground)] mb-1">Contraseña</label>
+            <label htmlFor="password" className="text-sm text-(--muted-foreground) mb-1">Contraseña</label>
             <input
               id="password"
               name="password"
@@ -126,10 +126,10 @@ const formik = useFormik<RegisterFormValues>({
               value={formik.values.password}
               onChange={formik.handleChange}
               onBlur={formik.handleBlur}
-              className={`p-2 rounded-xl bg-[var(--background)] border text-[var(--foreground)] focus:outline-none focus:ring-2 ${
+              className={`p-2 rounded-xl bg-(--background) border text-(--foreground) focus:outline-none focus:ring-2 ${
                 formik.touched.password && formik.errors.password
                   ? "border-red-500 focus:ring-red-500"
-                  : "border-[var(--border)] focus:ring-[var(--primary)]"
+                  : "border-(--border) focus:ring-(--primary)"
               }`}
             />
             {formik.touched.password && formik.errors.password && (
@@ -139,7 +139,7 @@ const formik = useFormik<RegisterFormValues>({
 
           {/* Confirmar contraseña */}
           <div className="flex flex-col">
-            <label htmlFor="confirmPassword" className="text-sm text-[var(--muted-foreground)] mb-1">Confirmar Contraseña</label>
+            <label htmlFor="confirmPassword" className="text-sm text-(--muted-foreground) mb-1">Confirmar Contraseña</label>
             <input
               id="confirmPassword"
               name="confirmPassword"
@@ -148,10 +148,10 @@ const formik = useFormik<RegisterFormValues>({
               value={formik.values.confirmPassword}
               onChange={formik.handleChange}
               onBlur={formik.handleBlur}
-              className={`p-2 rounded-xl bg-[var(--background)] border text-[var(--foreground)] focus:outline-none focus:ring-2 ${
+              className={`p-2 rounded-xl bg-(--background) border text-(--foreground) focus:outline-none focus:ring-2 ${
                 formik.touched.confirmPassword && formik.errors.confirmPassword
                   ? "border-red-500 focus:ring-red-500"
-                  : "border-[var(--border)] focus:ring-[var(--primary)]"
+                  : "border-(--border) focus:ring-(--primary)"
               }`}
             />
             {formik.touched.confirmPassword && formik.errors.confirmPassword && (
@@ -159,14 +159,14 @@ const formik = useFormik<RegisterFormValues>({
             )}
           </div>
 
-          <button type="submit" className="w-full py-2.5 bg-[var(--primary)] text-[var(--background)] font-semibold rounded-xl hover:opacity-90 transition">
+          <button type="submit" className="w-full py-2.5 bg-(--primary) text-(--background) font-semibold rounded-xl hover:opacity-90 transition">
             Crear cuenta
           </button>
         </form>
 
-        <p className="text-center text-sm text-[var(--muted-foreground)] mt-6">
+        <p className="text-center text-sm text-(--muted-foreground) mt-6">
           ¿Ya tienes cuenta?{' '}
-          <button onClick={openLogin} className="text-[var(--primary)] hover:underline font-medium">
+          <button onClick={openLogin} className="text-(--primary) hover:underline font-medium">
             Inicia sesión aquí
           </button>
         </p>

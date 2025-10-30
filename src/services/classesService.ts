@@ -1,8 +1,9 @@
 import axios from "axios"
+import { Classes } from "@/interfaces/Classes"
 
 const API_URL = process.env.NEXT_PUBLIC_API_URL || "http://localhost:3000";
 
-export const getAllClasses = async (): Promise<[]> => {
+export const getAllClasses = async (): Promise<Classes[]> => {
     try {
       const { data } = await axios.get(`${API_URL}/activities`)
       console.log(data)

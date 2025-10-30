@@ -48,7 +48,7 @@ export default function MyBookings() {
       {/* Header */}
       <div className="flex flex-col">
         <h2 className="font-semibold text-2xl">Mis Reservas</h2>
-        <p className="font-light text-lg text-[var(--muted-foreground)] mt-3">
+        <p className="font-light text-lg text-(--muted-foreground) mt-3">
           Gestiona tus clases reservadas y consulta tu historial
         </p>
       </div>
@@ -58,19 +58,19 @@ export default function MyBookings() {
         <h3 className="text-xl font-semibold mb-4">Próximas Clases</h3>
         <div className="grid gap-6 grid-cols-1 sm:grid-cols-2 lg:grid-cols-3">
           {upcoming.length === 0 ? (
-            <div className="bg-[var(--secondary)] border border-[var(--muted-foreground)] rounded-xl p-8 text-center">
-              <CalendarIcon className="w-12 h-12 mx-auto mb-3 text-[var(--muted-foreground)]" />
-              <p className="text-[14px] text-[var(--muted-foreground)]">No tienes clases reservadas próximamente</p>
+            <div className="bg-(--secondary) border border-(--muted-foreground) rounded-xl p-8 text-center">
+              <CalendarIcon className="w-12 h-12 mx-auto mb-3 text-(--muted-foreground)" />
+              <p className="text-[14px] text-(--muted-foreground)">No tienes clases reservadas próximamente</p>
             </div>
           ) : (
             upcoming.map((b) => (
               <div
                 key={b.id}
-                className="flex flex-col bg-[var(--secondary)] border border-[var(--muted-foreground)] p-6 rounded-xl hover:border-[var(--primary)] transition"
+                className="flex flex-col bg-(--secondary) border border-(--muted-foreground) p-6 rounded-xl hover:border-(--primary) transition"
               >
                 {/* Header */}
                 <div className="flex justify-between items-start mb-3">
-                  <span className="text-[11px] px-2 py-1 rounded bg-[var(--primary)]/80 text-black font-semibold">
+                  <span className="text-[11px] px-2 py-1 rounded bg-(--primary)/80 text-black font-semibold">
                     Confirmada
                   </span>
                   <button
@@ -83,16 +83,16 @@ export default function MyBookings() {
 
                 {/* Info de la clase */}
                 <h4 className="text-lg font-bold">{b.className}</h4>
-                <p className="text-sm text-[var(--card-foreground)] mt-1">con {b.instructor}</p>
+                <p className="text-sm text-(--card-foreground) mt-1">con {b.instructor}</p>
 
                 {/* Detalles */}
-                <div className="mt-4 space-y-2 text-[13px] text-[var(--card-foreground)]">
+                <div className="mt-4 space-y-2 text-[13px] text-(--card-foreground)">
                   <div className="flex items-center gap-2"><CalendarIcon className="w-4 h-4" /> {b.date}</div>
                   <div className="flex items-center gap-2"><ClockIcon className="w-4 h-4" /> {b.time}</div>
                   <div className="flex items-center gap-2"><MapPinIcon className="w-4 h-4" /> {b.location}</div>
                 </div>
 
-                <button className="mt-6 bg-[var(--primary)]/80 hover:bg-[var(--primary)] px-3 py-2 rounded-xl text-black font-semibold transition">
+                <button className="mt-6 bg-(--primary)/80 hover:bg-(--primary) px-3 py-2 rounded-xl text-black font-semibold transition">
                   Ver detalles
                 </button>
               </div>
@@ -105,9 +105,9 @@ export default function MyBookings() {
       {/* Modal */}
       {cancelDialogOpen && (
         <div className="fixed inset-0 bg-black/50 flex items-center justify-center z-50">
-          <div className="bg-[var(--secondary)] rounded-xl p-6 w-80 text-center space-y-4">
+          <div className="bg-(--secondary) rounded-xl p-6 w-80 text-center space-y-4">
             <h4 className="text-lg font-semibold">¿Cancelar reserva?</h4>
-            <p className="text-sm text-[var(--muted-foreground)]">
+            <p className="text-sm text-(--muted-foreground)">
               Esta acción liberará tu cupo. Podrás volver a reservar si hay disponibilidad.
             </p>
             <div className="flex justify-center gap-3 mt-4">

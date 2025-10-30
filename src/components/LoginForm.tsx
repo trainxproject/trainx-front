@@ -49,11 +49,11 @@ const formik = useFormik<LoginFormValues>({
     <div
       className="fixed inset-0 z-50 flex items-center justify-center bg-black/60 backdrop-blur-sm"
     >
-      <div className="bg-[var(--card)] rounded-3xl shadow-2xl w-full max-w-md mx-4 p-8 relative animate-fadeIn">
+      <div className="bg-(--card) rounded-3xl shadow-2xl w-full max-w-md mx-4 p-8 relative animate-fadeIn">
         {/* Botón cerrar */}
         <button
           onClick={onClose}
-          className="absolute top-4 right-4 text-[var(--muted-foreground)] hover:text-[var(--foreground)] transition"
+          className="absolute top-4 right-4 text-(--muted-foreground) hover:text-(--foreground) transition"
           aria-label="Cerrar"
         >
           <X className="w-5 h-5" />
@@ -68,10 +68,10 @@ const formik = useFormik<LoginFormValues>({
             height={50}
             className="w-10 h-10"
           />
-          <h1 className="text-3xl font-bold text-[var(--primary)] mt-3">
+          <h1 className="text-3xl font-bold text-(--primary) mt-3">
             TrainX
           </h1>
-          <p className="text-sm text-[var(--muted-foreground)]">
+          <p className="text-sm text-(--muted-foreground)">
             Entrená sin límites
           </p>
         </div>
@@ -80,7 +80,7 @@ const formik = useFormik<LoginFormValues>({
         <button
           type="button"
           onClick={handleGoogleLogin}
-className="w-full flex items-center justify-center gap-2 py-2.5 border rounded-xl transition-colors border-[var(--muted)] text-[var(--foreground)] bg-[var(--background)] hover:bg-[var(--card)] hover:text-[var(--muted-foreground)]" 
+        className="w-full flex items-center justify-center gap-2 py-2.5 border rounded-xl transition-colors border-(--muted) text-(--foreground) bg-(--background) hover:bg-(--card) hover:text-(--muted-foreground)" 
         >
           <FcGoogle className="w-4 h-4" />
           Continuar con Google
@@ -88,8 +88,8 @@ className="w-full flex items-center justify-center gap-2 py-2.5 border rounded-x
 
         {/* Separador */}
         <div className="relative text-center my-5">
-          <hr className="border-[var(--border)]" />
-          <span className="absolute left-1/2 -translate-x-1/2 -translate-y-1/2 bg-[var(--card)] text-xs text-[var(--muted-foreground)] px-2">
+          <hr className="border-(--border)" />
+          <span className="absolute left-1/2 -translate-x-1/2 -translate-y-1/2 bg-(--card) text-xs text-(--muted-foreground) px-2">
             o continúa con email
           </span>
         </div>
@@ -100,7 +100,7 @@ className="w-full flex items-center justify-center gap-2 py-2.5 border rounded-x
           <div className="flex flex-col">
             <label
               htmlFor="email"
-              className="text-sm text-[var(--muted-foreground)] mb-1"
+              className="text-sm text-(--muted-foreground) mb-1"
             >
               Email
             </label>
@@ -112,10 +112,10 @@ className="w-full flex items-center justify-center gap-2 py-2.5 border rounded-x
               value={formik.values.email}
               onChange={formik.handleChange}
               onBlur={formik.handleBlur}
-              className={`p-2 rounded-xl bg-[var(--background)] border text-[var(--foreground)] focus:outline-none focus:ring-2 ${
+              className={`p-2 rounded-xl bg-(--background) border text-(--foreground) focus:outline-none focus:ring-2 ${
                 formik.touched.email && formik.errors.email
                   ? "border-red-500 focus:ring-red-500"
-                  : "border-[var(--border)] focus:ring-[var(--primary)]"
+                  : "border-(--border) focus:ring-(--primary)"
               }`}
             />
             {formik.touched.email && formik.errors.email && (
@@ -129,7 +129,7 @@ className="w-full flex items-center justify-center gap-2 py-2.5 border rounded-x
           <div className="flex flex-col">
             <label
               htmlFor="password"
-              className="text-sm text-[var(--muted-foreground)] mb-1"
+              className="text-sm text-(--muted-foreground) mb-1"
             >
               Contraseña
             </label>
@@ -141,10 +141,10 @@ className="w-full flex items-center justify-center gap-2 py-2.5 border rounded-x
               value={formik.values.password}
               onChange={formik.handleChange}
               onBlur={formik.handleBlur}
-              className={`p-2 rounded-xl bg-[var(--background)] border text-[var(--foreground)] focus:outline-none focus:ring-2 ${
+              className={`p-2 rounded-xl bg-(--background) border text-(--foreground) focus:outline-none focus:ring-2 ${
                 formik.touched.password && formik.errors.password
                   ? "border-red-500 focus:ring-red-500"
-                  : "border-[var(--border)] focus:ring-[var(--primary)]"
+                  : "border-(--border) focus:ring-(--primary)"
               }`}
             />
             {formik.touched.password && formik.errors.password && (
@@ -156,18 +156,18 @@ className="w-full flex items-center justify-center gap-2 py-2.5 border rounded-x
 
           <button
             type="submit"
-            className="w-full py-2.5 bg-[var(--primary)] text-[var(--background)] font-semibold rounded-xl hover:opacity-90 transition"
+            className="w-full py-2.5 bg-(--primary) text-(--background) font-semibold rounded-xl hover:opacity-90 transition"
           >
             Iniciar Sesión
           </button>
         </form>
 
         {/* Registro */}
-        <p className="text-center text-sm text-[var(--muted-foreground)] mt-6">
+        <p className="text-center text-sm text-(--muted-foreground) mt-6">
           ¿Aún no tienes cuenta?{" "}
           <button
             onClick={openRegister}
-            className="text-[var(--primary)] hover:underline font-medium"
+            className="text-(--primary) hover:underline font-medium"
           >
             Regístrate con email
           </button>
