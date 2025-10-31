@@ -2,7 +2,6 @@
 
 import { useState } from "react";
 import CalendarView from "../components/Calendar";
-import MyBookings from "@/components/Reservations";
 import ChatBot from "@/components/ChatBot";
 import MapView from "./MapView";
 import SubscriptionsView from "./SubscriptionsView";
@@ -40,7 +39,6 @@ export default function DashboardUserView() {
             {/* Content */}
             <div className="w-full max-w-[1600px]">
                 {String(tabSelected) === "class" && <CalendarView />}
-                {String(tabSelected) === "reservations" && <MyBookings />}
                 {String(tabSelected) === "routines" && <ChatBot />}
                 {String(tabSelected) === "location" && <MapView />}
                 {String(tabSelected) === "subscription" && <SubscriptionsView />}
