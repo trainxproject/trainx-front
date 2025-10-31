@@ -11,3 +11,7 @@ export const getAllTrainers = async () => {
         console.error("Error al traer los entrenadores: ", error);
     }
 }
+
+export const selecTrainer = async () => {
+    
+}

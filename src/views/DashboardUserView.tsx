@@ -2,7 +2,6 @@
 
 import { useState } from "react";
 import CalendarView from "../components/Calendar";
-import MyBookings from "@/components/Reservations";
 import ChatBot from "@/components/ChatBot";
 import MapView from "./MapView";
 import SubscriptionsView from "./SubscriptionsView";
@@ -17,8 +16,7 @@ export default function DashboardUserView() {
             <div className="flex flex-wrap justify-center gap-2 md:gap-4 my-6 w-full max-w-[1200px] bg-(--secondary) border border->(--border) rounded-3xl p-2 md:p-3">
                 {[
                     { key: "class", label: "Clases" },
-                    { key: "reservations", label: "Mis reservas" },
-                    { key: "subscription", label: "Mi plan" },
+                    { key: "subscription", label: "Planes" },
                     { key: "coach", label: "Entrenador" },
                     { key: "routines", label: "Rutinas" },
                     { key: "location", label: "Ubicación" },
@@ -41,7 +39,6 @@ export default function DashboardUserView() {
             {/* Content */}
             <div className="w-full max-w-[1600px]">
                 {String(tabSelected) === "class" && <CalendarView />}
-                {String(tabSelected) === "reservations" && <MyBookings />}
                 {String(tabSelected) === "routines" && <ChatBot />}
                 {String(tabSelected) === "location" && <MapView />}
                 {String(tabSelected) === "subscription" && <SubscriptionsView />}
