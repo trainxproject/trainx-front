@@ -5,4 +5,5 @@ export interface Trainers {
     formation: string | null;
     imageUrl: string;
     available: boolean;
+    qualification: number;
 }
