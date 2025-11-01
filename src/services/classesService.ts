@@ -1,6 +1,5 @@
 import axios from "axios"
 import { Classes } from "@/interfaces/Classes"
-import { AsyncCallbackSet } from "next/dist/server/lib/async-callback-set";
 
 const API_URL = process.env.NEXT_PUBLIC_API_URL || "http://localhost:3000";
 
