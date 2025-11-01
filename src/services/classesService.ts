@@ -16,7 +16,7 @@ export const getAllClasses = async (): Promise<Classes[]> => {
 
 export const resevedClass = async (scheduleId: string)  => {
   console.log(scheduleId);
-  const token = localStorage.getItem("auth:token");
+  const token = localStorage.getItem("token");
   console.log("token obtenido: ", token)
     if(!token) {
       console.log("Error al obtener el token. Reservar clase")
