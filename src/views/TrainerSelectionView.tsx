@@ -9,25 +9,25 @@ import { FaRegStar } from "react-icons/fa";
 
 interface TrainerSelectionProps {
   selectedTrainer?: string | null;
-  onSelectTrainer: (trainerId: string) => void;
+  // onSelectTrainer: (trainerId: string) => void;
 }
 
-const TrainerSelection = ({ selectedTrainer, onSelectTrainer }: TrainerSelectionProps) => {
+const TrainerSelection = ({ selectedTrainer }: TrainerSelectionProps) => {
   const [trainers, setTrainers] = useState<Trainers[]>([]);
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
     const fetchTrainers = async () => {
       try {
-        const data = await getAllTrainers();
-        setTrainers(data);
+        const data = ( await getAllTrainers()) ?? [];
+        setTrainers(data); // ✅ ya no da error
       } catch (error) {
         toast.error("Error al cargar los entrenadores");
       } finally {
         setLoading(false);
       }
     };
-
+  
     fetchTrainers();
   }, []);
 
@@ -87,7 +87,6 @@ const TrainerSelection = ({ selectedTrainer, onSelectTrainer }: TrainerSelection
               )}
 
               <button
-                onClick={() => onSelectTrainer(trainer.id)}
                 disabled={!trainer.available || selectedTrainer === trainer.id}
                 className={`w-full py-2 rounded-md font-semibold transition-colors duration-200 ${
                   !trainer.available
