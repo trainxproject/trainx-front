@@ -51,7 +51,7 @@ const CalendarView = () => {
           id: sch.id,
           name: cls.name,
           time: sch.startTime,
-          instructor: cls.trainer,
+          instructor: sch.trainer,
           booked: 0,
           capacity: cls.maxCapacity ?? 0,
           description: cls.description,

@@ -9,36 +9,38 @@ import { useAuthModal } from "../context/AuthModalContext";
 import { useAuth } from "@/context/AuthContext";
 import { useRouter } from "next/navigation";
 import { toast } from "sonner";
-import { useEffect } from "react";
+import { useEffect, useState } from "react";
 export default function LoginForm({ onClose }: { onClose?: () => void }) {
 const { openRegister } = useAuthModal();
-const { login, loading, user, loginWithGoogle } = useAuth();
-const router = useRouter();
+  const { login, user, loginWithGoogle, loading: authLoading } = useAuth();
+  const router = useRouter();
+  const [loading, setLoading] = useState(false);
  
 
-useEffect(() => {
-    // Solo redirige si user existe y ya pasó el login
+  useEffect(() => {
     if (user) {
       router.push("/dashboard/user");
     }
   }, [user, router]);
 
-
-const formik = useFormik<LoginFormValues>({
+  const formik = useFormik<LoginFormValues>({
     initialValues: LoginInitialValues,
     validationSchema: LoginValidationSchema,
     onSubmit: async (values) => {
       try {
+        setLoading(true);
         await login({ email: values.email, password: values.password });
-       toast.success("Login exitoso");
+        toast.success("Login exitoso");
         onClose?.();
-        router.push("/dashboard/user"); 
-      } catch (error) {
+      } catch (error: any) {
         console.error(error);
-       toast.error("Error en login, revisa tus credenciales");
+        const message = error?.response?.data?.message || "Error en login, revisa tus credenciales";
+        toast.error(message);
+      } finally {
+        setLoading(false);
       }
     },
-  });;
+  });
 
   const handleGoogleLogin = () => {
    loginWithGoogle();

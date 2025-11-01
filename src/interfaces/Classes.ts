@@ -14,6 +14,12 @@ export interface Classes {
     maxCapacity: number | null;
     imageUrl: string;
     schedules: Schedules[];
-    trainer: string;
-    startTime: string
+}
+
+export interface IReservation {
+  id: string;
+  userId: string;
+  schedule: Schedules;
+  createdAt: string; 
+  status: "active" | "cancelled";
 }

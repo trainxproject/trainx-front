@@ -1,8 +1,13 @@
+
+
 export interface IUser {
   id: string;
   name: string;
   email: string;
   isAdmin?: boolean;
+  profilePicture?: string;
+  status?: string;
+
 }
 
 
@@ -30,4 +35,6 @@ export interface JWTPayload {
   email: string;
   name?: string;
   isAdmin?: boolean;
+  profilePicture?: string;
 }
+
