@@ -39,7 +39,7 @@ const TrainerSelection = ({ selectedTrainer, onSelectTrainer }: TrainerSelection
     <div className="space-y-6">
       <div>
         <h2 className="text-2xl font-semibold mb-2">Elige tu Entrenador</h2>
-        <p className="text-sm text-gray-500">
+        <p className="text-sm text-gray-600">
           Selecciona un entrenador disponible según tu objetivo
         </p>
       </div>
