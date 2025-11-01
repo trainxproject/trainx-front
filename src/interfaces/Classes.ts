@@ -15,3 +15,11 @@ export interface Classes {
     imageUrl: string;
     schedules: Schedules[];
 }
+
+export interface IReservation {
+  id: string;
+  userId: string;
+  schedule: Schedules;
+  createdAt: string; 
+  status: "active" | "cancelled";
+}
