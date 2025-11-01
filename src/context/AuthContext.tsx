@@ -11,6 +11,7 @@ interface AuthContextProps {
   user: IUser | null;
   setUser: (user: IUser | null) => void;
   token: string | null;
+  setToken: (token: string | null) => void;
   loading: boolean;
   login: (data: ILoginData) => Promise<void>;
   register: (data: IRegisterData) => Promise<void>;
@@ -110,7 +111,7 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
   };
 
   return (
-    <AuthContext.Provider value={{ user, setUser, token, loading, login, register, loginWithGoogle, logout, updateUserProfile }}>
+    <AuthContext.Provider value={{ user, setUser, token, setToken, loading, login, register, loginWithGoogle, logout, updateUserProfile }}>
       {children}
     </AuthContext.Provider>
   );
