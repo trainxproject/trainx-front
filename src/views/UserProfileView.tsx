@@ -19,11 +19,11 @@ const tabs = [
 
   return (
     <main className="min-h-screen flex flex-col items-center bg-[var(--background)] px-4 md:px-8 lg:px-16 py-8">
-      {/* ENCABEZADO: Foto + Info + Botón */}
+    
       <section className="card flex items-center justify-between p-6 mb-8 w-full max-w-4xl">
         <div className="flex items-center gap-6">
-          {/* Imagen */}
-          <div className="relative w-28 h-28 rounded-full overflow-hidden border-4 border-primary flex-shrink-0 flex items-center justify-center bg-[var(--secondary)]">
+          
+          <div className="relative w-28 h-28 rounded-full overflow-hidden border-4 border-[var(--primary)] flex-shrink-0 flex items-center justify-center bg-[var(--secondary)]">
   {user?.profilePicture ? (
     <Image
       src={user.profilePicture}
@@ -39,7 +39,7 @@ const tabs = [
     
           <div className="flex flex-col justify-center">
             <h2 className="text-2xl font-semibold">{user?.name || 'Usuario'}</h2>
-            <p className="text-muted">{user?.email}</p>
+            <p className="text-muted-foreground">{user?.email}</p>
           </div>
         </div>
 

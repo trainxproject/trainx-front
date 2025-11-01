@@ -31,7 +31,7 @@ const handleSubmit = async (e: FormEvent) => {
 
   setLoading(true);
   try {
-    // Llamamos a la función del contexto que ya maneja nombre + foto
+  
     await updateUserProfile(name,file || undefined);
 
     onClose();

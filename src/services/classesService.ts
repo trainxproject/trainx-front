@@ -13,3 +13,4 @@ export const getAllClasses = async (): Promise<Classes[]> => {
       return [];
     }
   };
+

@@ -11,3 +11,4 @@ export const getAllPlans = async () => {
         console.error("Error al obtener los planes: ", error);
     }
 } 
+
