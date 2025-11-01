@@ -33,3 +33,13 @@ export const updateUserName = async (userId: string, name: string) => {
   const response = await axios.patch(`${API_URL}/users/${userId}/name`, { name });
   return response.data;
 };
+
+export const getPlanUser = async (userId: string) => {
+  try {
+    const { data } = await axios.get(`${API_URL}/users/plan/${userId}`);
+    console.log("Plan del usuario: ", data);
+    return data;
+  } catch (error) {
+    console.error("Error al traer el plan del usuario: ", error);
+  }
+};
