@@ -1,6 +1,5 @@
 import axios from "axios"
 import { Classes } from "@/interfaces/Classes"
-import { AsyncCallbackSet } from "next/dist/server/lib/async-callback-set";
 
 const API_URL = process.env.NEXT_PUBLIC_API_URL || "http://localhost:3000";
 
@@ -17,7 +16,7 @@ export const getAllClasses = async (): Promise<Classes[]> => {
 
 export const resevedClass = async (scheduleId: string)  => {
   console.log(scheduleId);
-  const token = localStorage.getItem("auth:token");
+  const token = localStorage.getItem("token");
   console.log("token obtenido: ", token)
     if(!token) {
       console.log("Error al obtener el token. Reservar clase")

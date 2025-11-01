@@ -6,6 +6,7 @@ import {Footer} from "../components/Footer";
 import {NavBar} from "../components/NavBar";
 import { AuthModalProvider } from "@/context/AuthModalContext";
 import { AuthProvider } from "@/context/AuthContext";
+import TokenHandler from "@/components/TokenHandler";
 
 const geistSans = Geist({
   variable: "--font-geist-sans",
@@ -32,8 +33,9 @@ export default function RootLayout({
       <body
        
         className={`${geistSans.variable} ${geistMono.variable} antialiased`}
-      >
+      > 
         <AuthProvider>
+          <TokenHandler />
         <AuthModalProvider>
          <Toaster 
           position="top-right"
