@@ -4,6 +4,8 @@ import { useEffect, useState } from "react";
 import { getAllTrainers } from "@/services/trainersService";
 import { Trainers } from "@/interfaces/Trainer";
 import { toast } from "sonner";
+import { FaRegStar } from "react-icons/fa";
+
 
 interface TrainerSelectionProps {
   selectedTrainer?: string | null;
@@ -73,6 +75,10 @@ const TrainerSelection = ({ selectedTrainer, onSelectTrainer }: TrainerSelection
             <div className="p-5">
               <h3 className="text-lg font-semibold mb-1">{trainer.name}</h3>
               <p className="text-sm text-gray-500 mb-2">{trainer.specialization}</p>
+              <div className="flex justify-baseline p-2">
+                <p><FaRegStar color="orange"/></p>
+                <p className="text-sm text-(--foreground) mb-2 pl-2">{trainer.qualification}</p>
+              </div>
 
               {trainer.formation && (
                 <p className="text-xs text-gray-400 mb-3 italic">

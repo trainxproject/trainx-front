@@ -14,4 +14,6 @@ export interface Classes {
     maxCapacity: number | null;
     imageUrl: string;
     schedules: Schedules[];
+    trainer: string;
+    startTime: string
 }
