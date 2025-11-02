@@ -6,7 +6,7 @@ export const createPreference = async (planId: string, token: string) => {
   try {
     const { data } = await axios.post(
       `${API_URL}/mp/preference/${planId}`,
-      { quantity: 1 },
+      { },
       {
         headers: {
           Authorization: `Bearer ${token}`,

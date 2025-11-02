@@ -19,6 +19,7 @@ const TrainerSelection = ({ selectedTrainer }: TrainerSelectionProps) => {
   useEffect(() => {
     const fetchTrainers = async () => {
       try {
+          
         const data = ( await getAllTrainers()) ?? [];
         setTrainers(data); // ✅ ya no da error
       } catch (error) {
