@@ -3,6 +3,8 @@
 import { useEffect, useState } from "react";
 import { GrStatusGood } from "react-icons/gr";
 import { getAllPlans } from "@/services/plansService";
+import { createPreference } from "@/services/mpService";
+import { useAuth } from "@/context/AuthContext";
 
 interface Plan {
   id: string;
@@ -13,6 +15,7 @@ interface Plan {
 
 const SubscriptionsView: React.FC = () => {
   const [plans, setPlans] = useState<Plan[]>([]);
+  const { token } = useAuth();
 
   useEffect(() => {
     const fetchPlans = async () => {
@@ -22,6 +25,24 @@ const SubscriptionsView: React.FC = () => {
     fetchPlans();
   }, []);
 
+const handleSubscribe = async (planId: string) => {
+  try {
+    console.log("🔑 Token del usuario:", token);
+
+    if (!token) return; // ruta protegida, no debería pasar
+
+  
+    const preference = await createPreference(planId, token);
+
+    if (preference?.init_point) {
+      window.location.href = preference.init_point;
+    } else {
+      console.error("No se recibió init_point desde el backend");
+    }
+  } catch (error) {
+    console.error("Error al crear la preferencia:", error);
+  }
+};
   return (
     <div className="flex flex-wrap gap-8 mt-8">
   {plans.map((plan, index) => (
@@ -48,6 +69,7 @@ const SubscriptionsView: React.FC = () => {
 
       {/* botón fijo en parte inferior */}
       <button
+      onClick={() => handleSubscribe(plan.id)}
         className="bg-(--primary)/80 hover:bg-(--primary)
                    px-3 py-2 rounded-xl text-black font-semibold
                    hover:shadow-2xl hover:shadow-(--muted-foreground)
