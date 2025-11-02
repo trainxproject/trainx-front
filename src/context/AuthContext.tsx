@@ -5,15 +5,13 @@ import { IUser, IAuthResponse, ILoginData, IRegisterData, JWTPayload } from "@/i
 import { loginUser, registerUser, loginWithPassport } from "@/services/authService";
 import { uploadCloudinaryService } from "@/services/uploadCloudinaryService";
 import { updateProfilePicture, updateUserName } from "@/services/userService";
-import { useRouter, useSearchParams } from "next/navigation";
-import { jwtDecode } from "jwt-decode";
-
-
+import { useRouter } from "next/navigation";
 
 interface AuthContextProps {
   user: IUser | null;
   setUser: (user: IUser | null) => void;
   token: string | null;
+  setToken: (token: string | null) => void;
   loading: boolean;
   login: (data: ILoginData) => Promise<void>;
   register: (data: IRegisterData) => Promise<void>;
@@ -29,9 +27,8 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
   const [token, setToken] = useState<string | null>(null);
   const [loading, setLoading] = useState(true);
   const router = useRouter();
-  const searchParams = useSearchParams();
 
-  // 🔹 Función para mapear el payload del JWT a IUser
+  // 🔹 Función para mapear payload JWT a IUser
   const mapToIUser = (data: Partial<IUser> & Partial<JWTPayload>): IUser => ({
     id: data.id || data.sub || "",
     name: data.name || "Mi perfil",
@@ -40,35 +37,22 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
     profilePicture: data.profilePicture || ""
   });
 
-  // 🔹 Manejar sesión al iniciar (login normal, Google login o sesión guardada)
-useEffect(() => {
-  const tokenFromURL = searchParams.get("token");
-  const storedUser = localStorage.getItem("user");
-  const storedToken = localStorage.getItem("token");
+  // 🔹 Manejar sesión al iniciar (login normal o Google)
+  useEffect(() => {
+    const storedUser = localStorage.getItem("user");
+    const storedToken = localStorage.getItem("token");
 
-  if (tokenFromURL) {
-    try {
-      const decoded = jwtDecode<JWTPayload>(tokenFromURL);
-      const userData = mapToIUser(decoded);
-      setUser(userData);
-      setToken(tokenFromURL);
-      localStorage.setItem("user", JSON.stringify(userData));
-      localStorage.setItem("token", tokenFromURL);
-      router.replace("/dashboard/user");
-    } catch (err) {
-      console.error("Error decodificando token de Google:", err);
-    }
-  } else if (storedUser && storedToken) {
+    if (storedUser && storedToken) {
       const parsedUser = JSON.parse(storedUser);
       if (!parsedUser.profilePicture) {
-        parsedUser.profilePicture = "/default-avatar.png";
+        parsedUser.profilePicture = "";
       }
-    setUser(JSON.parse(storedUser));
-    setToken(storedToken);
-  }
+      setUser(parsedUser);
+      setToken(storedToken);
+    }
 
-  setLoading(false);
-}, [searchParams, router]);
+    setLoading(false);
+  }, []);
 
   // 🔹 Login tradicional
   const login = async (data: ILoginData) => {
@@ -78,30 +62,31 @@ useEffect(() => {
     setToken(response.access_token);
     localStorage.setItem("user", JSON.stringify(userData));
     localStorage.setItem("token", response.access_token);
+    router.push("/dashboard/user");
   };
 
-  // 🔹 Register
+  // 🔹 Registro
   const register = async (data: IRegisterData) => {
-     await registerUser(data);
-
+    await registerUser(data);
     // No hay token todavía; el usuario deberá loguearse
   };
 
   // 🔹 Login con Google
   const loginWithGoogle = () => {
-    loginWithPassport();
+    loginWithPassport(); // redirige al backend, token se maneja en TokenHandler
   };
 
   // 🔹 Logout
-const logout = () => {
-  setUser(null);
-  setToken(null);
-  localStorage.removeItem("user");
-  localStorage.removeItem("token");
-  router.push("/");
-};
+  const logout = () => {
+    setUser(null);
+    setToken(null);
+    localStorage.removeItem("user");
+    localStorage.removeItem("token");
+    router.push("/");
+  };
 
-const updateUserProfile = async (name?: string, file?: File) => {
+  // 🔹 Actualizar perfil (nombre y foto)
+  const updateUserProfile = async (name?: string, file?: File) => {
     if (!user || !token) return;
 
     try {
@@ -112,7 +97,6 @@ const updateUserProfile = async (name?: string, file?: File) => {
         await updateProfilePicture(user.id, imageUrl);
       }
 
-      
       if (name && name !== user.name) {
         await updateUserName(user.id, name);
       }
@@ -127,7 +111,7 @@ const updateUserProfile = async (name?: string, file?: File) => {
   };
 
   return (
-    <AuthContext.Provider value={{ user, setUser, token, loading, login, register, loginWithGoogle,logout, updateUserProfile }}>
+    <AuthContext.Provider value={{ user, setUser, token, setToken, loading, login, register, loginWithGoogle, logout, updateUserProfile }}>
       {children}
     </AuthContext.Provider>
   );

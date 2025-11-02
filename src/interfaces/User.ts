@@ -35,8 +35,6 @@ export interface JWTPayload {
   email: string;
   name?: string;
   isAdmin?: boolean;
+  profilePicture?: string;
 }
 
-export interface IPlan {
-
-}
