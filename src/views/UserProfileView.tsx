@@ -19,9 +19,9 @@ const tabs = [
 
   return (
     <main className="min-h-screen flex flex-col items-center bg-[var(--background)] px-4 sm:px-6 md:px-8 lg:px-16 py-8">
-  {/* PERFIL */}
+
   <section className="card flex flex-col sm:flex-row items-center sm:items-start sm:justify-between gap-6 p-6 mb-8 w-full max-w-4xl">
-    {/* FOTO + INFO */}
+
     <div className="flex flex-col sm:flex-row items-center sm:items-center gap-6 w-full sm:w-auto">
       <div className="relative w-24 h-24 sm:w-28 sm:h-28 rounded-full overflow-hidden border-4 border-[var(--primary)] flex-shrink-0 flex items-center justify-center bg-[var(--secondary)]">
         {user?.profilePicture ? (
@@ -42,7 +42,7 @@ const tabs = [
       </div>
     </div>
 
-    {/* BOTÓN EDITAR */}
+    
     <div className="w-full sm:w-auto flex justify-center sm:justify-end">
       <button
         className="btn-primary text-sm w-full sm:w-auto"
@@ -53,7 +53,7 @@ const tabs = [
     </div>
   </section>
 
-  {/* TABS */}
+
   <div className="flex flex-wrap justify-center gap-2 md:gap-4 my-6 w-full max-w-4xl bg-[var(--secondary)] border border-[var(--border)] rounded-3xl p-2 md:p-3">
     {tabs.map((tab) => (
       <button
@@ -69,7 +69,7 @@ const tabs = [
     ))}
   </div>
 
-  {/* CONTENIDO */}
+
   <section className="card p-4 sm:p-6 w-full max-w-4xl">
     {activeTab === 'reservations' && (
       <div>
@@ -93,7 +93,6 @@ const tabs = [
     )}
   </section>
 
-  {/* MODAL */}
   {isModalOpen && (
     <EditProfileModal onClose={() => setIsModalOpen(false)} />
   )}
