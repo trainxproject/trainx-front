@@ -52,3 +52,14 @@ export const filter = async (name: string): Promise< Classes[]> => {
       throw new Error("error en filter");
     }
 }
+
+export const getReservationsByUser = async (userId: string) => {
+  try {
+    const response = await axios.get(`${API_URL}/reservations/${userId}`);
+    console.log(response);
+    return response.data as Classes[];
+  } catch (error) {
+    console.error(error);
+    throw new Error("error en getClassesByUser");
+  }
+}

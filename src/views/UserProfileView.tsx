@@ -5,14 +5,22 @@ import { useState, useEffect } from 'react';
 import {User} from 'lucide-react'
 import  {EditProfileModal}  from '../components/EditProfileModal'; 
 import { useAuth } from '@/context/AuthContext';
-import { getPlanUser } from '@/services/userService';
+import { getPlanUser, getTrainerUser } from '@/services/userService';
 import { Plan } from '@/interfaces/Plan';
+import { Trainers } from '@/interfaces/Trainer';
+import { getReservationsByUser } from '@/services/classesService';
+import { Classes } from '@/interfaces/Classes';
 
 export default function ProfileDashboard() {
   const [activeTab, setActiveTab] = useState<'reservations' | 'subscription' | 'trainer'>('reservations');
   const [isModalOpen, setIsModalOpen] = useState(false);
-  const [plan, setPlan] = useState<Plan[]>([]);
+  const [plan, setPlan] = useState<Plan | null>(null);
   const [loadingPlan, setLoadingPlan] = useState(false);
+  const [trainer, setTrainer] = useState<Trainers | null>(null);
+  const [loadingTrainer, setLoadingTrainer] = useState(false);
+  const [reservations, setReservations] = useState<Classes[]>([]);
+  const [loadingReservations, setLoadingReservations] = useState(false);
+
   const { user } = useAuth();
 
 const tabs = [
@@ -31,10 +39,42 @@ const tabs = [
     } finally {
       setLoadingPlan(false);
  }
-   useEffect(() => {
-    handleFetchPlan();
-  }, [user?.id]);
+  
  }
+ const handleFetchTrainer = async () => {
+    if (!user?.id) return;
+    try {
+      setLoadingTrainer(true);
+      const assignedTrainer = await getTrainerUser(user.id);
+      setTrainer(assignedTrainer);
+    } catch (err) {
+      setTrainer(null);
+    } finally {
+      setLoadingTrainer(false);
+    }
+  };
+
+  // --- Fetch Reservations ---
+  const handleFetchReservations = async () => {
+    if (!user?.id) return;
+    try {
+      setLoadingReservations(true);
+      const data = await getReservationsByUser(user.id);
+      setReservations(data);
+    } catch (err) {
+      setReservations([]);
+      console.error("Error al traer reservas:", err);
+    } finally {
+      setLoadingReservations(false);
+    }
+  };
+
+  useEffect(() => {
+    handleFetchPlan();
+    handleFetchTrainer();
+    handleFetchReservations();
+  }, [user?.id]);
+
   return (
     <main className="min-h-screen flex flex-col items-center bg-[var(--background)] px-4 sm:px-6 md:px-8 lg:px-16 py-8">
 
@@ -92,14 +132,34 @@ const tabs = [
     {activeTab === 'reservations' && (
       <div>
         <h3 className="text-lg sm:text-xl mb-4 font-semibold">Mis Reservas</h3>
-        <p className="text-muted">Aún no tenés reservas registradas.</p>
-      </div>
+             {loadingReservations ? (
+      <p className="text-muted">Cargando reservas...</p>
+    ) : reservations.length > 0 ? (
+      <ul className="space-y-2">
+        {reservations.map((res) => (
+          <li key={res.id} className="border rounded p-3 bg-[var(--secondary)]">
+            <p><strong>Clase:</strong> {res.name}</p>
+            <p><strong>Descripción:</strong> {res.description}</p>
+            {res.schedules.map((s) => (
+              <div key={s.id} className="ml-2">
+                <p><strong>Día:</strong> {s.dayOfWeek}</p>
+                <p><strong>Hora:</strong> {s.startTime} - {s.endTime}</p>
+                <p><strong>Instructor:</strong> {s.trainer}</p>
+              </div>
+            ))}
+          </li>
+        ))}
+      </ul>
+    ) : (
+      <p className="text-muted">Aún no tenés reservas registradas.</p>
     )}
+  </div>
+)}
 
     {activeTab === 'subscription' && (
       <div>
         <h3 className="text-lg sm:text-xl mb-4 font-semibold">Mi Plan</h3>
-        {/* {loadingPlan ? (
+        {loadingPlan ? (
               <p className="text-muted">Cargando plan...</p>
             ) : plan ? (
               <div className="space-y-2">
@@ -109,15 +169,28 @@ const tabs = [
               </div>
             ) : (
               <p className="text-muted">No tenés un plan activo.</p>
-            )} */}
+            )}
           </div>
         )}
 
     {activeTab === 'trainer' && (
-      <div>
-        <h3 className="text-lg sm:text-xl mb-4 font-semibold">Entrenador Asignado</h3>
-        <p className="text-muted">Aún no tenés un entrenador asignado.</p>
-      </div>
+       <div>
+            <h3 className="text-lg sm:text-xl mb-4 font-semibold">Entrenador Asignado</h3>
+            {loadingTrainer ? (
+              <p className="text-muted">Cargando entrenador...</p>
+            ) : trainer ? (
+              <div className="space-y-2">
+                {trainer.imageUrl && (
+                  <img src={trainer.imageUrl} alt={trainer.name} className="w-24 h-24 rounded-full object-cover" />
+                )}
+                <p><strong>Nombre:</strong> {trainer.name}</p>
+                <p><strong>Especialidad:</strong> {trainer.specialization}</p>
+                <p><strong>Formación:</strong> {trainer.formation}</p>
+              </div>
+            ) : (
+              <p className="text-muted">Aún no tenés un entrenador asignado.</p>
+            )}
+          </div>
     )}
   </section>
 
