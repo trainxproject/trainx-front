@@ -1,14 +1,18 @@
 'use client'
 
 import Image from 'next/image';
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import {User} from 'lucide-react'
 import  {EditProfileModal}  from '../components/EditProfileModal'; 
 import { useAuth } from '@/context/AuthContext';
+import { getPlanUser } from '@/services/userService';
+import { Plan } from '@/interfaces/Plan';
 
 export default function ProfileDashboard() {
   const [activeTab, setActiveTab] = useState<'reservations' | 'subscription' | 'trainer'>('reservations');
   const [isModalOpen, setIsModalOpen] = useState(false);
+  const [plan, setPlan] = useState<Plan[]>([]);
+  const [loadingPlan, setLoadingPlan] = useState(false);
   const { user } = useAuth();
 
 const tabs = [
@@ -16,7 +20,21 @@ const tabs = [
     { key: 'subscription', label: 'Mi plan' },
     { key: 'trainer', label: 'Entrenador' },
   ];
-
+ const handleFetchPlan = async () => {
+    if (!user?.id) return;
+    try {
+      setLoadingPlan(true);
+      const data = await getPlanUser(user.id);
+      setPlan(data[0] || null);
+    } catch (err) {
+      console.error("Error al traer el plan:", err);
+    } finally {
+      setLoadingPlan(false);
+ }
+   useEffect(() => {
+    handleFetchPlan();
+  }, [user?.id]);
+ }
   return (
     <main className="min-h-screen flex flex-col items-center bg-[var(--background)] px-4 sm:px-6 md:px-8 lg:px-16 py-8">
 
@@ -27,7 +45,7 @@ const tabs = [
         {user?.profilePicture ? (
           <Image
             src={user.profilePicture}
-            alt={user.name || "Usuario"}
+            alt={user.name}
             fill
             className="object-cover"
           />
@@ -37,7 +55,7 @@ const tabs = [
       </div>
 
       <div className="text-center sm:text-left">
-        <h2 className="text-xl sm:text-2xl font-semibold">{user?.name || 'Usuario'}</h2>
+        <h2 className="text-xl sm:text-2xl font-semibold">{user?.name}</h2>
         <p className="text-muted-foreground text-sm sm:text-base">{user?.email}</p>
       </div>
     </div>
@@ -81,9 +99,19 @@ const tabs = [
     {activeTab === 'subscription' && (
       <div>
         <h3 className="text-lg sm:text-xl mb-4 font-semibold">Mi Plan</h3>
-        <p className="text-muted">No tenés un plan activo.</p>
-      </div>
-    )}
+        {/* {loadingPlan ? (
+              <p className="text-muted">Cargando plan...</p>
+            ) : plan ? (
+              <div className="space-y-2">
+                <p><strong>Nombre:</strong> {plan.name}</p>
+                <p><strong>Precio:</strong> ${plan.price}</p>
+                <p><strong>Beneficios:</strong> {plan.features} meses</p>
+              </div>
+            ) : (
+              <p className="text-muted">No tenés un plan activo.</p>
+            )} */}
+          </div>
+        )}
 
     {activeTab === 'trainer' && (
       <div>
@@ -98,5 +126,6 @@ const tabs = [
   )}
 </main>
 
-  );
-} 
+  )
+    };   
+  
