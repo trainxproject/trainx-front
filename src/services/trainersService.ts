@@ -15,5 +15,5 @@ export const getAllTrainers = async (): Promise<Trainers[]> => {
   };
 
 export const selecTrainer = async () => {
-
+  
 }

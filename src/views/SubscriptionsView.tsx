@@ -15,7 +15,7 @@ const SubscriptionsView: React.FC = () => {
   useEffect(() => {
     const fetchPlans = async () => {
       const res = await getAllPlans();
-      setPlans(res.data); // importante: axios devuelve .data
+      setPlans(res.data);
     };
     fetchPlans();
   }, []);
@@ -24,7 +24,7 @@ const handleSubscribe = async (planId: string) => {
   try {
     console.log("🔑 Token del usuario:", token);
 
-    if (!token) return; // ruta protegida, no debería pasar
+    if (!token) return;
 
   
     const preference = await createPreference(planId, token);
@@ -53,18 +53,20 @@ const handleSubscribe = async (planId: string) => {
         <p className="ml-2">/mes</p>
       </div>
 
-      <div className="mt-6 flex-1 overflow-hidden">
-        <div className="flex flex-col space-y-2">
-          <div className="flex items-center">
-            <GrStatusGood color="orange" className="bg-(--primary)/20 rounded-lg" />
-            <p className="ml-2 font-light text-(--card-foreground)">{plan.features}</p>
-          </div>
-        </div>
-      </div>
+      <div className="mt-6">
+        {plan.features.map((feature, i) => (
+        <div key={i} className="flex justify-baseline items-center m-2">
+      <GrStatusGood color="orange" className="bg-(--primary)/20 rounded-lg" />
+      <p className="ml-2 font-light text-(--card-foreground)">{feature}</p>
+    </div>
+  ))}
+
+  {/* <p>{plan.features}</p> */}
+</div>
 
       {/* botón fijo en parte inferior */}
       <button
-      onClick={() => handleSubscribe(plan.id)}
+      onClick={() => {handleSubscribe(plan.id)}}
         className="bg-(--primary)/80 hover:bg-(--primary)
                    px-3 py-2 rounded-xl text-black font-semibold
                    hover:shadow-2xl hover:shadow-(--muted-foreground)
