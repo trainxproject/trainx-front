@@ -5,13 +5,8 @@ import { GrStatusGood } from "react-icons/gr";
 import { getAllPlans } from "@/services/plansService";
 import { createPreference } from "@/services/mpService";
 import { useAuth } from "@/context/AuthContext";
+import { Plan } from "@/interfaces/Plan";
 
-interface Plan {
-  id: string;
-  name: string;
-  price: number;
-  features: string[];
-}
 
 const SubscriptionsView: React.FC = () => {
   const [plans, setPlans] = useState<Plan[]>([]);
