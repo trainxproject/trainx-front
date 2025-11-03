@@ -42,7 +42,7 @@ export default function DashboardUserView() {
                 {String(tabSelected) === "routines" && <ChatBot />}
                 {String(tabSelected) === "location" && <MapView />}
                 {String(tabSelected) === "subscription" && <SubscriptionsView />}
-                {/* {String(tabSelected) === "coach" && <TrainerSelection />} */}
+                {String(tabSelected) === "coach" && <TrainerSelection />}
             </div>
         </div>
     );

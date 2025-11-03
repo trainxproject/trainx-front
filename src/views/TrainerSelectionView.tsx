@@ -1,40 +1,59 @@
 'use client';
 
 import { useEffect, useState } from "react";
-import { getAllTrainers } from "@/services/trainersService";
+import { getAllTrainers, selectTrainer } from "@/services/trainersService";
 import { Trainers } from "@/interfaces/Trainer";
 import { toast } from "sonner";
 import { FaRegStar } from "react-icons/fa";
 
-
 interface TrainerSelectionProps {
   selectedTrainer?: string | null;
-  // onSelectTrainer: (trainerId: string) => void;
+  userId: string;
+  onTrainerAssigned: (trainerId: string) => void;
 }
 
-const TrainerSelection = ({ selectedTrainer }: TrainerSelectionProps) => {
+const TrainerSelection = ({ selectedTrainer, userId, onTrainerAssigned }: TrainerSelectionProps) => {
   const [trainers, setTrainers] = useState<Trainers[]>([]);
   const [loading, setLoading] = useState(true);
+  const [assigning, setAssigning] = useState(false);
 
   useEffect(() => {
     const fetchTrainers = async () => {
       try {
-          
-        const data = ( await getAllTrainers()) ?? [];
-        setTrainers(data); // ✅ ya no da error
+       
+        const data = await getAllTrainers() ?? [];
+        setTrainers(data);
       } catch (error) {
+        
         toast.error("Error al cargar los entrenadores");
       } finally {
+        // Indicamos que la carga ha terminado
         setLoading(false);
       }
     };
-  
+
     fetchTrainers();
   }, []);
 
+  
   if (loading) {
     return <p className="text-center text-gray-500">Cargando entrenadores...</p>;
   }
+
+  
+  const handleSelectTrainer = async (trainerId: string) => {
+    setAssigning(true); 
+    try {
+      
+      await selectTrainer(userId, trainerId);
+      onTrainerAssigned(trainerId); 
+      toast.success("Entrenador asignado correctamente");
+    } catch (error) {
+      toast.error("Error al asignar el entrenador");
+    } finally {
+      setAssigning(false); 
+    }
+  };
 
   return (
     <div className="space-y-6">
@@ -77,8 +96,12 @@ const TrainerSelection = ({ selectedTrainer }: TrainerSelectionProps) => {
               <h3 className="text-lg font-semibold mb-1">{trainer.name}</h3>
               <p className="text-sm text-gray-500 mb-2">{trainer.specialization}</p>
               <div className="flex justify-baseline p-2">
-                <p><FaRegStar color="orange"/></p>
-                <p className="text-sm text-(--foreground) mb-2 pl-2">{trainer.qualification}</p>
+                <p>
+                  <FaRegStar color="orange" />
+                </p>
+                <p className="text-sm text-(--foreground) mb-2 pl-2">
+                  {trainer.qualification}
+                </p>
               </div>
 
               {trainer.formation && (
@@ -88,7 +111,8 @@ const TrainerSelection = ({ selectedTrainer }: TrainerSelectionProps) => {
               )}
 
               <button
-                disabled={!trainer.available || selectedTrainer === trainer.id}
+                disabled={!trainer.available || selectedTrainer === trainer.id || assigning} 
+                onClick={() => handleSelectTrainer(trainer.id)}
                 className={`w-full py-2 rounded-md font-semibold transition-colors duration-200 ${
                   !trainer.available
                     ? "bg-gray-800 text-gray-400 cursor-not-allowed"
@@ -100,7 +124,9 @@ const TrainerSelection = ({ selectedTrainer }: TrainerSelectionProps) => {
                 {selectedTrainer === trainer.id
                   ? "Tu Entrenador"
                   : trainer.available
-                  ? "Seleccionar"
+                  ? assigning
+                    ? "Asignando..."
+                    : "Seleccionar"
                   : "No disponible"}
               </button>
             </div>
