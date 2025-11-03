@@ -146,7 +146,7 @@ const CalendarView = () => {
                     }}
                     className="w-full text-left p-4 md:p-5 rounded-2xl border border-(--muted-foreground) hover:border-(--primary) transition-colors bg-[var(--secondary)] hover:bg-(--primary)/10"
                   >
-                    <p className="text-base md:text-lg font-medium truncate text-(--card-foreground)">
+                    <p className="text-base md:text-xl font-medium truncate text-(--card-foreground)">
                       {classData.name}
                     </p>
                     <p className="text-sm text-(--muted-foreground)">{classData.time}</p>
