@@ -18,6 +18,6 @@ export const registerUser = async (data: IRegisterData): Promise<IUser> => {
 };
 
 export const loginWithPassport = async () =>{
-  window.location.href = "http://localhost:3000/auth/google";
+  window.location.href = `${API_URL}/auth/google`;
 }
 
