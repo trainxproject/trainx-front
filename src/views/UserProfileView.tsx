@@ -138,13 +138,16 @@ const tabs = [
       <ul className="space-y-2">
           {reservations.map((res) => (
     <li key={res.id} className="border rounded p-3 bg-[var(--secondary)]">
+      <div className='flex justify-between'>
       <p><strong>Estado:</strong> {res.status === "active" ? "Activa" : "Cancelada"}</p>
+      <button className="bg-red-500 hover:bg-red-600 hover:border-[1px] hover:border-black py-2 px-3 rounded-lg">Cancelar</button>
+      </div>
       <p><strong>Fecha de creación:</strong> {new Date(res.createdAt).toLocaleString()}</p>
 
       <div className="ml-2 mt-2">
-        {/* <p><strong>Día:</strong> {res.schedule.dayOfWeek}</p>
+        <p><strong>Día:</strong> {res.schedule.dayOfWeek}</p>
         <p><strong>Hora:</strong> {res.schedule.startTime} - {res.schedule.endTime}</p>
-        <p><strong>Instructor:</strong> {res.schedule.trainer}</p> */}
+        <p><strong>Instructor:</strong> {res.schedule.trainer}</p>
       </div>
     </li>
   ))}
@@ -184,7 +187,6 @@ const tabs = [
                 )}
                 <p><strong>Nombre:</strong> {trainer.name}</p>
                 <p><strong>Especialidad:</strong> {trainer.specialization}</p>
-                <p><strong>Formación:</strong> {trainer.formation}</p>
               </div>
             ) : (
               <p className="text-muted">Aún no tenés un entrenador asignado.</p>

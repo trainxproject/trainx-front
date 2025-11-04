@@ -45,7 +45,7 @@ export const getPlanUser = async (userId: string) => {
 };
  
 export const getTrainerUser = async (userId: string) => {
-const { data } = await axios.get(`${API_URL}/users/${userId}`);
-console.log(data.trainer);
-return data.trainer;
+const { data } = await axios.get(`${API_URL}/users/trainer/${userId}`);
+console.log(data);
+return data;
 }
