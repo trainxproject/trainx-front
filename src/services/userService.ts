@@ -43,8 +43,9 @@ export const getPlanUser = async (userId: string) => {
     console.error("Error al traer el plan del usuario: ", error);
   }
 };
- export const getTrainerUser = async (userId: string) => {
+ 
+export const getTrainerUser = async (userId: string) => {
 const { data } = await axios.get(`${API_URL}/users/${userId}`);
-console.log(data.trainer); // trainer asignado
+console.log(data.trainer);
 return data.trainer;
 }

@@ -1,5 +1,5 @@
 import axios from "axios"
-import { Classes } from "@/interfaces/Classes"
+import { Classes, IReservation } from "@/interfaces/Classes"
 
 const API_URL = process.env.NEXT_PUBLIC_API_URL || "http://localhost:3000";
 
@@ -55,9 +55,9 @@ export const filter = async (name: string): Promise< Classes[]> => {
 
 export const getReservationsByUser = async (userId: string) => {
   try {
-    const response = await axios.get(`${API_URL}/reservations/${userId}`);
+    const response = await axios.get(`${API_URL}/reservations/user/${userId}`);
     console.log(response);
-    return response.data as Classes[];
+    return response.data as IReservation[];
   } catch (error) {
     console.error(error);
     throw new Error("error en getClassesByUser");

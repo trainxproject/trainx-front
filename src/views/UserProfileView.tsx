@@ -9,7 +9,7 @@ import { getPlanUser, getTrainerUser } from '@/services/userService';
 import { Plan } from '@/interfaces/Plan';
 import { Trainers } from '@/interfaces/Trainer';
 import { getReservationsByUser } from '@/services/classesService';
-import { Classes } from '@/interfaces/Classes';
+import { IReservation } from '@/interfaces/Classes';
 
 export default function ProfileDashboard() {
   const [activeTab, setActiveTab] = useState<'reservations' | 'subscription' | 'trainer'>('reservations');
@@ -18,7 +18,7 @@ export default function ProfileDashboard() {
   const [loadingPlan, setLoadingPlan] = useState(false);
   const [trainer, setTrainer] = useState<Trainers | null>(null);
   const [loadingTrainer, setLoadingTrainer] = useState(false);
-  const [reservations, setReservations] = useState<Classes[]>([]);
+  const [reservations, setReservations] = useState<IReservation[]>([]);
   const [loadingReservations, setLoadingReservations] = useState(false);
 
   const { user } = useAuth();
@@ -33,7 +33,7 @@ const tabs = [
     try {
       setLoadingPlan(true);
       const data = await getPlanUser(user.id);
-      setPlan(data[0] || null);
+      setPlan(data || null);
     } catch (err) {
       console.error("Error al traer el plan:", err);
     } finally {
@@ -48,7 +48,7 @@ const tabs = [
       const assignedTrainer = await getTrainerUser(user.id);
       setTrainer(assignedTrainer);
     } catch (err) {
-      setTrainer(null);
+      return;
     } finally {
       setLoadingTrainer(false);
     }
@@ -136,19 +136,18 @@ const tabs = [
       <p className="text-muted">Cargando reservas...</p>
     ) : reservations.length > 0 ? (
       <ul className="space-y-2">
-        {reservations.map((res) => (
-          <li key={res.id} className="border rounded p-3 bg-[var(--secondary)]">
-            <p><strong>Clase:</strong> {res.name}</p>
-            <p><strong>Descripción:</strong> {res.description}</p>
-            {res.schedules.map((s) => (
-              <div key={s.id} className="ml-2">
-                <p><strong>Día:</strong> {s.dayOfWeek}</p>
-                <p><strong>Hora:</strong> {s.startTime} - {s.endTime}</p>
-                <p><strong>Instructor:</strong> {s.trainer}</p>
-              </div>
-            ))}
-          </li>
-        ))}
+          {reservations.map((res) => (
+    <li key={res.id} className="border rounded p-3 bg-[var(--secondary)]">
+      <p><strong>Estado:</strong> {res.status === "active" ? "Activa" : "Cancelada"}</p>
+      <p><strong>Fecha de creación:</strong> {new Date(res.createdAt).toLocaleString()}</p>
+
+      <div className="ml-2 mt-2">
+        {/* <p><strong>Día:</strong> {res.schedule.dayOfWeek}</p>
+        <p><strong>Hora:</strong> {res.schedule.startTime} - {res.schedule.endTime}</p>
+        <p><strong>Instructor:</strong> {res.schedule.trainer}</p> */}
+      </div>
+    </li>
+  ))}
       </ul>
     ) : (
       <p className="text-muted">Aún no tenés reservas registradas.</p>
