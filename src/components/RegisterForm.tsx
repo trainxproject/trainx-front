@@ -24,7 +24,8 @@ const formik = useFormik<RegisterFormValues>({
       await register({ 
         name: values.name, 
         email: values.email, 
-        password: values.password
+        password: values.password,
+        confirmPassword: values.confirmPassword
       });
       toast.success("Registro exitoso");
       onClose?.();

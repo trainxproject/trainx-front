@@ -15,17 +15,28 @@ export const getAllTrainers = async (): Promise<Trainers[]> => {
   };
 
   export const selectTrainer = async (userId: string, trainerId: string) => {
+    const token = localStorage.getItem("token")
+    console.log(token);
+
+    if(!token) {
+      console.log("No se pudo encontrar el token")
+      return null;
+    } 
+
     try {
-      // Realiza la solicitud PATCH a la API
-      const response = await axios.patch(`${API_URL}/users/${trainerId}/trainer`, {
-        userId,  // Pasa el ID del entrenador en el cuerpo de la solicitud
-      });
-  
-      // Devuelve la respuesta de la API
+      console.log("userId: ", userId,"trainerId: ", trainerId
+      )
+      const response = await axios.patch(`${API_URL}/users/${trainerId}/trainer`, 
+      {},
+      {
+        headers: {
+          Authorization : `Bearer ${token}`
+        }
+      }
+      )
       return response.data;
     } catch (error) {
-      // Manejo de errores
       console.error("Error al seleccionar el entrenador:", error);
-      throw error;  // Propaga el error al componente que hace la solicitud
+      throw error;
     }
   };
