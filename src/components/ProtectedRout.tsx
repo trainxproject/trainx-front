@@ -15,7 +15,7 @@ export default function ProtectedRoutes({ children }: ProtectedRoutesProps) {
   useEffect(() => {
 
     if (!loading) {
-      if (!token) {
+      if (!token || !user) {
         router.push('/login')
       }
     }
@@ -30,7 +30,7 @@ export default function ProtectedRoutes({ children }: ProtectedRoutesProps) {
   }
 
   // Si no hay user o token, no renderiza el contenido (mientras redirige)
-  if (!token) return null
+  if (!token || !user) return null
 
   return <>{children}</>
 }

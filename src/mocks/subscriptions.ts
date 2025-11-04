@@ -1,7 +1,7 @@
 export const plans = [
   {
     name: 'Plan 3 Días',
-    price: 30000,
+    price: 1.500,
     frequency: '3 días por semana',
     features: [
       'Acceso 3 días a la semana',
@@ -13,7 +13,7 @@ export const plans = [
   },
   {
     name: 'Plan 5 Días',
-    price: 40000,
+    price: 2.500,
     frequency: '5 días por semana',
     features: [
       'Acceso 5 días a la semana',
