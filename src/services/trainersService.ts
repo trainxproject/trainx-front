@@ -17,8 +17,8 @@ export const getAllTrainers = async (): Promise<Trainers[]> => {
   export const selectTrainer = async (userId: string, trainerId: string) => {
     try {
       // Realiza la solicitud PATCH a la API
-      const response = await axios.patch(`${API_URL}/users/${userId}/trainer`, {
-        trainerId,  // Pasa el ID del entrenador en el cuerpo de la solicitud
+      const response = await axios.patch(`${API_URL}/users/${trainerId}/trainer`, {
+        userId,  // Pasa el ID del entrenador en el cuerpo de la solicitud
       });
   
       // Devuelve la respuesta de la API

@@ -56,7 +56,7 @@ const TrainerSelection = ({ selectedTrainer, userId, onTrainerAssigned }: Traine
   };
 
   return (
-    <div className="space-y-6">
+    <div className="space-y-6 p-4">
       <div>
         <h2 className="text-2xl font-semibold mb-2">Elige tu Entrenador</h2>
         <p className="text-sm text-gray-500">

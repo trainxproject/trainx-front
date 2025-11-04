@@ -54,14 +54,14 @@ const handleSubscribe = async (planId: string) => {
       </div>
 
       <div className="mt-6">
-        {plan.features.map((feature, i) => (
+        {/* {plan.features.map((feature, i) => (
         <div key={i} className="flex justify-baseline items-center m-2">
       <GrStatusGood color="orange" className="bg-(--primary)/20 rounded-lg" />
       <p className="ml-2 font-light text-(--card-foreground)">{feature}</p>
     </div>
-  ))}
+  ))} */}
 
-  {/* <p>{plan.features}</p> */}
+  <p>{plan.features}</p>
 </div>
 
       {/* botón fijo en parte inferior */}
