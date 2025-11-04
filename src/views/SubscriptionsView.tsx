@@ -60,7 +60,6 @@ const handleSubscribe = async (planId: string) => {
       <p className="ml-2 font-light text-(--card-foreground)">{feature}</p>
     </div>
   ))} */}
-
   <p>{plan.features}</p>
 </div>
 
