@@ -1,4 +1,5 @@
 'use client';
+
 import { useState } from "react";
 import { ArrowRight,Check, CheckCircle, Calendar, Clock, Users, Trophy, Zap } from "lucide-react";
 import Image from "next/image";

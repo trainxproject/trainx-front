@@ -1,5 +1,9 @@
 import UserProfileView from "@/views/UserProfileView";
+import ProtectedRoutes from "@/components/ProtectedRout";
 
 export default function UserProfile() {
-    return <UserProfileView />;
+    return 
+        <ProtectedRoutes>
+            <UserProfileView />
+        </ProtectedRoutes>
 }
