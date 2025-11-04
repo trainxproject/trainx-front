@@ -145,9 +145,9 @@ const tabs = [
       <p><strong>Fecha de creación:</strong> {new Date(res.createdAt).toLocaleString()}</p>
 
       <div className="ml-2 mt-2">
-        {/* <p><strong>Día:</strong> {res.schedule.dayOfWeek}</p> 
+         <p><strong>Día:</strong> {res.schedule.dayOfWeek}</p> 
          <p><strong>Hora:</strong> {res.schedule.startTime} - {res.schedule.endTime}</p> 
-         <p><strong>Instructor:</strong> {res.schedule.trainer}</p> */}
+         <p><strong>Instructor:</strong> {res.schedule.trainer}</p> 
       </div>
     </li>
   ))}
