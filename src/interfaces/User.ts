@@ -7,7 +7,6 @@ export interface IUser {
   isAdmin?: boolean;
   profilePicture?: string;
   status?: string;
-
 }
 
 

@@ -40,17 +40,18 @@ export const resevedClass = async (scheduleId: string)  => {
     }
 }
 
-export const filter = async (name: string): Promise< Classes[]> => {
+export const filter = async (name: string[]): Promise<Classes[]> => {
     try {
       const response = await axios.get(`${API_URL}/activities/filter`, 
-      {params: {name}}
+      {params: {name},
+      paramsSerializer: { indexes: null }},
     );
     console.log(response);
     return response.data as Classes[];
     } catch (error) {
       console.error(error);
       throw new Error("error en filter");
-    }
+    } 
 }
 
 export const getReservationsByUser = async (userId: string) => {
