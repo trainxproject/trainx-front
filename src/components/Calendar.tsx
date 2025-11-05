@@ -32,7 +32,7 @@
     const [scheduleData, setScheduleData] = useState<{ [key: string]: CalendarClass[] }>({});
     const [selectedClass, setSelectedClass] = useState<CalendarClass | null>(null);
     const [isOpen, setIsOpen] = useState(false);
-    const [activeFilter, setActiveFilter] = useState<string | null>(null);
+    const [activeFilters, setActiveFilters] = useState<string[]>([]);
 
     const filtros = ["CrossFit", "Zumba", "Pilates", "Telas"];
 
@@ -79,22 +79,28 @@
 
     // Manejo de filtro
     const handleFilterClick = async (filtro: string) => {
-      const newFilter = filtro === activeFilter ? null : filtro;
-      setActiveFilter(newFilter);
-
+      let newFilters;
+    
+      if (activeFilters.includes(filtro)) {
+        newFilters = activeFilters.filter(f => f !== filtro);
+      } else {
+        newFilters = [...activeFilters, filtro];
+      }
+    
+      setActiveFilters(newFilters);
+    
       try {
         let classes: Classes[];
-        if (newFilter) {
-          classes = await filter(newFilter); // Trae solo coincidencias
+        if (newFilters.length > 0) {
+          classes = await filter(newFilters); // tu servicio debe aceptar arrays
         } else {
-          classes = await getAllClasses(); // Trae todas
+          classes = await getAllClasses();
         }
         setScheduleData(groupClassesByDay(classes));
       } catch (error) {
         toast.error("Error al filtrar las clases");
       }
     };
-
     
 
     return (
@@ -107,7 +113,7 @@
                   key={filtro}
                   onClick={() => handleFilterClick(filtro)}
                   className={`w-sm p-2 mx-2 rounded-xl transition-colors hover:border-[1px] hover:border-(--border) ${
-                  activeFilter === filtro
+                  activeFilters.includes(filtro)
                   ? "bg-(--primary) text-white"
                   : "bg-(--card) hover:bg-(--background)"
                   }`}
@@ -230,7 +236,6 @@
       </div>
     </div>
   )}
-
       </div>
       </div>
     );
