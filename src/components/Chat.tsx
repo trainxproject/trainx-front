@@ -15,4 +15,4 @@ const Chat = () => {
     )
 }
 
-export default Script;
+export default Chat;

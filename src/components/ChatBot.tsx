@@ -1,4 +1,4 @@
-import Script from "next/script";
+import Chat from "./Chat";
 
 const routines = [
   {
@@ -61,14 +61,7 @@ const ChatBot = () => {
           </div>
         ))}
         <div className="w-52 h-72">
-          <Script
-            src="https://cdn.botpress.cloud/webchat/v3.3/inject.js"
-            strategy="afterInteractive"
-          />
-          <Script
-            src="https://files.bpcontent.cloud/2025/10/23/02/20251023025900-6FW1NSKH.js"
-            strategy="afterInteractive"
-          />
+          <Chat />
       </div>
       </div>
     </div>
