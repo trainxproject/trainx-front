@@ -3,6 +3,7 @@
 import { useState, useEffect } from "react";
 import CalendarView from "../components/Calendar";
 import ChatBot from "@/components/ChatBot";
+import Chat from "@/components/Chat";
 import MapView from "./MapView";
 import SubscriptionsView from "./SubscriptionsView";
 import TrainerSelection from "./TrainerSelectionView";
