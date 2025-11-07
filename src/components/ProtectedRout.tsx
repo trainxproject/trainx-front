@@ -1,6 +1,6 @@
 'use client'
 
-import { ReactNode, useEffect } from 'react'
+import { ReactNode, useEffect, useState } from 'react'
 import { useRouter } from 'next/navigation'
 import { useAuth } from '@/context/AuthContext'
 
@@ -11,26 +11,25 @@ interface ProtectedRoutesProps {
 export default function ProtectedRoutes({ children }: ProtectedRoutesProps) {
   const { user, token, loading } = useAuth()
   const router = useRouter()
+  const [checked, setChecked] = useState(false)
 
   useEffect(() => {
-
     if (!loading) {
-      if (!token || !user) {
+      if (!user || !token) {
         router.push('/login')
+      } else {
+        setChecked(true) // solo pasa a renderizar si todo está listo
       }
     }
   }, [user, token, loading, router])
 
-  if (loading) {
+  if (loading || !checked) {
     return (
       <div className="flex justify-center items-center h-screen bg-[var(--background)]">
         <p className="text-lg text-orange-500">Cargando...</p>
       </div>
     )
   }
-
-  // Si no hay user o token, no renderiza el contenido (mientras redirige)
-  if (!token || !user) return null
 
   return <>{children}</>
 }
