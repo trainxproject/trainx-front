@@ -1,6 +1,6 @@
 'use client';
 
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { ArrowRight,Check, CheckCircle, Calendar, Clock, Users, Trophy, Zap } from "lucide-react";
 import Image from "next/image";
 import { toast } from "sonner";
@@ -8,6 +8,8 @@ import LoginForm from "../components/LoginForm";
 import { benefits } from "@/mocks/benefits";
 import { quickStats } from "@/mocks/quickStats";  
 import { plans } from "@/mocks/subscriptions";
+import { useRouter } from "next/navigation";
+import { useAuth } from "@/context/AuthContext";
 
 const Icons = {
   Calendar,
@@ -20,7 +22,18 @@ const Icons = {
 
 export default function HomeView() {
   const [showLogin, setShowLogin] = useState(false);
+  const { user, loading } = useAuth();
+  const router = useRouter();
 
+useEffect(() => {
+  if (!loading && user) {
+    router.push("/dashboard/user");
+  }
+}, [loading, user, router]);
+
+ if (loading) {
+    return <p className="text-center mt-10">Cargando...</p>;
+  }
   const handleOpenLogin = () => {
     setShowLogin(true);
     toast.info("Inicia sesión", { description: "Debes iniciar sesión para acceder a esta función" });
