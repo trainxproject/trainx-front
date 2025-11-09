@@ -138,34 +138,55 @@ const tabs = [
 
   <section className="card p-4 sm:p-6 w-full max-w-4xl">
     {activeTab === 'reservations' && (
-      <div>
-        <h3 className="text-lg sm:text-xl mb-4 font-semibold">Mis Reservas</h3>
-             {loadingReservations ? (
-      <p className="text-muted">Cargando reservas...</p>
-    ) : reservations.length > 0 ? (
-      <ul className="space-y-2">
-          {reservations.map((res) => (
-    <li key={res.id} className="border rounded p-3 bg-[var(--secondary)]">
-      <div className='flex justify-between'>
-      <p><strong>Estado:</strong> {res.status === "active" ? "Activa" : "Cancelada"}</p>
-      <button 
-        onClick={() => handleCancelReservation(res.id)} className="bg-red-500 hover:bg-red-600 hover:border-[1px] hover:border-black py-2 px-3 rounded-lg">Cancelar</button>
-      </div>
-      <p><strong>Fecha de creación:</strong> {new Date(res.createdAt).toLocaleString()}</p>
+    <div>
+      <h3 className="text-lg sm:text-xl mb-4 font-semibold">Mis Reservas</h3>
 
-      <div className="ml-2 mt-2">
-         <p><strong>Día:</strong> {res.schedule.dayOfWeek}</p> 
-         <p><strong>Hora:</strong> {res.schedule.startTime} - {res.schedule.endTime}</p> 
-         <p><strong>Instructor:</strong> {res.schedule.trainer}</p> 
-      </div>
-    </li>
-  ))}
-      </ul>
-    ) : (
-      <p className="text-muted">Aún no tenés reservas registradas.</p>
-    )}
-  </div>
-)}
+      {loadingReservations ? (
+        <p className="text-muted">Cargando reservas...</p>
+      ) : reservations.length > 0 ? (
+        <ul className="space-y-2">
+          {reservations.map((res) => (
+            <li key={res.id} className="border rounded p-3 bg-[var(--secondary)]">
+              <div className="flex justify-between items-center">
+                <p>
+                  <strong>Estado:</strong>{" "}
+                  {res.status === "active" ? "Activa" : "Cancelada"}
+                </p>
+
+                {res.status === "active" && (
+                  <button
+                    onClick={() => handleCancelReservation(res.id)}
+                    className="bg-red-500 hover:bg-red-600 text-white py-2 px-3 rounded-lg border border-transparent hover:border-black transition"
+                  >
+                    Cancelar
+                  </button>
+                )}
+              </div>
+
+              <p>
+                <strong>Fecha de creación:</strong>{" "}
+                {new Date(res.createdAt).toLocaleString()}
+              </p>
+
+              <div className="ml-2 mt-2">
+                <p>
+                  <strong>Día:</strong> {res.schedule.dayOfWeek}
+                </p>
+                <p>
+                  <strong>Hora:</strong> {res.schedule.startTime} - {res.schedule.endTime}
+                </p>
+                <p>
+                  <strong>Instructor:</strong> {res.schedule.trainer}
+                </p>
+              </div>
+            </li>
+          ))}
+        </ul>
+      ) : (
+        <p className="text-muted">Aún no tenés reservas registradas.</p>
+      )}
+    </div>
+  )}
 
     {activeTab === 'subscription' && (
       <div>
