@@ -8,7 +8,7 @@ import { useAuth } from '@/context/AuthContext';
 import { getPlanUser, getTrainerUser } from '@/services/userService';
 import { Plan } from '@/interfaces/Plan';
 import { Trainers } from '@/interfaces/Trainer';
-import { getReservationsByUser } from '@/services/classesService';
+import { getReservationsByUser, cancelReservation } from '@/services/classesService';
 import { IReservation } from '@/interfaces/Classes';
 
 export default function ProfileDashboard() {
@@ -21,7 +21,7 @@ export default function ProfileDashboard() {
   const [reservations, setReservations] = useState<IReservation[]>([]);
   const [loadingReservations, setLoadingReservations] = useState(false);
 
-  const { user } = useAuth();
+  const { user, token } = useAuth();
 
 const tabs = [
     { key: 'reservations', label: 'Mis reservas' },
@@ -66,6 +66,14 @@ const tabs = [
       console.error("Error al traer reservas:", err);
     } finally {
       setLoadingReservations(false);
+    }
+  };
+  const handleCancelReservation = async (reservationId: string) => {
+    try {
+      await cancelReservation(reservationId,token || '');
+      handleFetchReservations();
+    } catch (err) {
+      console.error("Error al cancelar la reserva:", err);
     }
   };
 
@@ -140,7 +148,8 @@ const tabs = [
     <li key={res.id} className="border rounded p-3 bg-[var(--secondary)]">
       <div className='flex justify-between'>
       <p><strong>Estado:</strong> {res.status === "active" ? "Activa" : "Cancelada"}</p>
-      <button className="bg-red-500 hover:bg-red-600 hover:border-[1px] hover:border-black py-2 px-3 rounded-lg">Cancelar</button>
+      <button 
+        onClick={() => handleCancelReservation(res.id)} className="bg-red-500 hover:bg-red-600 hover:border-[1px] hover:border-black py-2 px-3 rounded-lg">Cancelar</button>
       </div>
       <p><strong>Fecha de creación:</strong> {new Date(res.createdAt).toLocaleString()}</p>
 
@@ -167,8 +176,16 @@ const tabs = [
               <div className="space-y-2">
                 <p><strong>Nombre:</strong> {plan.name}</p>
                 <p><strong>Precio:</strong> ${plan.price}</p>
-                <p><strong>Beneficios:</strong> {plan.features} meses</p>
-              </div>
+             
+              <div>
+          <p><strong>Beneficios:</strong></p>
+          <ul className="list-disc ml-5">
+            {plan.features.map((feature: string, index: number) => (
+              <li key={index}>{feature}</li>
+            ))}
+          </ul>
+        </div>
+       </div>
             ) : (
               <p className="text-muted">No tenés un plan activo.</p>
             )}

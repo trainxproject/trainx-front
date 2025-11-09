@@ -64,3 +64,21 @@ export const getReservationsByUser = async (userId: string) => {
     throw new Error("error en getClassesByUser");
   }
 }
+
+export const cancelReservation = async (reservationId: string, token: string) => {
+  try {
+    const response = await axios.patch(`${API_URL}/reservations/${reservationId}`,
+    {},
+    {
+      headers: {
+        Authorization: `Bearer ${token}`
+      }
+    }
+    );
+   
+    return response;
+  } catch (error) {
+    console.error(error);
+    throw new Error("error en cancelReservation");
+  }
+}
