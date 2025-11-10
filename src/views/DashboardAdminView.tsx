@@ -3,6 +3,7 @@ import AdminStatsCard from "@/components/StatsCard/AdminStatsCard"
 import UserStatsCard from "@/components/StatsCard/UserStatsCard"
 import { useState } from "react"
 import { Users, Activity, Calendar, BarChart3, Search, icons, Icon, User } from "lucide-react";
+import ActivitiesCard from "@/components/StatsCard/ActivitiesCard";
 
 
 export default function DashboardAdminView() {
@@ -49,10 +50,8 @@ export default function DashboardAdminView() {
                     </div>
                     </div>
                     <div className="w-full max-w-[1600px]">
-
-
                         {String(tabSelect) === "users" && <UserStatsCard/>}
-                        {String(tabSelect) === "activities" && <UserStatsCard/>}
+                        {String(tabSelect) === "activities" && <ActivitiesCard/>}
                         {String(tabSelect) === "schedule" && <UserStatsCard/>}
                         {String(tabSelect) === "statistics" && <UserStatsCard/>}
                     </div>

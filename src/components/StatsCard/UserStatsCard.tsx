@@ -372,6 +372,8 @@ const UserStatsCard: React.FC = ()=> {
                     <h2 className="font-bold text-3xl text-(--primary)">0</h2>
                     </div>
                 </div>
+
+                
                 </div>
 
 
