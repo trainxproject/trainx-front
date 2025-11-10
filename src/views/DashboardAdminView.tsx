@@ -1,7 +1,7 @@
 'use client'
 
 import { useState } from "react";
-import { AllUsers } from "@/components/AllUser";
+import { UserListView } from "@/components/AllUser";
 import { Activities } from "@/components/Activities";
 import { Statistics } from "@/components/Statistics";
 
@@ -34,7 +34,7 @@ export default function DashboardAdminView() {
 
             {/* Content */}
             <div className="w-full max-w-[1600px]">
-                {String(tabSelected) === "users" && <AllUsers />}
+                {String(tabSelected) === "users" && <UserListView />}
                 {String(tabSelected) === "activities" && <Activities />}
                 {String(tabSelected) === "statistics" && <Statistics />}
             </div>
