@@ -1,4 +1,5 @@
-import DashboardAdminView from "@/views/DashboardAdminView";
+
+import DashboardAdminView from "@/views/DashboardAdminView"
 
 export default function DashboardAdmin() {
     return(
@@ -6,4 +7,7 @@ export default function DashboardAdmin() {
            <DashboardAdminView />
         </div>
     );
+    return (
+        <DashboardAdminView/>
+    )
 }
