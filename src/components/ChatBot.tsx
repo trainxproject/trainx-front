@@ -60,7 +60,7 @@ const ChatBot = () => {
             </div>
           </div>
         ))}
-        <div className="w-52 h-72">
+        <div className="w-4xl h-72">
           <Chat />
       </div>
       </div>

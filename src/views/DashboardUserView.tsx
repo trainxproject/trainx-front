@@ -49,7 +49,7 @@ export default function DashboardUserView() {
                 ))}
             </div>
 
-            {/* Content */}
+            {/* Content */}s
             <div className="w-full max-w-[1600px]">
                 {String(tabSelected) === "class" && <CalendarView />}
                 {String(tabSelected) === "routines" && <ChatBot />}
@@ -66,4 +66,3 @@ export default function DashboardUserView() {
         </div>
     );
 }
-
