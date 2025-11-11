@@ -29,7 +29,7 @@ const ActivitiesCard: React.FC = () =>  {
                     Gestión de Actividades
                     </h1>
                      <h3 className="text-lg text-gray-400 ">
-                    Crea, edita y administra las clases del gimnasio
+                    Crea las actividades para las clases del gimnasio
                     </h3>
                 </div>
                 
@@ -41,18 +41,24 @@ const ActivitiesCard: React.FC = () =>  {
                     >+ Nueva Actividad</button>
                 </div>
 
-                <div className="flex flex-wrap justify-center gap-8 mt-15">
+                <div 
+                className="flex flex-wrap justify-center gap-8 mt-15 ">
                 { user.map((e) => {
                 
                 // const requires = e.requiresReservation === "true" || e.requiresReservation === true
                 return(
                             
                     <div
-                        className="bg-(--secondary) border border-white/10 p-5 rounded-2xl
-                                    w-full sm:w-[300px] md:w-[350px] lg:w-[380px] h-auto
-                                    shadow-[0_4px_20px_rgba(255,255,255,0.05)]
-                                    hover:shadow-[0_6px_25px_rgba(255,255,255,0.1)]
-                                    transition-all duration-300 flex flex-col items-start gap-3"
+                    
+                        className="bg-[hsl(var(--secondary))] 
+                                border border-white/10 
+                                rounded-2xl p-6 
+                                w-full sm:w-[300px] md:w-[350px] lg:w-[380px] 
+                                h-auto flex flex-col gap-4 
+                                shadow-lg shadow-black/20 
+                                hover:shadow-[0_6px_30px_rgba(255,255,255,0.15)] 
+                                hover:scale-[1.02]
+                                transition-all duration-300 ease-out"
                         >
 
                         <div className="w-full flex justify-center">
@@ -104,55 +110,73 @@ const ActivitiesCard: React.FC = () =>  {
                 <div className="fixed inset-0 bg-[rgba(0,0,0,0.7)] flex items-center justify-center z-50">
 
                 <div
-                className=" bg-orange-500 rounded-2xl shadow-xl p-8 w-11/12 max-w-md relative border-none"
+                style={{
+                    background: "rgba(70, 70, 70, 1)"
+                }}
+                className=" rounded-2xl shadow-xl p-8 w-11/12 max-w-md relative border-none"
                 onClick={(e) => e.stopPropagation()}
                 >
             
                 <button
                     onClick={() => setModal(false)}
-                    className="absolute top-3 right-3 text-black hover:text-gray-600 transition"
+                    className="absolute top-3 right-3 text-white hover:text-gray-800 transition"
                 >
                     &times;
                 </button>
 
-                <h2 className="text-2xl font-semibold text-black mb-6 text-center">
+                <h2 className="text-2xl font-semibold text-white mb-6 text-center">
                     Nueva Actividad
                 </h2>
 
                 <form className="flex flex-col gap-5">
               
                     <div>
-                    <label className="block text-sm font-medium text-black mb-1">
+                    <label className="block text-sm font-medium text-white mb-1">
                         Imagen de la actividad
                     </label>
                     <input
                         type="file"
                         name="imageUrl"
-                        className="w-full border border-gray-300 rounded-lg px-3 py-2 text-gray-700 cursor-pointer bg-gray-50 hover:bg-gray-100 focus:outline-none focus:ring-2 focus:ring-blue-400"
+                        style={{
+                    color: 'black',
+                    background: 'rgba(255, 255, 255, 1)',
+                    border: '1px solid rgba(255, 253, 253, 1)',
+                }}
+                        className="w-full border border-gray-300 rounded-lg px-3 py-2 text-gray-700 cursor-pointer bg-gray-50 hover:bg-gray-100 focus:outline-none focus:ring-2"
                     />
                     </div>
 
                     <div>
-                    <label className="block text-sm font-medium text-black mb-1">
+                    <label className="block text-sm font-medium text-white mb-1">
                         Nombre
                     </label>
                     <input
                         type="text"
                         name="name"
+                        style={{
+                    color: 'black',
+                    background: 'rgba(255, 255, 255, 1)',
+                    border: '1px solid rgba(255, 253, 253, 1)',
+                }}
                         placeholder="Ej: Yoga, Crossfit, Zumba..."
-                        className="w-full border border-gray-300 rounded-lg px-3 py-2 text-gray-50 focus:outline-none focus:ring-2 focus:ring-blue-400"
+                        className="w-full border border-gray-300 rounded-lg px-3 py-2 text-gray-700 cursor-pointer bg-gray-50 hover:bg-gray-100 focus:outline-none focus:ring-2"
                     />
                     </div>
 
                     
                     <div>
-                    <label className="block text-sm font-medium text-black mb-1">
+                    <label className="block text-sm font-medium text-white mb-1">
                         Descripción
                     </label>
                     <textarea
+                    style={{
+                    color: 'black',
+                    background: 'rgba(255, 255, 255, 1)',
+                    border: '1px solid rgba(255, 253, 253, 1)',
+                }}
                         placeholder="Breve descripción de la actividad"
                         name="description"
-                        className="w-full border border-gray-300 rounded-lg px-3 py-2 text-black focus:outline-none focus:ring-2 focus:ring-blue-400 min-h-[100px]"
+                        className="w-full border  rounded-lg px-3 py-2 text-black focus:outline-none focus:ring-2  min-h-[100px]"
                     ></textarea>
                     </div>
 
@@ -162,22 +186,28 @@ const ActivitiesCard: React.FC = () =>  {
                         type="checkbox"
                         name="requiresReservation"
                         id="requiresReservation"
+                        
                         className="w-5 h-5 accent-blue-600"
                     />
-                    <label htmlFor="requiresReservation" className="text-black text-sm">
+                    <label htmlFor="requiresReservation" className="text-white text-sm">
                         Requiere reservación
                     </label>
                     </div>
 
                 
                     <div>
-                    <label className="block text-sm font-medium text-black mb-1">
+                    <label className="block text-sm font-medium text-white mb-1">
                         Máximo de capacidad
                     </label>
                     <input
                         type="number"
                         name="maxCapacity"
-                        className="w-full border border-gray-300 rounded-lg px-3 py-2 text-gray-700 focus:outline-none focus:ring-2 focus:ring-blue-400"
+                        style={{
+                    color: 'black',
+                    background: 'rgba(255, 255, 255, 1)',
+                    border: '1px solid rgba(255, 253, 253, 1)',
+                }}
+                        className="w-full border border-gray-300 rounded-lg px-3 py-2 text-gray-700 cursor-pointer bg-gray-50 hover:bg-gray-100 focus:outline-none focus:ring-2"
                         min="0"
                         placeholder="Ej: 20"
                     />
@@ -185,10 +215,9 @@ const ActivitiesCard: React.FC = () =>  {
 
                     <button
                     type="submit"
-                    className="mt-2 bg-orange text-white font-medium px-4 py-2 rounded-lg hover:bg-black transition active:scale-[0.98]"
-                    >
-                    Crear Actividad
-                </button>
+                    className="mt-2 bg-white text-black font-medium px-4 py-2 rounded-lg 
+                            hover:bg-gray-300 transition active:scale-[0.98]"
+                >Crear Actividad</button>
             </form>
         </div>
     </div>

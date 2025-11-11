@@ -233,7 +233,14 @@ const UserStatsCard: React.FC = ()=> {
                     Administra socios, planes y pagos
                  </h3>
             <div  className="flex flex-col bg-(--secondary) border border-transparent p-6 rounded-xl 
-                w-full max-w-7xl h-auto min-h-[480px] mx-auto relative mt-15">
+                w-full max-w-7xl h-auto min-h-[480px] mx-auto relative mt-15 
+                
+                
+                    shadow-[0_4px_20px_rgba(255,255,255,0.05)] 
+                    hover:shadow-[0_6px_25px_rgba(255,255,255,0.1)] 
+                    transition-all duration-300 
+                    bg-[hsl(var(--secondary))] 
+                ">
                     
                 <div className="relative w-full">
                     
@@ -278,7 +285,8 @@ const UserStatsCard: React.FC = ()=> {
                         <p className="text-white mt-3 flex flex-col gap-2
                             bg-white/10 border border-white/20 p-4
                             backdrop-blur-xl shadow-[0_4px_30px_rgba(0,0,0,0.3)]
-                            transition-all duration-300 hover:bg-white/20 hover:border-white/30">
+                            transition-all duration-300 hover:bg-white/20 hover:border-white/30
+                            ">
                             {user.slice(0, 10).map((e, i) => {
                             switch(items.key) {
 
@@ -344,11 +352,19 @@ const UserStatsCard: React.FC = ()=> {
                         <div className="flex flex-wrap justify-center gap-8 mt-15">
            
                 <div
-                    className="bg-(--secondary) border border-white/10 p-6 rounded-xl 
+                    className="  p-6 rounded-xl 
                     w-full sm:w-[300px] md:w-[350px] lg:w-[380px] h-[220px]
                     shadow-[0_4px_20px_rgba(255,255,255,0.05)] 
                     hover:shadow-[0_6px_25px_rgba(255,255,255,0.1)] 
-                    transition-all duration-300 "
+                    transition-all duration-300 
+                    bg-[hsl(var(--secondary))] 
+                                border border-white/10 
+                                rounded-2xl p-6 
+                                flex flex-col gap-4 
+                                shadow-lg shadow-black/20 
+                                hover:shadow-[0_6px_30px_rgba(255,255,255,0.15)] 
+                                hover:scale-[1.02]
+                                transition-all duration-300 ease-out"
                 >
                     <h3 className="text-gray-100">Total de Usuarios en la Aplicación</h3>
 
@@ -360,11 +376,15 @@ const UserStatsCard: React.FC = ()=> {
 
              
                 <div
-                    className="bg-(--secondary) border border-white/10 p-6 rounded-xl 
-                    w-full sm:w-[300px] md:w-[350px] lg:w-[380px] h-[220px]
-                    shadow-[0_4px_20px_rgba(255,255,255,0.05)] 
-                    hover:shadow-[0_6px_25px_rgba(255,255,255,0.1)] 
-                    transition-all duration-300"
+                    className="bg-[hsl(var(--secondary))] 
+                                border border-white/10 
+                                rounded-2xl p-6 
+                                w-full sm:w-[300px] md:w-[350px] lg:w-[380px] 
+                                h-auto flex flex-col gap-4 
+                                shadow-lg shadow-black/20 
+                                hover:shadow-[0_6px_30px_rgba(255,255,255,0.15)] 
+                                hover:scale-[1.02]
+                                transition-all duration-300 ease-out"
                 >
                     <h3 className="text-gray-100">Pagos Pendientes</h3>
 
@@ -373,7 +393,7 @@ const UserStatsCard: React.FC = ()=> {
                     </div>
                 </div>
 
-                
+
                 </div>
 
 

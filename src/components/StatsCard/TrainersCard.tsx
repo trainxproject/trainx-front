@@ -1,0 +1,235 @@
+import { Star } from "lucide-react";
+import { useState } from "react";
+
+
+
+const trainers = [
+
+      {
+        id: 1,
+        name: 'Antonella Miracle',
+        formation: "Algo",
+        specialization: 'Entrenadora olímpica de powerlifting, especializada en técnica y planificación de fuerza, con integración de control mental y conciencia corporal a partir de su maestría en psicología deportiva y formación avanzada en telas aéreas.',
+        imageUrl: 'https://res.cloudinary.com/dxpqhpme3/image/upload/v1761433928/antonella-miracle_bbhthd.jpg',
+        qualification: 2.3,
+      },
+      {
+        id: 2,
+        name: 'Lucas Romero',
+        formation: "Algo",
+        specialization: 'Entrenador especializado en fuerza explosiva, enfocado en mejorar técnica, potencia y rendimiento en competiciones. Experiencia en programas de hipertrofia y resistencia muscular, combinando entrenamiento funcional y planificación de cargas.',
+        imageUrl: 'https://res.cloudinary.com/dxpqhpme3/image/upload/v1761433927/lucas-romero_egpv6j.jpg',
+        qualification: 0,
+      },
+      {
+        id: 3,
+        name: 'Sofía Torres',
+        formation: "Algo",
+        specialization: 'Entrenadora especializada en entrenamiento correctivo, movilidad articular y prevención de lesiones en fuerza. Experta en diseño de programas de acondicionamiento funcional, fortalecimiento muscular equilibrado y técnicas de recuperación.',
+        imageUrl: 'https://res.cloudinary.com/dxpqhpme3/image/upload/v1761433928/sofia-torres_duljzi.jpg',
+        qualification: 2.3,
+      },
+      {
+        id: 4,
+        name: 'Uriel Rodríguez',
+        formation: "Algo",
+        specialization: 'Entrenador especializado en desarrollo de hipertrofia y acondicionamiento físico integral. Experto en planificación de rutinas adaptadas a diferentes niveles, combinando técnica y resistencia para mejorar el rendimiento general.',
+        imageUrl: 'https://res.cloudinary.com/dxpqhpme3/image/upload/v1761433928/uriel-rodriguez_i1hip2.jpg',
+        qualification: 2.3,
+      },
+]
+
+const TrainersCard: React.FC = () =>  {
+     const [modal, setModal] = useState(false)   
+ 
+     return (
+
+        <div  className="min-h-screen  flex flex-col  bg-(--background) flex flex-wrap  mt-29">
+                <div className="mb-3 flex flex-col gap-1 items-center">
+                    <h1 className="text-4xl font-semibold text-white tracking-tight leading-tight">
+                    Entrenadores para TrainX
+                    </h1>
+                     <h3 className="text-lg text-gray-400 ">
+                    Gestión de entrenadores para los usuarios
+                    </h3>
+                </div>
+                
+
+                <div className="w-full flex justify-end px-10 mt-6">
+                    <button
+                    onClick={()=> setModal(true)}
+                    className="px-4 py-2 bg-orange-500 text-black rounded hover:bg-orange-600 transition"
+                    >+ Agregar Entrenador</button>
+                </div>
+
+                <div className="flex flex-wrap justify-center gap-8 mt-15">
+                 {trainers.map((t) => {
+                        return (
+                            <div
+                            key={t.id}
+                            className="bg-[hsl(var(--secondary))] 
+                                        border border-white/10 
+                                        rounded-2xl p-6 
+                                        w-full sm:w-[300px] md:w-[350px] lg:w-[380px] 
+                                        h-auto flex flex-col gap-4 
+                                        shadow-lg shadow-black/20 
+                                        hover:shadow-[0_6px_30px_rgba(255,255,255,0.15)] 
+                                        hover:scale-[1.02]
+                                        transition-all duration-300 ease-out"
+                            >
+                         
+                            <div className="w-full flex justify-center">
+                                <img
+                                src={t.imageUrl}
+                                alt={t.name}
+                                className="w-28 h-28 object-cover rounded-xl border border-white/10 shadow-md"
+                                />
+                            </div>
+
+                        
+                            <h2 className="text-2xl font-semibold text-(--primary) mt-2 text-center w-full">
+                                {t.name}
+                            </h2>
+
+                          
+                            <p className="text-gray-300 text-sm text-center leading-snug w-full">
+                                {t.specialization}
+                            </p>
+
+                            
+                            <div className="flex items-center justify-between w-full mt-2 px-1">
+                                <h3 className="text-gray-400 text-sm uppercase tracking-wide">
+                                Formación
+                                </h3>
+                                <span className="text-white font-medium">{t.formation}</span>
+                            </div>
+
+                         
+                            <div className="flex items-center justify-between w-full px-1">
+                                <h3 className="text-gray-400 text-sm uppercase tracking-wide">
+                                Calificación de usuarios
+                                </h3>
+                            <div className="flex items-center gap-1">
+                                <Star className="w-4 h-4 text-yellow-400 fill-yellow-400" />
+                                <span className="text-white font-medium">{t.qualification}</span>
+                            </div>
+                            </div>
+                            </div>
+                        );
+                        })}
+
+                    </div>
+
+            {modal && (
+                <div className="fixed inset-0 bg-[rgba(0,0,0,0.3)] flex items-center justify-center z-50 
+                  
+                ">
+
+                <div
+                style={{
+                    background: "rgba(70, 70, 70, 1)"
+                }}
+                className="rounded-2xl p-8 w-11/12 max-w-md relative border-none"
+                onClick={(e) => e.stopPropagation()}
+                >
+            
+                <button
+                    onClick={() => setModal(false)}
+                    className="absolute top-3 right-3 text-white hover:text-gray-800 transition"
+                >
+                    &times;
+                </button>
+
+                <h2 className="text-2xl font-semibold text-white mb-6 text-center">
+                    Datos del Entrenador
+                </h2>
+
+             
+                <form className="flex flex-col gap-5">
+                    <div>
+                    <label className="block text-sm font-medium text-white mb-1">
+                    Foto
+                    </label>
+                    <input
+                        type="file"
+                        name="imageUrl"
+                        style={{
+                    color: 'black',
+                    background: 'rgba(255, 255, 255, 1)',
+                    border: '1px solid rgba(255, 253, 253, 1)',
+                }}
+                        className="w-full border border-gray-300 rounded-lg px-3 py-2 text-gray-700 cursor-pointer bg-gray-50 hover:bg-gray-100 focus:outline-none focus:ring-2"
+                    />
+                    </div>
+                <div>
+                    <label className="block text-sm font-medium text-white mb-1">
+                    Nombre
+                    </label>
+                    <input
+                    type="text"
+                    name="dayOfWeek"
+                    style={{
+                    color: 'black',
+                    background: 'rgba(255, 255, 255, 1)',
+                    border: '1px solid rgba(255, 253, 253, 1)',
+                }}
+                    className="w-full bg-white/10 border border-white/20 rounded-lg px-3 py-2 
+                                text-white placeholder-gray-400 
+                                focus:outline-none focus:ring-2 
+                                transition"
+                    />
+                </div>
+
+                <div>
+                    <label className="block text-sm font-medium text-white mb-1">
+                    Formación
+                    </label>
+                    <input
+                    type="text"
+                    name="startTime"
+                    style={{
+                    color: 'black',
+                    background: 'rgba(255, 255, 255, 1)',
+                    border: '1px solid rgba(255, 253, 253, 1)',
+                }}
+                    className="w-full bg-white/10 border border-white/20 rounded-lg px-3 py-2 
+                                text-white placeholder-gray-400 
+                                focus:outline-none focus:ring-2 transition"
+                    />
+                </div>
+
+                <div>
+                    <label className="block text-sm font-medium text-white mb-1">
+                    Especialización
+                    </label>
+                    <input
+                    type="text"
+                    name="endTime"
+                    style={{
+                    color: 'black',
+                    background: 'rgba(255, 255, 255, 1)',
+                   border: '1px solid rgba(255, 253, 253, 1)',
+                }}
+                    className="w-full bg-white/10 border border-white/20 rounded-lg px-3 py-2 
+                                text-white placeholder-gray-400 
+                                focus:outline-none focus:ring-2 transition"
+                    />
+                </div>
+
+                <button
+                    type="submit"
+                    className="mt-2 bg-white text-black font-medium px-4 py-2 rounded-lg 
+                            hover:bg-gray-300 transition active:scale-[0.98]"
+                >
+                    Agregar
+                </button>
+                </form>
+        </div>
+    </div>
+    )}
+        </div>
+    )
+}
+
+
+export default TrainersCard;
