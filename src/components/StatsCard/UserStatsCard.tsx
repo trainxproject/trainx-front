@@ -1,6 +1,7 @@
 
+import { getAllUsers } from "@/services/userService";
 import { Users, Activity, Calendar, BarChart3, Search, icons, User, CheckCircle, Clock, XCircle, Check, DollarSign, Ban, Timer, Slash, UserCheck2Icon, UserX2Icon, UserX, UserXIcon, UserX2, UserRoundX, UserRoundXIcon, UserCheck, MoreVertical } from "lucide-react";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { string } from "yup";
 
 interface User {
@@ -13,237 +14,248 @@ interface User {
   state: string;
 }
 
-const user = [{
-    id:1,
-    name: "Carlos",
-    email: "carlos123@hotmail.com",
-    plan: "week-3",
-    pay: "active",
-    trainer: "Carlos VII",
-         state: "inactive"
-}, 
-{
-    id:2,
-    name: "Carlos",
-    email: "carlos123@hotmail.com",
-    plan: "week-3",
-    pay: "pending",
-    trainer: "Carlos VII",
-           state: "inactive"
-}, {
-    id:3,
-    name: "Carlos",
-    email: "carlos123@hotmail.com",
-    plan: "week-3",
-    pay: "cancelled",
-    trainer: "Carlos VII",
-    state: "inactive"
-},
-{
-    id:4,
-    name: "Carlos",
-    email: "carlos123@hotmail.com",
-    plan: "week-3",
-    pay: "active",
-    trainer: "Carlos VII",
-    state: "active"
-}, 
-{
-    id:5,
-    name: "Carlos",
-    email: "carlos123@hotmail.com",
-    plan: "week-3",
-    pay: "pending",
-    trainer: "Carlos VII",
-    state: "active"
-}, {
-    id:6,
-    name: "Carlos",
-    email: "carlos123@hotmail.com",
-    plan: "week-3",
-    pay: "cancelled",
-    trainer: "Carlos VII",
-    state: "active"
-},
-{
-    id:7,
-    name: "Carlos",
-    email: "carlos123@hotmail.com",
-    plan: "week-3",
-    pay: "active",
-    trainer: "Carlos VII",
-    state: "active"
-}, 
-{
-    id:8,
-    name: "Carlos",
-    email: "carlos123@hotmail.com",
-    plan: "week-3",
-    pay: "pending",
-    trainer: "Carlos VII",
-     state: "active"
-}, {
-    id:9,
-    name: "Carlos",
-    email: "carlos123@hotmail.com",
-    plan: "week-3",
-    pay: "cancelled",
-    trainer: "Carlos VII",
-    state: "active"
-},
-{
-    id:10,
-    name: "Carlos",
-    email: "carlos123@hotmail.com",
-    plan: "week-3",
-    pay: "active",
-    trainer: "Carlos VII",
-    state: "active"
-}, 
-{
-    name: "Carlos",
-    email: "carlos123@hotmail.com",
-    plan: "week-3",
-    pay: "pending",
-    trainer: "Carlos VII",
-    state: "inactive"
-}, {
-    name: "Carlos",
-    email: "carlos123@hotmail.com",
-    plan: "week-3",
-    pay: "cancelled",
-    trainer: "Carlos VII",
-    state: "active"
-},
-{
-    name: "Carlos",
-    email: "carlos123@hotmail.com",
-    plan: "week-3",
-    pay: "active",
-    trainer: "Carlos VII",
-    state: "active"
-}, 
-{
-    name: "Carlos",
-    email: "carlos123@hotmail.com",
-    plan: "week-3",
-    pay: "pending",
-    trainer: "Carlos VII",
-    state: "inactive"
-}, {
-    name: "Carlos",
-    email: "carlos123@hotmail.com",
-    plan: "week-3",
-    pay: "cancelled",
-    trainer: "Carlos VII",
-    state: "active"
-},
-{
-    name: "Carlos",
-    email: "carlos123@hotmail.com",
-    plan: "week-3",
-    pay: "active",
-    trainer: "Carlos VII",
-    state: "active"
-}, 
-{
-    name: "Carlos",
-    email: "carlos123@hotmail.com",
-    plan: "week-3",
-    pay: "pending",
-    trainer: "Carlos VII",
-    state: "inactive"
-}, {
-    name: "Carlos",
-    email: "carlos123@hotmail.com",
-    plan: "week-3",
-    pay: "cancelled",
-    trainer: "Carlos VII",
-    state: "active"
-},
-{
-    name: "Carlos",
-    email: "carlos123@hotmail.com",
-    plan: "week-3",
-    pay: "active",
-    trainer: "Carlos VII",
-    state: "active"
-}, 
-{
-    name: "Carlos",
-    email: "carlos123@hotmail.com",
-    plan: "week-3",
-    pay: "pending",
-    trainer: "Carlos VII",
-    state: "inactive"
-}, {
-    name: "Carlos",
-    email: "carlos123@hotmail.com",
-    plan: "week-3",
-    pay: "cancelled",
-    trainer: "Carlos VII",
-    state: "active"
-},
-{
-    name: "Carlos",
-    email: "carlos123@hotmail.com",
-    plan: "week-3",
-    pay: "active",
-    trainer: "Carlos VII",
-    state: "active"
-}, 
-{
-    name: "Carlos",
-    email: "carlos123@hotmail.com",
-    plan: "week-3",
-    pay: "pending",
-    trainer: "Carlos VII",
-    state: "inactive"
-}, {
-    name: "Carlos",
-    email: "carlos123@hotmail.com",
-    plan: "week-3",
-    pay: "cancelled",
-    trainer: "Carlos VII",
-    state: "active"
-},
-{
-    name: "Carlos",
-    email: "carlos123@hotmail.com",
-    plan: "week-3",
-    pay: "active",
-    trainer: "Carlos VII",
-    state: "active"
-}, 
-{
-    name: "Carlos",
-    email: "carlos123@hotmail.com",
-    plan: "week-3",
-    pay: "pending",
-    trainer: "Carlos VII",
-    state: "inactive"
-}, {
-    name: "Carlos",
-    email: "carlos123@hotmail.com",
-    plan: "week-3",
-    pay: "cancelled",
-    trainer: "Carlos VII",
-    state: "active"
-}
+// const user = [{
+//     id:1,
+//     name: "Carlos",
+//     email: "carlos123@hotmail.com",
+//     plan: "week-3",
+//     pay: "active",
+//     trainer: "Carlos VII",
+//          state: "inactive"
+// }, 
+// {
+//     id:2,
+//     name: "Carlos",
+//     email: "carlos123@hotmail.com",
+//     plan: "week-3",
+//     pay: "pending",
+//     trainer: "Carlos VII",
+//            state: "inactive"
+// }, {
+//     id:3,
+//     name: "Carlos",
+//     email: "carlos123@hotmail.com",
+//     plan: "week-3",
+//     pay: "cancelled",
+//     trainer: "Carlos VII",
+//     state: "inactive"
+// },
+// {
+//     id:4,
+//     name: "Carlos",
+//     email: "carlos123@hotmail.com",
+//     plan: "week-3",
+//     pay: "active",
+//     trainer: "Carlos VII",
+//     state: "active"
+// }, 
+// {
+//     id:5,
+//     name: "Carlos",
+//     email: "carlos123@hotmail.com",
+//     plan: "week-3",
+//     pay: "pending",
+//     trainer: "Carlos VII",
+//     state: "active"
+// }, {
+//     id:6,
+//     name: "Carlos",
+//     email: "carlos123@hotmail.com",
+//     plan: "week-3",
+//     pay: "cancelled",
+//     trainer: "Carlos VII",
+//     state: "active"
+// },
+// {
+//     id:7,
+//     name: "Carlos",
+//     email: "carlos123@hotmail.com",
+//     plan: "week-3",
+//     pay: "active",
+//     trainer: "Carlos VII",
+//     state: "active"
+// }, 
+// {
+//     id:8,
+//     name: "Carlos",
+//     email: "carlos123@hotmail.com",
+//     plan: "week-3",
+//     pay: "pending",
+//     trainer: "Carlos VII",
+//      state: "active"
+// }, {
+//     id:9,
+//     name: "Carlos",
+//     email: "carlos123@hotmail.com",
+//     plan: "week-3",
+//     pay: "cancelled",
+//     trainer: "Carlos VII",
+//     state: "active"
+// },
+// {
+//     id:10,
+//     name: "Carlos",
+//     email: "carlos123@hotmail.com",
+//     plan: "week-3",
+//     pay: "active",
+//     trainer: "Carlos VII",
+//     state: "active"
+// }, 
+// {
+//     name: "Carlos",
+//     email: "carlos123@hotmail.com",
+//     plan: "week-3",
+//     pay: "pending",
+//     trainer: "Carlos VII",
+//     state: "inactive"
+// }, {
+//     name: "Carlos",
+//     email: "carlos123@hotmail.com",
+//     plan: "week-3",
+//     pay: "cancelled",
+//     trainer: "Carlos VII",
+//     state: "active"
+// },
+// {
+//     name: "Carlos",
+//     email: "carlos123@hotmail.com",
+//     plan: "week-3",
+//     pay: "active",
+//     trainer: "Carlos VII",
+//     state: "active"
+// }, 
+// {
+//     name: "Carlos",
+//     email: "carlos123@hotmail.com",
+//     plan: "week-3",
+//     pay: "pending",
+//     trainer: "Carlos VII",
+//     state: "inactive"
+// }, {
+//     name: "Carlos",
+//     email: "carlos123@hotmail.com",
+//     plan: "week-3",
+//     pay: "cancelled",
+//     trainer: "Carlos VII",
+//     state: "active"
+// },
+// {
+//     name: "Carlos",
+//     email: "carlos123@hotmail.com",
+//     plan: "week-3",
+//     pay: "active",
+//     trainer: "Carlos VII",
+//     state: "active"
+// }, 
+// {
+//     name: "Carlos",
+//     email: "carlos123@hotmail.com",
+//     plan: "week-3",
+//     pay: "pending",
+//     trainer: "Carlos VII",
+//     state: "inactive"
+// }, {
+//     name: "Carlos",
+//     email: "carlos123@hotmail.com",
+//     plan: "week-3",
+//     pay: "cancelled",
+//     trainer: "Carlos VII",
+//     state: "active"
+// },
+// {
+//     name: "Carlos",
+//     email: "carlos123@hotmail.com",
+//     plan: "week-3",
+//     pay: "active",
+//     trainer: "Carlos VII",
+//     state: "active"
+// }, 
+// {
+//     name: "Carlos",
+//     email: "carlos123@hotmail.com",
+//     plan: "week-3",
+//     pay: "pending",
+//     trainer: "Carlos VII",
+//     state: "inactive"
+// }, {
+//     name: "Carlos",
+//     email: "carlos123@hotmail.com",
+//     plan: "week-3",
+//     pay: "cancelled",
+//     trainer: "Carlos VII",
+//     state: "active"
+// },
+// {
+//     name: "Carlos",
+//     email: "carlos123@hotmail.com",
+//     plan: "week-3",
+//     pay: "active",
+//     trainer: "Carlos VII",
+//     state: "active"
+// }, 
+// {
+//     name: "Carlos",
+//     email: "carlos123@hotmail.com",
+//     plan: "week-3",
+//     pay: "pending",
+//     trainer: "Carlos VII",
+//     state: "inactive"
+// }, {
+//     name: "Carlos",
+//     email: "carlos123@hotmail.com",
+//     plan: "week-3",
+//     pay: "cancelled",
+//     trainer: "Carlos VII",
+//     state: "active"
+// },
+// {
+//     name: "Carlos",
+//     email: "carlos123@hotmail.com",
+//     plan: "week-3",
+//     pay: "active",
+//     trainer: "Carlos VII",
+//     state: "active"
+// }, 
+// {
+//     name: "Carlos",
+//     email: "carlos123@hotmail.com",
+//     plan: "week-3",
+//     pay: "pending",
+//     trainer: "Carlos VII",
+//     state: "inactive"
+// }, {
+//     name: "Carlos",
+//     email: "carlos123@hotmail.com",
+//     plan: "week-3",
+//     pay: "cancelled",
+//     trainer: "Carlos VII",
+//     state: "active"
+// }
+// ]
 
 
-]
-
-
-const UserStatsCard: React.FC = ()=> {
+const UserStatsCard: React.FC = () => {
     const [tabSelect, setTabSelected] = useState("class") 
-     const [active, setActive] = useState(false) 
-     const [inactive, setInactive] = useState(false) 
- 
+    const [active, setActive] = useState(false) 
+    const [inactive, setInactive] = useState(false)
+    const [users, setUsers] = useState<User[]>([])
+
+    useEffect( () => {
+        const fetchData = async () => {
+            try {
+                const Alluser = await getAllUsers();
+                console.log(Alluser);
+                setUsers(Alluser);
+            } catch (error) {
+                console.error("Error al traer los usuarios: ", error)
+            }
+        }
+        fetchData()
+    }, [])
 
     return (
 
-        <div  className="min-h-screen items-center flex flex-col  bg-(--background) flex flex-wrap  mt-29">
+        <div  className="min-h-screen items-center flex flex-col  bg-(--background) flex flex-wrap  mt-10">
                 <div className="mb-3 flex flex-col gap-1">
                     <h1 className="text-4xl font-semibold text-white tracking-tight leading-tight">
                     Gestión de Usuarios
@@ -308,7 +320,7 @@ const UserStatsCard: React.FC = ()=> {
                             backdrop-blur-xl shadow-[0_4px_30px_rgba(0,0,0,0.3)]
                             transition-all duration-300 hover:bg-white/20 hover:border-white/30
                             ">
-                            {user.slice(0, 10).map((e, i) => {
+                            {users.slice(0, 10).map((e, i) => {
                             switch(items.key) {
 
                             case "user": return <div key={i} className="font-medium">{e.name}</div>;
@@ -407,7 +419,7 @@ const UserStatsCard: React.FC = ()=> {
                         </div>
                         </div>
                     </div>
-                )};
+                )}
 
                 {inactive && 
                 (
@@ -439,7 +451,7 @@ const UserStatsCard: React.FC = ()=> {
                         </div>
                         </div>
                     </div>
-                    )};
+                    )}
 
 
             

@@ -7,6 +7,7 @@ import ActivitiesCard from "@/components/StatsCard/ActivitiesCard"
 import ScheduleCards from "@/components/StatsCard/ScheduleCard"
 import StatisticsCard from "@/components/StatsCard/Statistics"
 import TrainersCard from "@/components/StatsCard/TrainersCard"
+import { Activity, Calendar, BarChart3, User, Dumbbell } from "lucide-react";
 
 export default function DashboardAdminView() {
   const [tabSelect, setTabSelected] = useState("users")
@@ -23,19 +24,21 @@ export default function DashboardAdminView() {
       {/* --- Tabs --- */}
       <div className="w-full max-w-[1000px] flex flex-wrap justify-center gap-2 mt-8 sm:gap-4 bg-(--secondary) border border-(--border) rounded-3xl p-3 sm:p-4 mb-6">
         {[
-          { key: "users", label: "Usuarios" },
-          { key: "activities", label: "Actividades" },
-          { key: "statistics", label: "Estadísticas" },
+          { key: "users", label: "Usuarios", icon: <User className="w-5 h-5 " /> },
+          { key: "activities", label: "Actividades", icon: <Activity className="w-5 h-5" /> },
+          { key: "schedule", label: "Clases", icon: <Calendar className="w-5 h-5" /> },
+          { key: "trainer", label: "Entrenadores", icon: <Dumbbell className="w-5 h-5" /> },
+          { key: "statistics", label: "Estadísticas", icon: <BarChart3 className="w-5 h-5" /> },
         ].map((tab) => (
-          <button
+            <button
             key={tab.key}
             onClick={() => setTabSelected(tab.key)}
-            className={`
+            className={`flex items-center gap-2
               px-4 py-2 rounded-2xl font-semibold transition-colors duration-200
               hover:bg-(--background) hover:text-white
               ${tabSelect === tab.key ? "bg-(--primary) text-black" : "bg-(--secondary) text-white"}
             `}
-          >
+          > {tab.icon}
             {tab.label}
           </button>
         ))}
