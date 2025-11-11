@@ -1,3 +1,4 @@
+import { Trash2 } from "lucide-react";
 import { useState } from "react";
 
 const activi = [
@@ -70,7 +71,8 @@ const clases = [
 ]
 
 const ScheduleCards: React.FC = () =>  {
-     const [modal, setModal] = useState(false)   
+    const [modal, setModal] = useState(false)   
+    const [iconDelete, setIconDelete] = useState(false)  
  
      return (
 
@@ -108,6 +110,18 @@ const ScheduleCards: React.FC = () =>  {
                                 hover:scale-[1.02]
                                 transition-all duration-300 ease-out"
                     >
+                        <div className="flex items-center">
+                       
+                        <button
+                            onClick={()=> setIconDelete(true)}
+                            aria-label="Eliminar"
+                            title="Eliminar"
+                            className="ml-auto p-2 rounded-md text-gray-400 hover:text-red-500 hover:bg-transparent focus:outline-none transition active:scale-95"
+                        >
+                            <Trash2 size={18} />
+                        </button>
+                        </div>
+
                     <h2 className="text-2xl font-semibold text-(--primary) text-center w-full">
                         {e.dayOfWeek}
                     </h2>
@@ -141,6 +155,37 @@ const ScheduleCards: React.FC = () =>  {
                     </div>
                     )})}
                     </div>
+
+            {iconDelete && (
+                    <div className="fixed inset-0 bg-gradient-to-b from-black/0 to-black/100 flex items-center justify-center z-50">
+                        <div className="relative bg-[hsl(var(--secondary))] bg-black/100 bg-blend-overlay border border-white/10 rounded-2xl p-8 w-11/12 max-w-md shadow-lg animate-fadeIn">
+                        <div className="flex flex-col items-center text-center gap-6">
+                            <h2 className="text-2xl font-semibold text-white">
+                            Borrar Clase
+                            </h2>
+                            <p className="text-gray-400 text-sm">
+                            Al crear una nueva clase, consulte los horarios antes de eliminar clases que tengan reservas.
+                            </p>
+
+                            <div className="flex gap-4 mt-4">
+                            <button
+                                onClick={() => setIconDelete(false)}
+                                className="px-5 py-2 rounded-xl bg-white/10 text-white hover:bg-white/20 transition duration-200"
+                            >
+                                Cancelar
+                            </button>
+
+                            <button
+                            onClick={()=> console.log("Hola")}
+                            className="px-5 py-2 rounded-xl bg-red-600/90 hover:bg-red-700 text-white font-medium transition duration-200"
+                            >
+                            Eliminar
+                            </button>
+                            </div>
+                        </div>
+                        </div>
+                    </div>
+                )}        
 
             {modal && (
                 <div className="fixed inset-0 bg-[rgba(0,0,0,0.3)] flex items-center justify-center z-50 
