@@ -49,3 +49,9 @@ const { data } = await axios.get(`${API_URL}/users/trainer/${userId}`);
 console.log(data);
 return data;
 }
+
+export const canHaveTrainer = async (userId: string) => {
+  const { data } = await axios.get(`${API_URL}/users/${userId}/can-have-trainer`);
+  console.log(data);
+  return data;
+}
