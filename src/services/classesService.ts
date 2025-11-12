@@ -82,3 +82,13 @@ export const cancelReservation = async (reservationId: string, token: string) =>
     throw new Error("error en cancelReservation");
   }
 }
+
+export const getWeeklyStatus = async (userId: string) => {
+  try {
+    const { data } = await axios.get(`${API_URL}/reservations/user/${userId}/weekly-status`);
+    return data; 
+  } catch (error) {
+    console.error("Error verificando estado semanal:", error);
+    return { canReserveNewDay: false };
+  }
+};
