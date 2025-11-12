@@ -223,8 +223,8 @@
               onClick={async () => {
                 try {
                   const weeklyStatus= await getWeeklyStatus(user!.id)
-                  if(!weeklyStatus.canReserve){
-                    toast.error("Ya alcanzaste el límite de reservas semanales");
+                  if(!weeklyStatus.canReserveNewDay){
+                    toast.error("Alcanzaste el límite de reservas semanales");
                     return;
                   }
                   await resevedClass(selectedClass.id);
