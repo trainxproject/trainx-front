@@ -2,7 +2,7 @@
 
   import { useState, useEffect } from "react";
   import { toast } from "sonner";
-  import { getAllClasses, resevedClass, filter as filterClasses, filter, getWeeklyStatus } from "@/services/classesService";
+  import { getAllClasses, resevedClass, filter as filterClasses, filter, getWeeklyStatus, canReserveOnDay } from "@/services/classesService";
   import { Classes } from "@/interfaces/Classes";
   import Image from "next/image";
   import { IoClose } from "react-icons/io5";
@@ -222,6 +222,12 @@
             <button
               onClick={async () => {
                 try {
+
+                   const dayCheck = await canReserveOnDay(user!.id, selectedClass.id);
+                  if (!dayCheck.canReserve) {
+                    toast.error(dayCheck.reason || "No puedes reservar este día");
+                    return;
+                  }
                   const weeklyStatus= await getWeeklyStatus(user!.id)
                   if(!weeklyStatus.canReserveNewDay){
                     toast.error("Alcanzaste el límite de reservas semanales");
