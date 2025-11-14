@@ -2,28 +2,13 @@ import { Trash2 } from "lucide-react";
 import { useState, useEffect } from "react";
 import { getAllClasses } from "@/services/classesService";
 import { Classes } from "@/interfaces/Classes";
-
-// const user = [
-//     {
-//     name: 'CrossFit',
-//     description: 'High intensity functional training.',
-//     requiresReservation: true,
-//     maxCapacity: 10,
-//     imageUrl: 'https://res.cloudinary.com/dxpqhpme3/image/upload/v1760749983/crossfit_ufv3qq.jpg',  
-//     },
-//     // {
-//     // name: 'CrossFit',
-//     // description: 'High intensity functional training.',
-//     // requiresReservation: true,
-//     // maxCapacity: 10,
-//     // imageUrl: 'https://res.cloudinary.com/dxpqhpme3/image/upload/v1760749983/crossfit_ufv3qq.jpg',  
-//     // }
-// ]
+import { deleteActivities } from "@/services/adminServices";
 
 const ActivitiesCard: React.FC = () =>  {
      const [modal, setModal] = useState(false)  
      const [iconDelete, setIconDelete] = useState(false)  
      const [activities, setActivities] = useState<Classes[]>([])
+     const [activityId, setActivityId] = useState<string>()
 
         useEffect(() => {
             const fetchData = async () => {
@@ -38,7 +23,7 @@ const ActivitiesCard: React.FC = () =>  {
                 }
             }
             fetchData();
-        }, [])
+        }, []);
 
      return (
 
@@ -81,7 +66,7 @@ const ActivitiesCard: React.FC = () =>  {
                         <div className="flex items-center">
                        
                         <button
-                            onClick={()=> setIconDelete(true)}
+                            onClick={()=> {setActivityId(e.id); setIconDelete(true); console.log(activityId)}}
                             aria-label="Eliminar"
                             title="Eliminar"
                             className="ml-auto p-2 rounded-md text-gray-400 hover:text-red-500 hover:bg-transparent focus:outline-none transition active:scale-95"
@@ -155,7 +140,7 @@ const ActivitiesCard: React.FC = () =>  {
                             </button>
 
                             <button
-                            onClick={()=> console.log("Hola")}
+                            onClick={()=> console.log("hola")}
                             className="px-5 py-2 rounded-xl bg-red-600/90 hover:bg-red-700 text-white font-medium transition duration-200"
                             >
                             Eliminar

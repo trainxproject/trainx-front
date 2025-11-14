@@ -103,3 +103,22 @@ export const getFiveDayPlan = async () => {
         return null;
     }
 }
+
+export const deleteActivities = async (activityId: string) => {
+    const token = localStorage.getItem('token');
+    console.log(token);
+
+    if(!token) {
+        console.error("No se a podido encontrar el token");
+        return null;
+    }
+
+    try {
+        const deleteActivity = await axios.delete(`${API_URL}/activities/${activityId}`);
+        console.log(deleteActivities);
+        return deleteActivity
+    } catch (error) {
+        console.error("Error al eliminar la actividad: ", error);
+        return null
+    }
+}
