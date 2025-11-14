@@ -2,7 +2,7 @@ import { Trash2 } from "lucide-react";
 import { useState, useEffect } from "react";
 import { getAllClasses } from "@/services/classesService";
 import { Classes } from "@/interfaces/Classes";
-import { deleteActivities } from "@/services/adminServices";
+// import { deleteActivities } from "@/services/adminServices";
 
 const ActivitiesCard: React.FC = () =>  {
      const [modal, setModal] = useState(false)  
