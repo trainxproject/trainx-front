@@ -9,9 +9,12 @@ interface User {
   name: string;
   email: string;
   plan: string;
-  pay: string;
+  payment: [{
+    plan: string,
+    status: string
+  }];
   trainer: string;
-  state: string;
+  status: string;
 }
 
 // const user = [{
@@ -22,7 +25,7 @@ interface User {
 //     pay: "active",
 //     trainer: "Carlos VII",
 //          state: "inactive"
-// }, 
+// }], 
 // {
 //     id:2,
 //     name: "Carlos",
@@ -294,9 +297,9 @@ const UserStatsCard: React.FC = () => {
                         { key: "user", label: "Usuarios" },
                         { key: "email", label: "Email" },
                         { key: "plan", label: "Plan" },
-                        { key: "pay", label: "Pago" },
+                        { key: "paymentStatus", label: "Pago" },
                         { key: "trainer", label: "Entrenador" },
-                        { key: "state", label: "Estado" },
+                        { key: "status", label: "Estado" },
                     ].map((items) => (
                         <div 
                         key={items.key}
@@ -325,39 +328,39 @@ const UserStatsCard: React.FC = () => {
 
                             case "user": return <div key={i} className="font-medium">{e.name}</div>;
                             case "email": return <div key={i} className="text-gray-300 ">{e.email}</div>;
-                            case "plan": return <div key={i} className="text-[hsl(var(--primary))]">{e.plan}</div>;
-                            case "pay": return (
+                            case "plan": return <div key={i} className="text-[hsl(var(--primary))]">{e.payment[0]?.plan}</div>;
+                            case "paymentStatus": return (
                             
                             <div key={i} className="flex items-center gap-2">
-                                {e.pay === "active" && (
+                                {e.payment[0]?.status === "active" && (
                                     <>
                                     <CheckCircle/>
-                                    <div className="text-green-400 font-medium">{e.pay}</div>
+                                    <div className="text-green-400 font-medium">{e.payment[0]?.status}</div>
                                     </>
                                 )}
-                                {e.pay === "pending" && (
+                                {e.payment[0]?.status === "pending" && (
                                     <>
                                     <Timer/>
-                                    <div className="text-yellow-400 font-medium">{e.pay}</div>
+                                    <div className="text-yellow-400 font-medium">[{e.payment[0]?.status}]</div>
                                     </>
                                 )}
-                                {e.pay === "cancelled" && (
+                                {e.payment[0]?.status === "cancelled" && (
                                     <>
                                     <Ban/>
-                                    <div className="text-red-400 font-medium">{e.pay}</div>
+                                    <div className="text-red-400 font-medium">{e.payment[0]?.status}</div>
                                     </>
                                 )}
                             
                             </div>);
                             case "trainer": return <div key={i}>{e.trainer}</div>;
-                            case "state": return <div key={i} className="flex items-center gap-2">
+                            case "status": return <div key={i} className="flex items-center gap-2">
                                 
 
 
-                                {e.state === "active" && (
+                                {e.status === "active" && (
                                     <>
                                     <UserCheck2Icon/>
-                                    <div className="text-green-400 font-medium">{e.state}</div>
+                                    <div className="text-green-400 font-medium">{e.status}</div>
                                     <button
                                 onClick={()=> setActive(true)}
                                 className="p-1 hover:bg-white/10 rounded-full transition-colors duration-200"
@@ -367,10 +370,10 @@ const UserStatsCard: React.FC = () => {
                                     </>
                                     
                                 )}
-                                 {e.state === "inactive" && (
+                                 {e.status === "inactive" && (
                                      <>
                                     <UserX2/>
-                                    <div className="text-red-400 font-medium">{e.state}</div>
+                                    <div className="text-red-400 font-medium">{e.status}</div>
                                     <button
                                 onClick={()=> setInactive(true)}
                                 className="p-1 hover:bg-white/10 rounded-full transition-colors duration-200"

@@ -1,48 +1,65 @@
 import { Star, Trash2 } from "lucide-react";
-import { useState } from "react";
+import { useEffect, useState } from "react";
+import { getAllTrainers } from "@/services/trainersService";
+import { Trainers } from "@/interfaces/Trainer";
 
 
 
-const trainers = [
+// const trainers = [
 
-      {
-        id: 1,
-        name: 'Antonella Miracle',
-        formation: "Algo",
-        specialization: 'Entrenadora olímpica de powerlifting, especializada en técnica y planificación de fuerza, con integración de control mental y conciencia corporal a partir de su maestría en psicología deportiva y formación avanzada en telas aéreas.',
-        imageUrl: 'https://res.cloudinary.com/dxpqhpme3/image/upload/v1761433928/antonella-miracle_bbhthd.jpg',
-        qualification: 2.3,
-      },
-      {
-        id: 2,
-        name: 'Lucas Romero',
-        formation: "Algo",
-        specialization: 'Entrenador especializado en fuerza explosiva, enfocado en mejorar técnica, potencia y rendimiento en competiciones. Experiencia en programas de hipertrofia y resistencia muscular, combinando entrenamiento funcional y planificación de cargas.',
-        imageUrl: 'https://res.cloudinary.com/dxpqhpme3/image/upload/v1761433927/lucas-romero_egpv6j.jpg',
-        qualification: 0,
-      },
-      {
-        id: 3,
-        name: 'Sofía Torres',
-        formation: "Algo",
-        specialization: 'Entrenadora especializada en entrenamiento correctivo, movilidad articular y prevención de lesiones en fuerza. Experta en diseño de programas de acondicionamiento funcional, fortalecimiento muscular equilibrado y técnicas de recuperación.',
-        imageUrl: 'https://res.cloudinary.com/dxpqhpme3/image/upload/v1761433928/sofia-torres_duljzi.jpg',
-        qualification: 2.3,
-      },
-      {
-        id: 4,
-        name: 'Uriel Rodríguez',
-        formation: "Algo",
-        specialization: 'Entrenador especializado en desarrollo de hipertrofia y acondicionamiento físico integral. Experto en planificación de rutinas adaptadas a diferentes niveles, combinando técnica y resistencia para mejorar el rendimiento general.',
-        imageUrl: 'https://res.cloudinary.com/dxpqhpme3/image/upload/v1761433928/uriel-rodriguez_i1hip2.jpg',
-        qualification: 2.3,
-      },
-]
+//       {
+//         id: 1,
+//         name: 'Antonella Miracle',
+//         formation: "Algo",
+//         specialization: 'Entrenadora olímpica de powerlifting, especializada en técnica y planificación de fuerza, con integración de control mental y conciencia corporal a partir de su maestría en psicología deportiva y formación avanzada en telas aéreas.',
+//         imageUrl: 'https://res.cloudinary.com/dxpqhpme3/image/upload/v1761433928/antonella-miracle_bbhthd.jpg',
+//         qualification: 2.3,
+//       },
+//       {
+//         id: 2,
+//         name: 'Lucas Romero',
+//         formation: "Algo",
+//         specialization: 'Entrenador especializado en fuerza explosiva, enfocado en mejorar técnica, potencia y rendimiento en competiciones. Experiencia en programas de hipertrofia y resistencia muscular, combinando entrenamiento funcional y planificación de cargas.',
+//         imageUrl: 'https://res.cloudinary.com/dxpqhpme3/image/upload/v1761433927/lucas-romero_egpv6j.jpg',
+//         qualification: 0,
+//       },
+//       {
+//         id: 3,
+//         name: 'Sofía Torres',
+//         formation: "Algo",
+//         specialization: 'Entrenadora especializada en entrenamiento correctivo, movilidad articular y prevención de lesiones en fuerza. Experta en diseño de programas de acondicionamiento funcional, fortalecimiento muscular equilibrado y técnicas de recuperación.',
+//         imageUrl: 'https://res.cloudinary.com/dxpqhpme3/image/upload/v1761433928/sofia-torres_duljzi.jpg',
+//         qualification: 2.3,
+//       },
+//       {
+//         id: 4,
+//         name: 'Uriel Rodríguez',
+//         formation: "Algo",
+//         specialization: 'Entrenador especializado en desarrollo de hipertrofia y acondicionamiento físico integral. Experto en planificación de rutinas adaptadas a diferentes niveles, combinando técnica y resistencia para mejorar el rendimiento general.',
+//         imageUrl: 'https://res.cloudinary.com/dxpqhpme3/image/upload/v1761433928/uriel-rodriguez_i1hip2.jpg',
+//         qualification: 2.3,
+//       },
+// ]
 
 const TrainersCard: React.FC = () =>  {
-    const [modal, setModal] = useState(false)
-    const [iconDelete, setIconDelete] = useState(false)     
- 
+    const [modal, setModal] = useState(false);
+    const [iconDelete, setIconDelete] = useState(false);
+    const [trainers, setTrainers] = useState<Trainers[]>([])
+
+    useEffect(() => {
+        const fetchData = async () => {
+            try {
+                const trainers = await getAllTrainers();
+                console.log(trainers);
+                setTrainers(trainers);
+            } catch (error) {
+                console.error("Error al traer los entrenadores: ", error)
+                return[];
+            }
+        }
+        fetchData()
+    }, [])
+
     return (
 
         <div  className="min-h-screen  flex flex-col  bg-(--background) flex flex-wrap  mt-29">
@@ -141,7 +158,7 @@ const TrainersCard: React.FC = () =>  {
                             Eliminar Entrenador
                             </h2>
                             <p className="text-gray-400 text-sm">
-                            No olvide primero borrar las actividades y clases relacionadas con el entrenador.
+                            Borre las actividades y clases vinculadas al entrenador.
                             </p>
 
                             <div className="flex gap-4 mt-4">

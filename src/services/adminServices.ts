@@ -35,7 +35,7 @@ export const createActivities = async (name: string, description: string, requir
 
 export const getMonthlyCollection = async () => {
     console.log("recaudacion mensual")
-    const token = localStorage.getItem("token");
+    const token = localStorage.getItem('token');
     console.log(token)
 
     if(!token) {
@@ -58,7 +58,7 @@ export const getMonthlyCollection = async () => {
 }
 
 export const getThreeDayPlan = async () => {
-    const token = localStorage.getItem("token");
+    const token = localStorage.getItem('token');
     console.log(token);
 
     if(!token) {
@@ -67,7 +67,7 @@ export const getThreeDayPlan = async () => {
     }
 
     try {
-        const response = await axios.get(`${API_URL}/admin/statistics/plans/3-days`,
+        const response = await axios.get(`${API_URL}/admin/statistics/plans/week-3`,
             {headers: {
                 Authorization: `Bearer: ${token}`
             }},
@@ -81,7 +81,7 @@ export const getThreeDayPlan = async () => {
 }
 
 export const getFiveDayPlan = async () => {
-    const token = localStorage.getItem("token");
+    const token = localStorage.getItem('token');
     console.log(token);
 
     if(!token) {
@@ -90,7 +90,7 @@ export const getFiveDayPlan = async () => {
     }
 
     try {
-        const response = await axios.get(`${API_URL}/admin/statistics/plans/5-days`,
+        const response = await axios.get(`${API_URL}/admin/statistics/plans/week-5`,
 
             {headers: {
                 Authorization: `Bearer: ${token}`
@@ -101,5 +101,24 @@ export const getFiveDayPlan = async () => {
     } catch (error) {
         console.error("Error al traer los planes de cinco días: ", error);
         return null;
+    }
+}
+
+export const deleteActivities = async (activityId: string) => {
+    const token = localStorage.getItem('token');
+    console.log(token);
+
+    if(!token) {
+        console.error("No se a podido encontrar el token");
+        return null;
+    }
+
+    try {
+        const deleteActivity = await axios.delete(`${API_URL}/activities/${activityId}`);
+        console.log(deleteActivities);
+        return deleteActivity
+    } catch (error) {
+        console.error("Error al eliminar la actividad: ", error);
+        return null
     }
 }
