@@ -35,7 +35,7 @@ export const createActivities = async (name: string, description: string, requir
 
 export const getMonthlyCollection = async () => {
     console.log("recaudacion mensual")
-    const token = localStorage.getItem("token");
+    const token = localStorage.getItem('token');
     console.log(token)
 
     if(!token) {
@@ -58,7 +58,7 @@ export const getMonthlyCollection = async () => {
 }
 
 export const getThreeDayPlan = async () => {
-    const token = localStorage.getItem("token");
+    const token = localStorage.getItem('token');
     console.log(token);
 
     if(!token) {
@@ -81,7 +81,7 @@ export const getThreeDayPlan = async () => {
 }
 
 export const getFiveDayPlan = async () => {
-    const token = localStorage.getItem("token");
+    const token = localStorage.getItem('token');
     console.log(token);
 
     if(!token) {

@@ -83,7 +83,7 @@ const Statistics: React.FC =  () => {
                 </div>
             </div>
             <button 
-            onClick={() => {getFiveDayPlan(), getFiveDayPlan(), getMonthlyCollection()}}>Llamado a la api</button>
+            onClick={() => getThreeDayPlan()}>Llamado a la api</button>
         </div>
     )
 }
