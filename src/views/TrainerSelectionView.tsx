@@ -2,6 +2,7 @@
 
 import { useEffect, useState } from "react";
 import { getAllTrainers, selectTrainer } from "@/services/trainersService";
+import { canHaveTrainer } from "@/services/userService";
 import { Trainers } from "@/interfaces/Trainer";
 import { toast } from "sonner";
 import { FaRegStar } from "react-icons/fa";
@@ -41,17 +42,24 @@ const TrainerSelection = ({ selectedTrainer, userId, onTrainerAssigned }: Traine
   }
 
   
-  const handleSelectTrainer = async (trainerId: string) => {
-    setAssigning(true); 
+   const handleSelectTrainer = async (trainerId: string) => {
+    setAssigning(true);
     try {
-      
+    
+      const { canHaveTrainer: allowed } = await canHaveTrainer(userId);
+
+      if (!allowed) {
+        toast.warning("Tu plan no permite seleccionar un entrenador.");
+        return;
+      }
+
       await selectTrainer(userId, trainerId);
-      onTrainerAssigned(trainerId); 
+      onTrainerAssigned(trainerId);
       toast.success("Entrenador asignado correctamente");
     } catch (error) {
       toast.error("Error al asignar el entrenador");
     } finally {
-      setAssigning(false); 
+      setAssigning(false);
     }
   };
 
