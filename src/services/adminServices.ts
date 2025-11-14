@@ -67,7 +67,7 @@ export const getThreeDayPlan = async () => {
     }
 
     try {
-        const response = await axios.get(`${API_URL}/admin/statistics/plans/3-days`,
+        const response = await axios.get(`${API_URL}/admin/statistics/plans/week-3`,
             {headers: {
                 Authorization: `Bearer: ${token}`
             }},
@@ -90,7 +90,7 @@ export const getFiveDayPlan = async () => {
     }
 
     try {
-        const response = await axios.get(`${API_URL}/admin/statistics/plans/5-days`,
+        const response = await axios.get(`${API_URL}/admin/statistics/plans/week-5`,
 
             {headers: {
                 Authorization: `Bearer: ${token}`

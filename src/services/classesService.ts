@@ -1,5 +1,5 @@
 import axios from "axios"
-import { Classes, IReservation } from "@/interfaces/Classes"
+import { Classes, IReservation, Schedules } from "@/interfaces/Classes"
 
 const API_URL = process.env.NEXT_PUBLIC_API_URL || "http://localhost:3000";
 
@@ -13,6 +13,17 @@ export const getAllClasses = async (): Promise<Classes[]> => {
       return [];
     }
   };
+
+export const getAllSchedule = async (): Promise<Schedules[]> => {
+  try {
+    const { data } = await axios.get(`${API_URL}/schedules`)
+    console.log(data);
+    return data;
+  } catch (error) {
+    console.error("Error al traer los horarios: ", error);
+    return [];
+  }
+}
 
 export const resevedClass = async (scheduleId: string)  => {
   console.log(scheduleId);
