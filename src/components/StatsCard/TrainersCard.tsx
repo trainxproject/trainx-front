@@ -158,7 +158,7 @@ const TrainersCard: React.FC = () =>  {
                             Eliminar Entrenador
                             </h2>
                             <p className="text-gray-400 text-sm">
-                            No olvide primero borrar las actividades y clases relacionadas con el entrenador.
+                            Borre las actividades y clases vinculadas al entrenador.
                             </p>
 
                             <div className="flex gap-4 mt-4">
