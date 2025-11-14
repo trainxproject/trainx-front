@@ -18,7 +18,7 @@ export interface FiveDay {
 }
 
 export interface Collection {
-  count: number,
-  description: string,
-  planType: string,
+  activeSubscriptions: number,
+  currency: string,
+  totalMonthlyRevenue: number,
 }

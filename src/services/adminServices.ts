@@ -123,3 +123,26 @@ export const deleteActivities = async (activityId: string) => {
         return null
     }
 }
+
+export const userStatus = async (userId: string) => {
+    const token = localStorage.getItem('token');
+        if(!token) {
+            console.error("error al obtener el token");
+            return null;
+        }
+
+    console.log(token);
+
+    try {
+        const response = await axios.patch(`${API_URL}/users/${userId}/status`,
+            {headers: {
+                Authorization: `Bearer ${token}`
+            }}
+        );
+        console.log(response);
+        return response;
+    } catch (error) {
+        console.error("Error al cambiar el estasdo del usuario: ", error);
+        return null;
+    }
+}

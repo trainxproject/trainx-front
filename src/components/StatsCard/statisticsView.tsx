@@ -67,7 +67,7 @@ const Statistics: React.FC =  () => {
                     <h3 className="text-xl font-semibold text-(--foreground) text-(--muted-foreground)">
                         Ingresos mensuales
                     </h3>
-                    <span className="mt-2 text-lg font-bold text-(--primary)">${MonthlyCollection?.count}</span>
+                    <span className="mt-2 text-lg font-bold text-(--primary)">${MonthlyCollection?.totalMonthlyRevenue}</span>
                 </div>
                 <div className="flex flex-col items-center py-4 px-6 rounded-2xl border-2 border-(--border) bg-(--secondary)/45">
                     <h3 className="text-xl font-semibold text-(--foreground) text-(--muted-foreground)">
