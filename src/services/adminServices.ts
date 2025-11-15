@@ -1,5 +1,6 @@
 import axios from "axios";
 import { IUser } from "@/interfaces/User";
+import { ThreeDay, FiveDay, Collection } from "@/interfaces/Plan";
 
 const API_URL = process.env.NEXT_PUBLIC_API_URL;
 
@@ -33,7 +34,7 @@ export const createActivities = async (name: string, description: string, requir
     }
 }
 
-export const getMonthlyCollection = async () => {
+export const getMonthlyCollection = async (): Promise<Collection | null> => {
     console.log("recaudacion mensual")
     const token = localStorage.getItem('token');
     console.log(token)
@@ -50,14 +51,14 @@ export const getMonthlyCollection = async () => {
         }},
         )
         console.log(response);
-        return response
+        return response.data
     } catch (error) {
         console.error("Error al obtener los ingresos mensuales: ", error);
         return null;
     }
 }
 
-export const getThreeDayPlan = async () => {
+export const getThreeDayPlan = async (): Promise<ThreeDay | null> => {
     const token = localStorage.getItem('token');
     if(!token) {
         console.log("No se pudo encontrar el token");
@@ -73,14 +74,14 @@ export const getThreeDayPlan = async () => {
             }},
         );
         console.log(response);
-        return response;
+        return response.data;
     } catch (error) {
         console.error("Error al traer los planes de tres días",);
         return null;
     }
 }
 
-export const getFiveDayPlan = async () => {
+export const getFiveDayPlan = async (): Promise<FiveDay | null> => {
     const token = localStorage.getItem('token');
     console.log(token);
 
@@ -97,7 +98,7 @@ export const getFiveDayPlan = async () => {
             }},
         );
         console.log(response);
-        return(response)
+        return response.data
     } catch (error) {
         console.error("Error al traer los planes de cinco días: ", error);
         return null;
