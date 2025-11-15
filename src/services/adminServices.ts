@@ -59,23 +59,23 @@ export const getMonthlyCollection = async () => {
 
 export const getThreeDayPlan = async () => {
     const token = localStorage.getItem('token');
-    console.log(token);
-
     if(!token) {
         console.log("No se pudo encontrar el token");
         return null;
     }
+    console.log(token);
+
 
     try {
         const response = await axios.get(`${API_URL}/admin/statistics/plans/week-3`,
             {headers: {
-                Authorization: `Bearer: ${token}`
+                Authorization: `Bearer ${token}`
             }},
         );
         console.log(response);
         return response;
     } catch (error) {
-        console.error("Error al traer los planes de tres días");
+        console.error("Error al traer los planes de tres días",);
         return null;
     }
 }
@@ -93,7 +93,7 @@ export const getFiveDayPlan = async () => {
         const response = await axios.get(`${API_URL}/admin/statistics/plans/week-5`,
 
             {headers: {
-                Authorization: `Bearer: ${token}`
+                Authorization: `Bearer ${token}`
             }},
         );
         console.log(response);
