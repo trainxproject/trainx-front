@@ -6,6 +6,7 @@
   import { Classes } from "@/interfaces/Classes";
   import Image from "next/image";
   import { useAuth } from "@/context/AuthContext";
+  import { getPlanUser } from "@/services/userService";
 
   interface CalendarClass {
     id: string;
@@ -221,24 +222,34 @@
             <button
               onClick={async () => {
                 try {
+                // 1️⃣ Validar plan activo
+                const planInfo = await getPlanUser(user!.id);
 
-                   const dayCheck = await canReserveOnDay(user!.id, selectedClass.id);
-                  if (!dayCheck.canReserve) {
-                    toast.error(dayCheck.reason || "No puedes reservar este día");
-                    return;
-                  }
-                  const weeklyStatus= await getWeeklyStatus(user!.id)
-                  if(!weeklyStatus.canReserveNewDay){
-                    toast.error("Alcanzaste el límite de reservas semanales");
-                    return;
-                  }
-                  await resevedClass(selectedClass.id);
-                  toast.success("Reserva creada con éxito");
-                  setIsOpen(false);
-                } catch (error) {
-                  toast.error("No se pudo realizar la reserva");
+                if (!planInfo || planInfo.status !== "active") {
+                  toast.error("Necesitas un plan activo para reservar.");
+                  return;
                 }
-              }}
+                const dayCheck = await canReserveOnDay(user!.id, selectedClass.id);
+
+                if (!dayCheck.canReserve) {
+                  toast.error(dayCheck.reason || "No puedes reservar este día");
+                  return;
+                }
+
+                const weeklyStatus = await getWeeklyStatus(user!.id);
+                if (!weeklyStatus.canReserveNewDay) {
+                  toast.error("Alcanzaste el límite de reservas semanales");
+                  return;
+                }
+
+                await resevedClass(selectedClass.id);
+                toast.success("Reserva creada con éxito");
+                setIsOpen(false);
+
+              } catch (error) {
+                toast.error("No se pudo realizar la reserva");
+              }
+            }}
               className="w-full bg-(--primary) text-white py-2 rounded-xl hover:bg-(--primary)/90 transition"
             >
               Reservar clase
