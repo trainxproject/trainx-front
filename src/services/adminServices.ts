@@ -1,5 +1,7 @@
 import axios from "axios";
 import { IUser } from "@/interfaces/User";
+import { ThreeDay, FiveDay, Collection } from "@/interfaces/Plan";
+import { Classes } from "@/interfaces/Classes";
 
 const API_URL = process.env.NEXT_PUBLIC_API_URL;
 
@@ -15,25 +17,36 @@ export const getAllUsers = async (): Promise <IUser[] | null> => {
     }
 }
 
-export const createActivities = async (name: string, description: string, requiresReservation: boolean, maxCapacity: number, imageUrl: string) => {
-    try {
-        const response = await axios.post(`${API_URL}/activities`, 
-        {
-            name: name,
-            description: description,
-            requiresReservation: requiresReservation,
-            maxCapacity: maxCapacity,
-            imageUrl: imageUrl
-        });
+export const createActivities = async (name: string, description: string, requiresReservation: boolean, maxCapacity: number, imageUrl: string): Promise<Classes | null> => {
+    const token = localStorage.getItem('token');
+    console.log(token);
+
+        if(!token) {
+            console.error("No se pudo obtener el token");
+            return null;
+        }
+
+        try {
+            const response = await axios.post(`${API_URL}/activities`,
+            {
+                name: name,
+                description: description,
+                requiresReservation: requiresReservation,
+                maxCapacity: maxCapacity,
+                imageUrl: imageUrl
+            }, { headers: {
+                Authorization: `Bearer ${token}`
+            }} 
+        )
         console.log(response);
-        return response;
-    } catch (error) {
-        console.error("Error al crear la activivdad: ", error);
-        return null;
-    }
+        return response.data
+        } catch (error) {
+            console.error("Error al crear la activiadad: ", error);
+            return null;
+        }
 }
 
-export const getMonthlyCollection = async () => {
+export const getMonthlyCollection = async (): Promise<Collection | null> => {
     console.log("recaudacion mensual")
     const token = localStorage.getItem('token');
     console.log(token)
@@ -50,37 +63,37 @@ export const getMonthlyCollection = async () => {
         }},
         )
         console.log(response);
-        return response
+        return response.data
     } catch (error) {
         console.error("Error al obtener los ingresos mensuales: ", error);
         return null;
     }
 }
 
-export const getThreeDayPlan = async () => {
+export const getThreeDayPlan = async (): Promise<ThreeDay | null> => {
     const token = localStorage.getItem('token');
-    console.log(token);
-
     if(!token) {
         console.log("No se pudo encontrar el token");
         return null;
     }
+    console.log(token);
+
 
     try {
         const response = await axios.get(`${API_URL}/admin/statistics/plans/week-3`,
             {headers: {
-                Authorization: `Bearer: ${token}`
+                Authorization: `Bearer ${token}`
             }},
         );
         console.log(response);
-        return response;
+        return response.data;
     } catch (error) {
-        console.error("Error al traer los planes de tres días");
+        console.error("Error al traer los planes de tres días",);
         return null;
     }
 }
 
-export const getFiveDayPlan = async () => {
+export const getFiveDayPlan = async (): Promise<FiveDay | null> => {
     const token = localStorage.getItem('token');
     console.log(token);
 
@@ -93,11 +106,11 @@ export const getFiveDayPlan = async () => {
         const response = await axios.get(`${API_URL}/admin/statistics/plans/week-5`,
 
             {headers: {
-                Authorization: `Bearer: ${token}`
+                Authorization: `Bearer ${token}`
             }},
         );
         console.log(response);
-        return(response)
+        return response.data
     } catch (error) {
         console.error("Error al traer los planes de cinco días: ", error);
         return null;
@@ -120,5 +133,28 @@ export const deleteActivities = async (activityId: string) => {
     } catch (error) {
         console.error("Error al eliminar la actividad: ", error);
         return null
+    }
+}
+
+export const userStatus = async (userId: string) => {
+    const token = localStorage.getItem('token');
+        if(!token) {
+            console.error("error al obtener el token");
+            return null;
+        }
+
+    console.log(token);
+
+    try {
+        const response = await axios.patch(`${API_URL}/users/${userId}/status`,
+            {headers: {
+                Authorization: `Bearer ${token}`
+            }}
+        );
+        console.log(response);
+        return response;
+    } catch (error) {
+        console.error("Error al cambiar el estasdo del usuario: ", error);
+        return null;
     }
 }

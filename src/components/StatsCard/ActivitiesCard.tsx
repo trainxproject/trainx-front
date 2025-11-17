@@ -2,6 +2,7 @@ import { Trash2 } from "lucide-react";
 import { useState, useEffect } from "react";
 import { getAllClasses } from "@/services/classesService";
 import { Classes } from "@/interfaces/Classes";
+import { createActivities } from "@/services/adminServices";
 // import { deleteActivities } from "@/services/adminServices";
 
 const ActivitiesCard: React.FC = () =>  {
@@ -9,6 +10,14 @@ const ActivitiesCard: React.FC = () =>  {
      const [iconDelete, setIconDelete] = useState(false)  
      const [activities, setActivities] = useState<Classes[]>([])
      const [activityId, setActivityId] = useState<string>()
+
+     //+ ESTADOS PARA LA PETICION DE CREAR ACTIVIDAD
+
+     const [name, setName] = useState<string>("");
+     const [description, setDescrition] = useState<string>("");
+     const [requiresReservation, setRequieresReservation] = useState<boolean>(false);
+     const [maxCapacity, setMaxCapacity] = useState<number>(0);
+     const [imageUrl, setImageUrl] = useState<string>("")
 
         useEffect(() => {
             const fetchData = async () => {
@@ -24,6 +33,22 @@ const ActivitiesCard: React.FC = () =>  {
             }
             fetchData();
         }, []);
+
+        const handlerCreate = async (e: React.FormEvent) => {
+            e.preventDefault()
+
+            const response = await createActivities(
+              name,
+              description,
+              requiresReservation,
+              maxCapacity,
+              imageUrl  
+            )
+
+            if(response) {
+                setModal(false);
+            }
+        }
 
      return (
 
@@ -174,7 +199,8 @@ const ActivitiesCard: React.FC = () =>  {
                     Nueva Actividad
                 </h2>
 
-                <form className="flex flex-col gap-5">
+                <form className="flex flex-col gap-5"
+                onSubmit={handlerCreate}>
               
                     <div>
                     <label className="block text-sm font-medium text-white mb-1">
@@ -189,6 +215,7 @@ const ActivitiesCard: React.FC = () =>  {
                     border: '1px solid rgba(255, 253, 253, 1)',
                 }}
                         className="w-full border border-gray-300 rounded-lg px-3 py-2 text-gray-700 cursor-pointer bg-gray-50 hover:bg-gray-100 focus:outline-none focus:ring-2"
+                        onChange={(e) => setImageUrl(e.target.value)}
                     />
                     </div>
 
@@ -206,6 +233,7 @@ const ActivitiesCard: React.FC = () =>  {
                 }}
                         placeholder="Ej: Yoga, Crossfit, Zumba..."
                         className="w-full border border-gray-300 rounded-lg px-3 py-2 text-gray-700 cursor-pointer bg-gray-50 hover:bg-gray-100 focus:outline-none focus:ring-2"
+                        onChange={(e) => setName(e.target.value)}
                     />
                     </div>
 
@@ -223,6 +251,7 @@ const ActivitiesCard: React.FC = () =>  {
                         placeholder="Breve descripción de la actividad"
                         name="description"
                         className="w-full border  rounded-lg px-3 py-2 text-black focus:outline-none focus:ring-2  min-h-[100px]"
+                        onChange={(e) => setDescrition(e.target.value)}
                     ></textarea>
                     </div>
 
@@ -232,7 +261,7 @@ const ActivitiesCard: React.FC = () =>  {
                         type="checkbox"
                         name="requiresReservation"
                         id="requiresReservation"
-                        
+                        onChange={(e) => setRequieresReservation(e.target.checked)}
                         className="w-5 h-5 accent-blue-600"
                     />
                     <label htmlFor="requiresReservation" className="text-white text-sm">
@@ -256,13 +285,14 @@ const ActivitiesCard: React.FC = () =>  {
                         className="w-full border border-gray-300 rounded-lg px-3 py-2 text-gray-700 cursor-pointer bg-gray-50 hover:bg-gray-100 focus:outline-none focus:ring-2"
                         min="0"
                         placeholder="Ej: 20"
+                        onChange={(e) => setMaxCapacity(Number(e.target.value))}
                     />
                     </div>
 
                     <button
                     type="submit"
                     className="mt-2 bg-white text-black font-medium px-4 py-2 rounded-lg 
-                            hover:bg-gray-300 transition active:scale-[0.98]"
+                    hover:bg-gray-300 transition active:scale-[0.98]"
                 >Crear Actividad</button>
             </form>
         </div>

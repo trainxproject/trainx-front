@@ -5,7 +5,6 @@
   import { getAllClasses, resevedClass, filter as filterClasses, filter, getWeeklyStatus, canReserveOnDay } from "@/services/classesService";
   import { Classes } from "@/interfaces/Classes";
   import Image from "next/image";
-  import { IoClose } from "react-icons/io5";
   import { useAuth } from "@/context/AuthContext";
   import { getPlanUser } from "@/services/userService";
 
@@ -23,11 +22,11 @@
   const weekDays = ["Lun", "Mar", "Mié", "Jue", "Vie"];
 
   const dayTranslations: Record<string, string> = {
-    Monday: "Lun",
-    Tuesday: "Mar",
-    Wednesday: "Mié",
-    Thursday: "Jue",
-    Friday: "Vie",
+    Lunes: "Lun",
+    Martes: "Mar",
+    Miercoles: "Mié",
+    Jueves: "Jue",
+    Viernes: "Vie",
   };
 
   const CalendarView = () => {
