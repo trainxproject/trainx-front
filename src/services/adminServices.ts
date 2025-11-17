@@ -1,6 +1,7 @@
 import axios from "axios";
 import { IUser } from "@/interfaces/User";
 import { ThreeDay, FiveDay, Collection } from "@/interfaces/Plan";
+import { Classes } from "@/interfaces/Classes";
 
 const API_URL = process.env.NEXT_PUBLIC_API_URL;
 
@@ -16,22 +17,33 @@ export const getAllUsers = async (): Promise <IUser[] | null> => {
     }
 }
 
-export const createActivities = async (name: string, description: string, requiresReservation: boolean, maxCapacity: number, imageUrl: string) => {
-    try {
-        const response = await axios.post(`${API_URL}/activities`, 
-        {
-            name: name,
-            description: description,
-            requiresReservation: requiresReservation,
-            maxCapacity: maxCapacity,
-            imageUrl: imageUrl
-        });
+export const createActivities = async (name: string, description: string, requiresReservation: boolean, maxCapacity: number, imageUrl: string): Promise<Classes | null> => {
+    const token = localStorage.getItem('token');
+    console.log(token);
+
+        if(!token) {
+            console.error("No se pudo obtener el token");
+            return null;
+        }
+
+        try {
+            const response = await axios.post(`${API_URL}/activities`,
+            {
+                name: name,
+                description: description,
+                requiresReservation: requiresReservation,
+                maxCapacity: maxCapacity,
+                imageUrl: imageUrl
+            }, { headers: {
+                Authorization: `Bearer ${token}`
+            }} 
+        )
         console.log(response);
-        return response;
-    } catch (error) {
-        console.error("Error al crear la activivdad: ", error);
-        return null;
-    }
+        return response.data
+        } catch (error) {
+            console.error("Error al crear la activiadad: ", error);
+            return null;
+        }
 }
 
 export const getMonthlyCollection = async (): Promise<Collection | null> => {
