@@ -6,17 +6,19 @@ import { canHaveTrainer } from "@/services/userService";
 import { Trainers } from "@/interfaces/Trainer";
 import { toast } from "sonner";
 import { FaRegStar } from "react-icons/fa";
+import { useAuth } from "@/context/AuthContext";
 
 interface TrainerSelectionProps {
   selectedTrainer?: string | null;
-  userId: string;
   onTrainerAssigned: (trainerId: string) => void;
 }
 
-const TrainerSelection = ({ selectedTrainer, userId, onTrainerAssigned }: TrainerSelectionProps) => {
+const TrainerSelection = ({ selectedTrainer, onTrainerAssigned }: TrainerSelectionProps) => {
   const [trainers, setTrainers] = useState<Trainers[]>([]);
   const [loading, setLoading] = useState(true);
   const [assigning, setAssigning] = useState(false);
+   const { user } = useAuth();
+  const userId = user?.id;
 
   useEffect(() => {
     const fetchTrainers = async () => {
@@ -43,6 +45,11 @@ const TrainerSelection = ({ selectedTrainer, userId, onTrainerAssigned }: Traine
 
   
    const handleSelectTrainer = async (trainerId: string) => {
+    if(!userId){
+      toast.error("Error: el usuario no está cargado todavía.");
+    return;
+    }
+
     setAssigning(true);
     try {
     
