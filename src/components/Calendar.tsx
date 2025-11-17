@@ -5,7 +5,6 @@
   import { getAllClasses, resevedClass, filter as filterClasses, filter, getWeeklyStatus, canReserveOnDay } from "@/services/classesService";
   import { Classes } from "@/interfaces/Classes";
   import Image from "next/image";
-  import { IoClose } from "react-icons/io5";
   import { useAuth } from "@/context/AuthContext";
   import { getPlanUser } from "@/services/userService";
 

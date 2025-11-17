@@ -1,56 +1,56 @@
 'use client'
 
-import { Plan } from "@/interfaces/Plan";
+import { FiveDay, ThreeDay, Collection } from "@/interfaces/Plan";
 import { getThreeDayPlan, getFiveDayPlan, getMonthlyCollection } from "@/services/adminServices";
-import { fetchServerResponse } from "next/dist/client/components/router-reducer/fetch-server-response";
 import { useEffect, useState } from "react";
 
 const Statistics: React.FC =  () => {
 
-    const [threeDay, setThreeDay] = useState<Plan[]>([])
-    const [fiveDay, setFiveDay] = useState<Plan[]>([])
-    const [MonthlyCollection, setMonthlyCollection] = useState<Number>()
+    const [threeDay, setThreeDay] = useState<ThreeDay | null>()
+    const [fiveDay, setFiveDay] = useState<FiveDay | null>()
+    const [MonthlyCollection, setMonthlyCollection] = useState<Collection | null>()
 
-    // useEffect(() => {
-    //     const fetchData = async () => {
-    //         try {
-    //             const threeDay = await getThreeDayPlan();
-    //             console.log(threeDay);
-    //             setThreeDay(threeDay);
-    //         } catch (error) {
-    //             console.error("Error al traer los planes de tres días: ", error);
-    //             return[]
-    //         }
-    //     }
-    //     fetchData()
-    // }, [])
+    useEffect(() => {
+        const fetchData = async () => {
+            try {
+                const threeDay = await getThreeDayPlan();
+                console.log(threeDay);
+                setThreeDay(threeDay);
+            } catch (error) {
+                console.error("Error al traer los planes de tres días: ", error);
+                return[]
+            }
+        }
+        fetchData()
+    }, []);
 
-    // useEffect(() => {
-    //     const fetchData = async () => {
-    //         try {
-    //             const fiveDay = await getFiveDayPlan();
-    //             console.log(fiveDay);
-    //             setFiveDay(fiveDay);
-    //         } catch (error) {
-    //             console.error("Error al traer los planes de cinco días: ", fiveDay);
-    //             return[]
-    //         }
-    //     }
-    //     fetchData()
-    // }, [])
+    useEffect(() => {
+        const fetchData = async () => {
+            try {
+                const fiveDay = await getFiveDayPlan();
+                console.log(fiveDay);
+                setFiveDay(fiveDay);
+            } catch (error) {
+                console.error("Error al traer los planes de cinco días: ", error);
+                return[]
+            }
+        }
+        fetchData()
+    }, []);
 
-    // useEffect(() => {
-    //     const fetchData = async () => {
-    //         try {
-    //             const recaudacion = await getMonthlyCollection();
-    //             console.log(recaudacion);
-    //             setMonthlyCollection(recaudacion);
-    //         } catch (error) {
-    //             console.error("Error al traer la recaudacion mensual: ", error);
-    //             return[];
-    //         }
-    //     }
-    // })
+    useEffect(() => {
+        const fetchData = async () => {
+            try {
+                const recaudacion = await getMonthlyCollection();
+                console.log(recaudacion);
+                setMonthlyCollection(recaudacion);
+            } catch (error) {
+                console.error("Error al traer la recaudacion mensual: ", error);
+                return[];
+            }
+        }
+        fetchData()
+    }, []);
 
     return(
         <div className="flex flex-col">
@@ -67,23 +67,21 @@ const Statistics: React.FC =  () => {
                     <h3 className="text-xl font-semibold text-(--foreground) text-(--muted-foreground)">
                         Ingresos mensuales
                     </h3>
-                    <span className="mt-2 text-lg font-bold text-(--primary)">$1.623</span>
+                    <span className="mt-2 text-lg font-bold text-(--primary)">${MonthlyCollection?.totalMonthlyRevenue}</span>
                 </div>
                 <div className="flex flex-col items-center py-4 px-6 rounded-2xl border-2 border-(--border) bg-(--secondary)/45">
                     <h3 className="text-xl font-semibold text-(--foreground) text-(--muted-foreground)">
                         Planes de tres días
                     </h3>
-                    <span className="mt-2 text-lg font-bold text-(--primary)">13</span>
+                    <span className="mt-2 text-lg font-bold text-(--primary)">{threeDay?.count}</span>
                 </div>
                 <div className="flex flex-col items-center py-4 px-6 rounded-2xl border-2 border-(--border) bg-(--secondary)/45">
                     <h3 className="text-xl font-semibold text-(--foreground) text-(--muted-foreground)">
                         Planes de cinco días
                     </h3>
-                    <span className="mt-2 text-lg font-bold text-(--primary)">4</span>
+                    <span className="mt-2 text-lg font-bold text-(--primary)">{fiveDay?.count}</span>
                 </div>
             </div>
-            <button 
-            onClick={() => getThreeDayPlan()}>Llamado a la api</button>
         </div>
     )
 }
