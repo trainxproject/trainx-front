@@ -1,9 +1,10 @@
 import { getAllUsers } from "@/services/userService";
 import { Search, CheckCircle, Ban, Timer, UserCheck2Icon, UserX2 } from "lucide-react";
 import { useEffect, useState } from "react";
+import { userStatus } from "@/services/adminServices";
 
 interface User {
-  id: number | null;
+  id: string;
   name: string;
   email: string;
   plan: string;
@@ -13,10 +14,10 @@ interface User {
 }
 
 const UserStatsCard: React.FC = () => {
-  const [tabSelect, setTabSelected] = useState("class");
   const [active, setActive] = useState(false);
   const [inactive, setInactive] = useState(false);
   const [users, setUsers] = useState<User[]>([]);
+  const [userId, setUserId] = useState<string>("")
 
   useEffect(() => {
     const fetchData = async () => {
@@ -110,7 +111,7 @@ const UserStatsCard: React.FC = () => {
                   <UserCheck2Icon className="text-green-400" />
                   <span className="text-green-400 text-sm">{e.status}</span>
                   <button
-                    onClick={() => setActive(true)}
+                    onClick={() => {setActive(true), setUserId(e.id)}}
                     className="p-1 hover:bg-white/10 rounded-full"
                   >
                     <Ban className="w-5 h-5 text-gray-300 hover:text-white" />
@@ -147,7 +148,8 @@ const UserStatsCard: React.FC = () => {
               >
                 Cancelar
               </button>
-              <button className="px-5 py-2 rounded-xl bg-red-600 text-white">Inhabilitar</button>
+              <button className="px-5 py-2 rounded-xl bg-red-600 text-white"
+              onClick={() => userStatus(userId)}>Inhabilitar</button>
             </div>
           </div>
         </div>
