@@ -7,6 +7,7 @@ import { Trainers } from "@/interfaces/Trainer";
 import { toast } from "sonner";
 import { FaRegStar } from "react-icons/fa";
 import { useAuth } from "@/context/AuthContext";
+import { rateTrainer } from "@/services/adminServices";
 
 interface TrainerSelectionProps {
   selectedTrainer?: string | null;
@@ -17,7 +18,10 @@ const TrainerSelection = ({ selectedTrainer, onTrainerAssigned }: TrainerSelecti
   const [trainers, setTrainers] = useState<Trainers[]>([]);
   const [loading, setLoading] = useState(true);
   const [assigning, setAssigning] = useState(false);
-   const { user } = useAuth();
+
+  const [ratingValue, setRatingValue] = useState<number>(0)
+
+  const { user } = useAuth();
   const userId = user?.id;
 
   useEffect(() => {
@@ -52,14 +56,6 @@ const TrainerSelection = ({ selectedTrainer, onTrainerAssigned }: TrainerSelecti
 
     setAssigning(true);
     try {
-    
-      const { canHaveTrainer: allowed } = await canHaveTrainer(userId);
-
-      if (!allowed) {
-        toast.warning("Tu plan no permite seleccionar un entrenador.");
-        return;
-      }
-
       await selectTrainer(userId, trainerId);
       onTrainerAssigned(trainerId);
       toast.success("Entrenador asignado correctamente");
