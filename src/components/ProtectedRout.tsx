@@ -19,7 +19,7 @@ export default function ProtectedRoutes({ children, adminOnly = false }: Protect
       if (!user || !token) {
         router.push('/login') // No logueado → login
       } else if (adminOnly && !isAdmin) {
-        router.push('/') // Logueado pero no admin → home
+        router.push('/dashboard/user') // Logueado pero no admin → home
       } else {
         setChecked(true) // Todo listo, renderizar contenido
       }
