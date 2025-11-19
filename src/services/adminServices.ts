@@ -3,6 +3,7 @@ import { IUser } from "@/interfaces/User";
 import { ThreeDay, FiveDay, Collection } from "@/interfaces/Plan";
 import { Classes } from "@/interfaces/Classes";
 import { Trainers } from "@/interfaces/Trainer";
+import { toast } from "sonner";
 
 const API_URL = process.env.NEXT_PUBLIC_API_URL;
 
@@ -211,5 +212,23 @@ export const rateTrainer = async (userId: string, rating: number): Promise<Train
     } catch (error) {
         console.error("Error al calificar el entrenador", error);
         return null
+    }
+}
+
+export const deleteTrainer = async (trainerId: string): Promise<Trainers | null> => {
+    const token = localStorage.getItem('token');
+    console.log(token);
+    if(!token) {
+        console.log("Error al obtener el token");
+        return null
+    }
+
+    try {
+        const response = await axios.delete(`${API_URL}/trainers/${trainerId}`);
+        console.log(response);
+        return response.data
+    } catch (error) {
+        console.log("Error al eliminar el entrenador: ", error);
+        return null;
     }
 }

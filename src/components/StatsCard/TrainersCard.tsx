@@ -2,12 +2,15 @@ import { Star, Trash2 } from "lucide-react";
 import { useEffect, useState } from "react";
 import { getAllTrainers } from "@/services/trainersService";
 import { Trainers } from "@/interfaces/Trainer";
-import { createTrainer,  } from "@/services/adminServices";
+import { createTrainer, deleteActivities,  } from "@/services/adminServices";
+import { deleteTrainer } from "@/services/adminServices";
+import { toast } from "sonner";
 
 const TrainersCard: React.FC = () =>  {
     const [modal, setModal] = useState(false);
     const [iconDelete, setIconDelete] = useState(false);
     const [trainers, setTrainers] = useState<Trainers[]>([])
+    const [trainerId, setTrainerId] = useState<string>("")
 
 //+ ESTADOS PARA CREAR EL ENTRENADOR
 
@@ -87,7 +90,7 @@ const TrainersCard: React.FC = () =>  {
                                 <div className="flex items-center">
                        
                         <button
-                            onClick={()=> setIconDelete(true)}
+                            onClick={()=> {setIconDelete(true), setTrainerId(t.id)}}
                             aria-label="Eliminar"
                             title="Eliminar"
                             className="ml-auto p-2 rounded-md text-gray-400 hover:text-red-500 hover:bg-transparent focus:outline-none transition active:scale-95"
@@ -159,7 +162,7 @@ const TrainersCard: React.FC = () =>  {
                             </button>
 
                             <button
-                            onClick={()=> console.log("Hola")}
+                            onClick={()=> {deleteTrainer(trainerId), setIconDelete(false)}}
                             className="px-5 py-2 rounded-xl bg-red-600/90 hover:bg-red-700 text-white font-medium transition duration-200"
                             >
                             Eliminar

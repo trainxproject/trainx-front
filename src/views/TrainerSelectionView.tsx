@@ -47,20 +47,29 @@ const TrainerSelection = ({ selectedTrainer, onTrainerAssigned }: TrainerSelecti
     return <p className="text-center text-gray-500">Cargando entrenadores...</p>;
   }
 
-  
-   const handleSelectTrainer = async (trainerId: string) => {
-    if(!userId){
+  const handleSelectTrainer = async (trainerId: string) => {
+    if (!userId) {
       toast.error("Error: el usuario no está cargado todavía.");
-    return;
+      return;
     }
-
+  
     setAssigning(true);
+  
     try {
-      await selectTrainer(userId, trainerId);
+      const response = await selectTrainer(userId, trainerId);
       onTrainerAssigned(trainerId);
       toast.success("Entrenador asignado correctamente");
-    } catch (error) {
-      toast.error("Error al asignar el entrenador");
+  
+    } catch (error: any) {
+  
+      //+ ALERTA DEL ERROR 403
+      if (error?.response?.status === 403) {
+        toast.error("Tu plan no permite asignar un entrenador.");
+        return;
+      }
+      toast.error("Error inesperado al asignar el entrenador");
+      console.error(error);
+  
     } finally {
       setAssigning(false);
     }
