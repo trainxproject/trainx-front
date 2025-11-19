@@ -8,9 +8,10 @@ import { useAuth } from '@/context/AuthContext';
 import { getPlanUser, getTrainerUser } from '@/services/userService';
 import { Plan } from '@/interfaces/Plan';
 import { Trainers } from '@/interfaces/Trainer';
-import { getReservationsByUser, cancelReservation } from '@/services/classesService';
+import { getReservationsByUser, cancelReservation, deleteReservation } from '@/services/classesService';
 import { IReservation } from '@/interfaces/Classes';
 import { rateTrainer } from '@/services/adminServices';
+
 
 
 export default function ProfileDashboard() {
@@ -76,6 +77,14 @@ const tabs = [
       handleFetchReservations();
     } catch (err) {
       console.error("Error al cancelar la reserva:", err);
+    }
+  };
+  const handleDeleteReservation = async (reservationId: string) => {
+    try {
+      await deleteReservation(reservationId,token || '');
+      handleFetchReservations();
+    } catch (err) {
+      console.error("Error al eliminar la reserva:", err);
     }
   };
 
@@ -155,14 +164,26 @@ const tabs = [
                   {res.status === "active" ? "Activa" : "Cancelada"}
                 </p>
 
-                {res.status === "active" && (
-                  <button
-                    onClick={() => handleCancelReservation(res.id)}
-                    className="bg-red-500 hover:bg-red-600 text-white py-2 px-3 rounded-lg border border-transparent hover:border-black transition"
-                  >
-                    Cancelar
-                  </button>
-                )}
+                {/* BOTONES SEGÚN ESTADO */}
+                <div className="flex gap-2">
+                  {res.status === "active" && (
+                    <button
+                      onClick={() => handleCancelReservation(res.id)}
+                      className="bg-red-500 hover:bg-red-600 text-white py-2 px-3 rounded-lg border border-transparent hover:border-black transition"
+                    >
+                      Cancelar
+                    </button>
+                  )}
+
+                  {res.status === "cancelled" && (
+                    <button
+                      onClick={() => handleDeleteReservation(res.id)}
+                      className="bg-gray-700 hover:bg-black text-white py-2 px-3 rounded-lg border border-transparent transition"
+                    >
+                      Eliminar
+                    </button>
+                  )}
+                </div>
               </div>
 
               <p>

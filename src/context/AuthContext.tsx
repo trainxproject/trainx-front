@@ -18,6 +18,7 @@ interface AuthContextProps {
   loginWithGoogle: () => void;
   logout: () => void;
   updateUserProfile: (name?: string, file?: File) => Promise<void>;
+  isAdmin: boolean;
 }
 
 const AuthContext = createContext<AuthContextProps | undefined>(undefined);
@@ -109,9 +110,12 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
       console.error("Error actualizando perfil:", error);
     }
   };
+   // 🔹 Admin
+  const isAdmin = user?.isAdmin ?? false;
+
 
   return (
-    <AuthContext.Provider value={{ user, setUser, token, setToken, loading, login, register, loginWithGoogle, logout, updateUserProfile }}>
+    <AuthContext.Provider value={{ user, setUser, token, setToken, loading, login, register, loginWithGoogle, logout, updateUserProfile, isAdmin }}>
       {children}
     </AuthContext.Provider>
   );

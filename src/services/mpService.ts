@@ -15,7 +15,11 @@ export const createPreference = async (planId: string, token: string) => {
     );
 
     return data; // contiene init_point
-  } catch (error) {
+  } catch (error: any) {
+    if (error.response?.status === 409) {
+      // Usuario ya tiene el plan
+      throw new Error("Ya tenés un plan activo"); 
+    }
     console.error("❌ Error al crear la preferencia:", error);
     throw error;
   }
