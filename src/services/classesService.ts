@@ -93,6 +93,21 @@ export const cancelReservation = async (reservationId: string, token: string) =>
     throw new Error("error en cancelReservation");
   }
 }
+export const deleteReservation = async (reservationId: string, token: string) => {
+  try {
+    const response = await axios.delete(`${API_URL}/reservations/${reservationId}`,
+    {
+      headers: {
+        Authorization: `Bearer ${token}`
+      }
+    }
+  );
+    return response;
+  } catch (error) {
+    console.error(error);
+    throw new Error("error en deleteReservation");
+  }
+}
 
 export const getWeeklyStatus = async (userId: string) => {
   try {
