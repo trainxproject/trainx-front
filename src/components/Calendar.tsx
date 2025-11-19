@@ -16,7 +16,8 @@
     booked: number;
     capacity: number;
     description: string;
-    imageUrl: string
+    imageUrl: string;
+    limit: number
   }
 
   const weekDays = ["Lun", "Mar", "Mié", "Jue", "Vie"];
@@ -57,7 +58,8 @@
             booked: 0,
             capacity: cls.maxCapacity ?? 0,
             description: cls.description,
-            imageUrl: cls.imageUrl
+            imageUrl: cls.imageUrl,
+            limit: sch.limit
           });
         });
       });
@@ -162,7 +164,7 @@
                         <div className="h-2 flex-1 bg-(--muted-foreground) rounded-full overflow-hidden">
                           <div
                             className={`h-full rounded-full ${isAlmostFull ? "bg-yellow-500" : "bg-(--primary)"}`}
-                            style={{ width: `${(classData.booked / classData.capacity) * 100}%` }}
+                            style={{ width: `${(classData.limit / classData.capacity) * 100}%` }}
                           />
                         </div>
                         <p className="text-[11px] md:text-xs text-(--muted-foreground)">{spotsLeft}</p>

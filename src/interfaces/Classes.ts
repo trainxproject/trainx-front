@@ -3,7 +3,8 @@ export interface Schedules {
     dayOfWeek: string;
     startTime: string;
     endTime: string;
-    trainer: string
+    trainer: string;
+    limit: number
 }
 
 export interface Classes {
