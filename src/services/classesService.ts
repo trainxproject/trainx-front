@@ -103,8 +103,14 @@ export const getWeeklyStatus = async (userId: string) => {
     return { canReserveNewDay: false };
   }
 };
-export const canReserveOnDay = async (userId: string, scheduleId: string, token: string) => {
+export const canReserveOnDay = async (userId: string, scheduleId: string) => {
   try {
+    const token = localStorage.getItem("token");
+
+    if (!token) {
+      return { canReserve: false, reason: "No hay token disponible" };
+    }
+
     const { data } = await axios.get(
       `${API_URL}/reservations/can-reserve/${userId}/${scheduleId}`,
       {
@@ -114,7 +120,7 @@ export const canReserveOnDay = async (userId: string, scheduleId: string, token:
       }
     );
 
-    return data; 
+    return data;
 
   } catch (error) {
     console.error(error);

@@ -34,7 +34,7 @@
     const [selectedClass, setSelectedClass] = useState<CalendarClass | null>(null);
     const [isOpen, setIsOpen] = useState(false);
     const [activeFilters, setActiveFilters] = useState<string[]>([]);
-    const { user, token } = useAuth();
+    const { user} = useAuth();
 
     const filtros = ["CrossFit", "Zumba", "Pilates", "Telas"];
 
@@ -113,7 +113,7 @@
       return;
     }
 
-    const dayCheck = await canReserveOnDay(user!.id, selectedClass!.id, token!);
+    const dayCheck = await canReserveOnDay(user!.id, selectedClass!.id);
 
     if (!dayCheck!.canReserve) {
       toast.error(dayCheck!.reason);
