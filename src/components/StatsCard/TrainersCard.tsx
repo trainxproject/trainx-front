@@ -2,49 +2,38 @@ import { Star, Trash2 } from "lucide-react";
 import { useEffect, useState } from "react";
 import { getAllTrainers } from "@/services/trainersService";
 import { Trainers } from "@/interfaces/Trainer";
-
-
-
-// const trainers = [
-
-//       {
-//         id: 1,
-//         name: 'Antonella Miracle',
-//         formation: "Algo",
-//         specialization: 'Entrenadora olímpica de powerlifting, especializada en técnica y planificación de fuerza, con integración de control mental y conciencia corporal a partir de su maestría en psicología deportiva y formación avanzada en telas aéreas.',
-//         imageUrl: 'https://res.cloudinary.com/dxpqhpme3/image/upload/v1761433928/antonella-miracle_bbhthd.jpg',
-//         qualification: 2.3,
-//       },
-//       {
-//         id: 2,
-//         name: 'Lucas Romero',
-//         formation: "Algo",
-//         specialization: 'Entrenador especializado en fuerza explosiva, enfocado en mejorar técnica, potencia y rendimiento en competiciones. Experiencia en programas de hipertrofia y resistencia muscular, combinando entrenamiento funcional y planificación de cargas.',
-//         imageUrl: 'https://res.cloudinary.com/dxpqhpme3/image/upload/v1761433927/lucas-romero_egpv6j.jpg',
-//         qualification: 0,
-//       },
-//       {
-//         id: 3,
-//         name: 'Sofía Torres',
-//         formation: "Algo",
-//         specialization: 'Entrenadora especializada en entrenamiento correctivo, movilidad articular y prevención de lesiones en fuerza. Experta en diseño de programas de acondicionamiento funcional, fortalecimiento muscular equilibrado y técnicas de recuperación.',
-//         imageUrl: 'https://res.cloudinary.com/dxpqhpme3/image/upload/v1761433928/sofia-torres_duljzi.jpg',
-//         qualification: 2.3,
-//       },
-//       {
-//         id: 4,
-//         name: 'Uriel Rodríguez',
-//         formation: "Algo",
-//         specialization: 'Entrenador especializado en desarrollo de hipertrofia y acondicionamiento físico integral. Experto en planificación de rutinas adaptadas a diferentes niveles, combinando técnica y resistencia para mejorar el rendimiento general.',
-//         imageUrl: 'https://res.cloudinary.com/dxpqhpme3/image/upload/v1761433928/uriel-rodriguez_i1hip2.jpg',
-//         qualification: 2.3,
-//       },
-// ]
+import { createTrainer,  } from "@/services/adminServices";
 
 const TrainersCard: React.FC = () =>  {
     const [modal, setModal] = useState(false);
     const [iconDelete, setIconDelete] = useState(false);
     const [trainers, setTrainers] = useState<Trainers[]>([])
+
+//+ ESTADOS PARA CREAR EL ENTRENADOR
+
+    const [name, setName] = useState<string>("");
+    const [specialization, setSpecialization] = useState<string>("");
+    const [formation, setFormation] = useState<string>("");
+    const [imageUrl, setImageUrl] = useState<string>("");
+    const [available, setAvailable] = useState<boolean>(true)
+
+    
+    const handlerCreate = async () => {
+        try {
+            const response = await createTrainer(
+                name,
+                specialization,
+                formation,
+                imageUrl,
+                available
+            )
+            console.log(response);
+            return response
+        } catch (error) {
+            console.error("Error al crear el entrenador", error);
+            return null
+        }
+    }
 
     useEffect(() => {
         const fetchData = async () => {
@@ -206,13 +195,14 @@ const TrainersCard: React.FC = () =>  {
                 </h2>
 
              
-                <form className="flex flex-col gap-5">
+                <form className="flex flex-col gap-5" onSubmit={handlerCreate}>
                     <div>
                     <label className="block text-sm font-medium text-white mb-1">
                     Foto
                     </label>
                     <input
                         type="file"
+                        onChange={(e) => setImageUrl(e.target.value)}
                         name="imageUrl"
                         style={{
                     color: 'black',
@@ -228,6 +218,7 @@ const TrainersCard: React.FC = () =>  {
                     </label>
                     <input
                     type="text"
+                    onChange={(e) => setName(e.target.value)}
                     name="dayOfWeek"
                     style={{
                     color: 'black',
@@ -247,6 +238,7 @@ const TrainersCard: React.FC = () =>  {
                     </label>
                     <input
                     type="text"
+                    onChange={(e) => setFormation(e.target.value)}
                     name="startTime"
                     style={{
                     color: 'black',
@@ -265,6 +257,7 @@ const TrainersCard: React.FC = () =>  {
                     </label>
                     <input
                     type="text"
+                    onChange={(e) => setSpecialization(e.target.value)}
                     name="endTime"
                     style={{
                     color: 'black',
