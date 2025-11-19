@@ -38,6 +38,16 @@ const TrainersCard: React.FC = () =>  {
         }
     }
 
+    const handlerDelete = async () => {
+        try {
+            const response = await deleteTrainer(trainerId);
+            console.log(response);
+                return response;
+        } catch (error) {
+                console.error("Error al eliminar el usaurio: ", error);
+        }
+    }
+
     useEffect(() => {
         const fetchData = async () => {
             try {
@@ -162,7 +172,7 @@ const TrainersCard: React.FC = () =>  {
                             </button>
 
                             <button
-                            onClick={()=> {deleteTrainer(trainerId), setIconDelete(false)}}
+                            onClick={()=> {handlerDelete(), setIconDelete(false)}}
                             className="px-5 py-2 rounded-xl bg-red-600/90 hover:bg-red-700 text-white font-medium transition duration-200"
                             >
                             Eliminar

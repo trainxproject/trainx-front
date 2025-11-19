@@ -1,7 +1,7 @@
 import axios from "axios";
 import { IUser } from "@/interfaces/User";
 import { ThreeDay, FiveDay, Collection } from "@/interfaces/Plan";
-import { Classes } from "@/interfaces/Classes";
+import { Classes, Schedules } from "@/interfaces/Classes";
 import { Trainers } from "@/interfaces/Trainer";
 import { toast } from "sonner";
 
