@@ -34,7 +34,7 @@
     const [selectedClass, setSelectedClass] = useState<CalendarClass | null>(null);
     const [isOpen, setIsOpen] = useState(false);
     const [activeFilters, setActiveFilters] = useState<string[]>([]);
-    const { user } = useAuth();
+    const { user, token } = useAuth();
 
     const filtros = ["CrossFit", "Zumba", "Pilates", "Telas"];
 
@@ -103,8 +103,34 @@
         toast.error("Error al filtrar las clases");
       }
     };
+    const handleReserve = async () => {
+  try {
     
+    const planInfo = await getPlanUser(user!.id);
 
+    if (!planInfo || planInfo.status !== "active") {
+      toast.error("Necesitas un plan activo para reservar.");
+      return;
+    }
+
+    const dayCheck = await canReserveOnDay(user!.id, selectedClass!.id, token!);
+
+    if (!dayCheck!.canReserve) {
+      toast.error(dayCheck!.reason || "No puedes reservar este día");
+      return;
+    }
+
+    await resevedClass(selectedClass!.id);
+
+    toast.success("Reserva creada con éxito");
+    setIsOpen(false);
+
+  } catch (error) {
+    toast.error("No se pudo realizar la reserva");
+  }
+};
+    
+  
     return (
         <div>
           <div>
@@ -220,36 +246,8 @@
 
             {/* Botón de reserva */}
             <button
-              onClick={async () => {
-                try {
-                // 1️⃣ Validar plan activo
-                const planInfo = await getPlanUser(user!.id);
-
-                if (!planInfo || planInfo.status !== "active") {
-                  toast.error("Necesitas un plan activo para reservar.");
-                  return;
-                }
-                const dayCheck = await canReserveOnDay(user!.id, selectedClass.id);
-
-                if (!dayCheck.canReserve) {
-                  toast.error(dayCheck.reason || "No puedes reservar este día");
-                  return;
-                }
-
-                const weeklyStatus = await getWeeklyStatus(user!.id);
-                if (!weeklyStatus.canReserveNewDay) {
-                  toast.error("Alcanzaste el límite de reservas semanales");
-                  return;
-                }
-
-                await resevedClass(selectedClass.id);
-                toast.success("Reserva creada con éxito");
-                setIsOpen(false);
-
-              } catch (error) {
-                toast.error("No se pudo realizar la reserva");
-              }
-            }}
+              onClick={() => handleReserve()}
+                
               className="w-full bg-(--primary) text-white py-2 rounded-xl hover:bg-(--primary)/90 transition"
             >
               Reservar clase
@@ -259,6 +257,7 @@
       </div>
     </div>
   )}
+
       </div>
       </div>
     );
