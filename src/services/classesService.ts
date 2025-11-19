@@ -103,10 +103,16 @@ export const getWeeklyStatus = async (userId: string) => {
     return { canReserveNewDay: false };
   }
 };
-export const canReserveOnDay = async (userId: string, scheduleId: string) => {
+export const canReserveOnDay = async (userId: string, scheduleId: string, token: string) => {
   try {
-    const { data } = await axios.get(`${API_URL}/reservations/can-reserve/${userId}/${scheduleId}`);
-    return data;
+    const { data } = await axios.get(
+      `${API_URL}/reservations/can-reserve/${userId}/${scheduleId}`,
+      {
+        headers: {
+          Authorization: `Bearer ${token}`,
+        },
+      }
+    );
   } catch (error) {
     console.error("Error verificando disponibilidad:", error);
     return { canReserve: false, reason: "Error al verificar disponibilidad" };
