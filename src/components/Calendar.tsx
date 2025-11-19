@@ -116,7 +116,7 @@
     const dayCheck = await canReserveOnDay(user!.id, selectedClass!.id, token!);
 
     if (!dayCheck!.canReserve) {
-      toast.error(dayCheck!.reason || "No puedes reservar este día");
+      toast.error(dayCheck!.reason);
       return;
     }
 

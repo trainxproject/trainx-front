@@ -113,8 +113,11 @@ export const canReserveOnDay = async (userId: string, scheduleId: string, token:
         },
       }
     );
+
+    return data; 
+
   } catch (error) {
-    console.error("Error verificando disponibilidad:", error);
-    return { canReserve: false, reason: "Error al verificar disponibilidad" };
-  }
+    console.error(error);
+    return { canReserve: false, reason: "Alcanzaste el límite de reservas" };
+  }
 };
