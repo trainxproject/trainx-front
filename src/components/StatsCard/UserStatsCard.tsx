@@ -2,6 +2,7 @@ import { getAllUsers } from "@/services/userService";
 import { Search, CheckCircle, Ban, Timer, UserCheck2Icon, UserX2 } from "lucide-react";
 import { useEffect, useState } from "react";
 import { userStatus } from "@/services/adminServices";
+import { toast } from "sonner";
 interface User {
   id: string;
   name: string;
@@ -41,6 +42,20 @@ const UserStatsCard: React.FC = () => {
     };
     fetchData();
   }, []);
+
+  const handlerUserStatus = async () => {
+    try {
+      const response = await userStatus(userId);
+      if(response?.status === 200) {
+        toast.success("Estado del usuario modificado");
+        return response
+      }
+    } catch (error: any) {
+      if(error.response.status === 401) {
+        toast.error("No posees los permisos necesarios para realizar esta acción")
+      }
+    }
+  }
 
   return (
     <div className="min-h-screen flex flex-col bg-(--background) mt-10 px-4 sm:px-6 lg:px-10">
@@ -186,7 +201,7 @@ const UserStatsCard: React.FC = () => {
                 Cancelar
               </button>
               <button className="px-5 py-2 rounded-xl bg-red-600 text-white"
-              onClick={() => userStatus(userId)}>Inhabilitar</button>
+              onClick={() => {handlerUserStatus(), setActive(false)}}>Inhabilitar</button>
             </div>
           </div>
         </div>

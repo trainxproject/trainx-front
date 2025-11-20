@@ -38,6 +38,30 @@ const TrainersCard: React.FC = () =>  {
         }
     }
 
+    const handlerDelete = async () => {
+        try {
+          const response = await deleteTrainer(trainerId);
+          if (response?.status === 200) {
+            toast.success("Entrenador eliminado");
+            return response;
+          }
+      
+        } catch (error: any) {
+      
+          const status = error?.response?.status;
+          if (status === 401) {
+            toast.error("No posees los permisos necesarios para realizar esta acción");
+            return null
+          } else if (status === 500) {
+            toast.error("Error interno al eliminar el entrenador");
+            return null
+          }
+          console.error("Error al eliminar el entrenador: ", error);
+          return null
+        }
+      };
+      
+
     useEffect(() => {
         const fetchData = async () => {
             try {
@@ -162,7 +186,7 @@ const TrainersCard: React.FC = () =>  {
                             </button>
 
                             <button
-                            onClick={()=> {deleteTrainer(trainerId), setIconDelete(false)}}
+                            onClick={()=> {handlerDelete(), setIconDelete(false)}}
                             className="px-5 py-2 rounded-xl bg-red-600/90 hover:bg-red-700 text-white font-medium transition duration-200"
                             >
                             Eliminar

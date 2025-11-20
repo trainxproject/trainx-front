@@ -2,12 +2,35 @@ import { Trash2 } from "lucide-react";
 import { useState, useEffect } from "react";
 import { Schedules } from "@/interfaces/Classes";
 import { getAllSchedule } from "@/services/classesService";
-
+import { deleteSchedules } from "@/services/adminServices";
+import { toast } from "sonner";
 
 const ScheduleCards: React.FC = () =>  {
     const [modal, setModal] = useState(false)   
     const [iconDelete, setIconDelete] = useState(false)  
     const [classes, setClasses] = useState<Schedules[]>([]);
+    const [scheduleId, setScheduleId] = useState<string>("");
+
+    const handlerDelete = async () => {
+        try {
+            const response = await deleteSchedules(scheduleId)
+                console.log(response);
+                if(response?.status === 200) {
+                    toast.success("Clase eliminada")
+                    return response
+                }
+        } catch (error: any) {
+            
+            const status = error?.response?.status;
+            console.error("Error al eliminar la clase: ", error);
+            if(status === 401) {
+                toast.error("No tienes los permisos necesarios para realizar esta accion")
+                return null
+            } else if ( status === 500) {
+                toast.error("Error al eliminar la clase")
+            }
+        }
+    }
 
     useEffect(() => {
         const fetchData = async () => {
@@ -62,7 +85,7 @@ const ScheduleCards: React.FC = () =>  {
                         <div className="flex items-center">
                        
                         <button
-                            onClick={()=> setIconDelete(true)}
+                            onClick={()=> {setIconDelete(true), setScheduleId(e.id)}}
                             aria-label="Eliminar"
                             title="Eliminar"
                             className="ml-auto p-2 rounded-md text-gray-400 hover:text-red-500 hover:bg-transparent focus:outline-none transition active:scale-95"
@@ -125,7 +148,7 @@ const ScheduleCards: React.FC = () =>  {
                             </button>
 
                             <button
-                            onClick={()=> console.log("Hola")}
+                            onClick={() => handlerDelete()}
                             className="px-5 py-2 rounded-xl bg-red-600/90 hover:bg-red-700 text-white font-medium transition duration-200"
                             >
                             Eliminar
