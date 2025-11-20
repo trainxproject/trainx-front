@@ -3,6 +3,8 @@ import { IUser } from "@/interfaces/User";
 import { ThreeDay, FiveDay, Collection } from "@/interfaces/Plan";
 import { Classes } from "@/interfaces/Classes";
 import { Trainers } from "@/interfaces/Trainer";
+import { Scheduler } from "timers/promises";
+import { toast } from "sonner";
 
 const API_URL = process.env.NEXT_PUBLIC_API_URL;
 
@@ -128,9 +130,12 @@ export const deleteActivities = async (activityId: string) => {
     }
 
     try {
-        const deleteActivity = await axios.delete(`${API_URL}/activities/${activityId}`);
+        const response = await axios.delete(`${API_URL}/activities/${activityId}`);
         console.log(deleteActivities);
-        return deleteActivity
+        if(response.status === 200){
+            toast.success("Actividad eliminada")
+        }
+        return response
     } catch (error) {
         console.error("Error al eliminar la actividad: ", error);
         return null
@@ -254,6 +259,30 @@ export const deleteSchedules = async (ScheduleId: string): Promise<AxiosResponse
     }
 }
 
+export const createSchedule = async (scheduleId: string): Promise<Scheduler | null> => {
+    const token = localStorage.getItem('token');
+    console.log(token);
+    if(!token) {
+        console.error("Error al obtener el token");
+        return null
+    }
+
+    try {
+        const response = await axios.post(`${API_URL}/schedules/${scheduleId}`,
+            {headers: {
+                Authorization: `Bearer ${token}`
+            }}
+        );
+        if(response.status === 201) {
+            toast.success("Clase creada");
+        }
+        return response.data;
+    } catch (error) {
+        console.error("Error al crear la clase: ", error);
+        toast.error("Error al crear la clase")
+        return null
+    }
+}
 
 //https://trainx.onrender.com/admin/filter?status
 export const filterUser = async (status: string): Promise<IUser[] | null> => {
