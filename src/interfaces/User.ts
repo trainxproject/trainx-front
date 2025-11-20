@@ -4,6 +4,9 @@ export interface IUser {
   id: string;
   name: string;
   email: string;
+  plan?: string;
+  payment?: [{ plan: string; status: string }];
+  trainer?: string;
   isAdmin?: boolean;
   profilePicture?: string;
   status?: string;
