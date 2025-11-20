@@ -3,13 +3,14 @@ import { useState, useEffect } from "react";
 import { getAllClasses } from "@/services/classesService";
 import { Classes } from "@/interfaces/Classes";
 import { createActivities } from "@/services/adminServices";
-// import { deleteActivities } from "@/services/adminServices";
+import { toast } from "sonner";
+import { deleteActivities } from "@/services/adminServices";
 
 const ActivitiesCard: React.FC = () =>  {
      const [modal, setModal] = useState(false)  
      const [iconDelete, setIconDelete] = useState(false)  
-     const [activities, setActivities] = useState<Classes[]>([])
-     const [activityId, setActivityId] = useState<string>()
+     const [activities, setActivities] = useState<Classes[] | null>([])
+     const [activityId, setActivityId] = useState<string>("")
 
      //+ ESTADOS PARA LA PETICION DE CREAR ACTIVIDAD
 
@@ -45,9 +46,22 @@ const ActivitiesCard: React.FC = () =>  {
                     maxCapacity,
                     imageUrl  
                   )
-                  return
+                  toast.success("Actividad creada")
+                  return response
             } catch (error) {
-                
+                    console.error("Error al crear la clase: ", error);
+                    toast.error("Error al crear la clase");
+                    return null
+            }
+        }
+        
+        const handlerDelete = async (activityId: string) => {
+            try {
+                const response = await deleteActivities(activityId);
+                return response
+            } catch (error) {
+                console.error("Error al emininar la actividad: ", error);
+                return null
             }
         }
 
@@ -73,7 +87,7 @@ const ActivitiesCard: React.FC = () =>  {
 
                 <div 
                 className="flex flex-wrap justify-center gap-8 mt-15 ">
-                { activities.map((e) => {
+                { activities?.map((e) => {
                 
                 // const requires = e.requiresReservation === "true" || e.requiresReservation === true
                 return(
@@ -166,7 +180,7 @@ const ActivitiesCard: React.FC = () =>  {
                             </button>
 
                             <button
-                            onClick={()=> console.log("hola")}
+                            onClick={()=> handlerDelete(activityId)}
                             className="px-5 py-2 rounded-xl bg-red-600/90 hover:bg-red-700 text-white font-medium transition duration-200"
                             >
                             Eliminar
