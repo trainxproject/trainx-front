@@ -4,9 +4,10 @@ export interface IUser {
   id: string;
   name: string;
   email: string;
-  isAdmin?: boolean;
-  profilePicture?: string;
-  status?: string;
+  plan: string;
+  payment: [{ plan: string; status: string }];
+  trainer: string;
+  status: string;
 }
 
 

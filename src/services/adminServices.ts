@@ -4,6 +4,7 @@ import { ThreeDay, FiveDay, Collection } from "@/interfaces/Plan";
 import { Classes, Schedules } from "@/interfaces/Classes";
 import { Trainers } from "@/interfaces/Trainer";
 import { toast } from "sonner";
+import { User } from "@/components/StatsCard/UserStatsCard";
 
 const API_URL = process.env.NEXT_PUBLIC_API_URL;
 
@@ -253,4 +254,31 @@ export const deleteSchedules = async (ScheduleId: string): Promise<AxiosResponse
         console.error("Error al eliminar la clase: ", error);
         return null;
     }
+}
+
+
+//https://trainx.onrender.com/admin/filter?status
+export const filterUser = async (status: string): Promise<IUser[] | null> => {
+    const token = localStorage.getItem('token');
+    if(!token) {
+        console.log("Error al obtener el token");
+    }
+
+    try {
+        const response = await axios.get(`${API_URL}/admin/filter?status=${status}`,
+             {headers: {
+                Authorization: `Bearer ${token}`
+            }}
+        );
+        console.log(response)
+        return response.data
+    } catch (error) {
+        console.error("Error al realziar el filtrado: ", error)
+        return null
+    }
+}
+
+//https://trainx.onrender.com/admin/seek?searchTerm
+export const searchUser = () => {
+
 }
