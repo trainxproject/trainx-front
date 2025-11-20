@@ -1,10 +1,8 @@
 import axios, { AxiosResponse } from "axios";
 import { IUser } from "@/interfaces/User";
 import { ThreeDay, FiveDay, Collection } from "@/interfaces/Plan";
-import { Classes, Schedules } from "@/interfaces/Classes";
+import { Classes } from "@/interfaces/Classes";
 import { Trainers } from "@/interfaces/Trainer";
-import { toast } from "sonner";
-import { User } from "@/components/StatsCard/UserStatsCard";
 
 const API_URL = process.env.NEXT_PUBLIC_API_URL;
 
