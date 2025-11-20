@@ -93,6 +93,21 @@ export const cancelReservation = async (reservationId: string, token: string) =>
     throw new Error("error en cancelReservation");
   }
 }
+export const deleteReservation = async (reservationId: string, token: string) => {
+  try {
+    const response = await axios.delete(`${API_URL}/reservations/${reservationId}`,
+    {
+      headers: {
+        Authorization: `Bearer ${token}`
+      }
+    }
+  );
+    return response;
+  } catch (error) {
+    console.error(error);
+    throw new Error("error en deleteReservation");
+  }
+}
 
 export const getWeeklyStatus = async (userId: string) => {
   try {
@@ -105,10 +120,25 @@ export const getWeeklyStatus = async (userId: string) => {
 };
 export const canReserveOnDay = async (userId: string, scheduleId: string) => {
   try {
-    const { data } = await axios.get(`${API_URL}/reservations/can-reserve/${userId}/${scheduleId}`);
+    const token = localStorage.getItem("token");
+
+    if (!token) {
+      return { canReserve: false, reason: "No hay token disponible" };
+    }
+
+    const { data } = await axios.get(
+      `${API_URL}/reservations/can-reserve/${userId}/${scheduleId}`,
+      {
+        headers: {
+          Authorization: `Bearer ${token}`,
+        },
+      }
+    );
+
     return data;
+
   } catch (error) {
-    console.error("Error verificando disponibilidad:", error);
-    return { canReserve: false, reason: "Error al verificar disponibilidad" };
-  }
+    console.error(error);
+    return { canReserve: false, reason: "Alcanzaste el límite de reservas" };
+  }
 };
