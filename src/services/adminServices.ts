@@ -1,4 +1,4 @@
-import axios from "axios";
+import axios, { AxiosResponse } from "axios";
 import { IUser } from "@/interfaces/User";
 import { ThreeDay, FiveDay, Collection } from "@/interfaces/Plan";
 import { Classes, Schedules } from "@/interfaces/Classes";
@@ -148,7 +148,7 @@ export const userStatus = async (userId: string) => {
     console.log(token);
 
     try {
-        const response = await axios.patch(`${API_URL}/users/${userId}/status`,
+        const response = await axios.patch(`${API_URL}admin/users/${userId}/status`,
             {headers: {
                 Authorization: `Bearer ${token}`
             }}
@@ -215,7 +215,7 @@ export const rateTrainer = async (userId: string, rating: number): Promise<Train
     }
 }
 
-export const deleteTrainer = async (trainerId: string): Promise<Trainers | null> => {
+export const deleteTrainer = async (trainerId: string): Promise<AxiosResponse<any> | null> => {
     const token = localStorage.getItem('token');
     console.log(token);
     if(!token) {
@@ -226,9 +226,31 @@ export const deleteTrainer = async (trainerId: string): Promise<Trainers | null>
     try {
         const response = await axios.delete(`${API_URL}/trainers/${trainerId}`);
         console.log(response);
-        return response.data
+        return response
     } catch (error) {
         console.log("Error al eliminar el entrenador: ", error);
+        return null
+    }
+}
+
+export const deleteSchedules = async (ScheduleId: string): Promise<AxiosResponse<any> | null> => {
+    const token = localStorage.getItem('token');
+    console.log(token);
+    if(!token) {
+        console.error("Error al obtener el token")
+        return null
+    }
+
+    try {
+        const response = await axios.delete(`${API_URL}/schedules/${ScheduleId}`,
+            {headers: {
+                Authorization: `Bearer ${token}`
+            }}
+        );
+        console.log(response);
+        return response
+    } catch (error) {
+        console.error("Error al eliminar la clase: ", error);
         return null;
     }
 }
