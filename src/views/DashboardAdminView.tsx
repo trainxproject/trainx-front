@@ -7,6 +7,7 @@ import ActivitiesCard from "@/components/StatsCard/ActivitiesCard"
 import ScheduleCards from "@/components/StatsCard/ScheduleCard"
 import StatisticsCard from "@/components/StatsCard/Statistics"
 import TrainersCard from "@/components/StatsCard/TrainersCard"
+import Statistics from "@/components/StatsCard/statisticsView"
 import { Activity, Calendar, BarChart3, User, Dumbbell } from "lucide-react";
 
 export default function DashboardAdminView() {
@@ -50,7 +51,7 @@ export default function DashboardAdminView() {
         {tabSelect === "activities" && <ActivitiesCard />}
         {tabSelect === "schedule" && <ScheduleCards />}
         {tabSelect === "trainer" && <TrainersCard />}
-        {tabSelect === "statistics" && <StatisticsCard />}
+        {tabSelect === "statistics" && <Statistics />}
       </div>
     </div>
   )

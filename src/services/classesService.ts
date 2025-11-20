@@ -1,5 +1,5 @@
 import axios from "axios"
-import { Classes, IReservation } from "@/interfaces/Classes"
+import { Classes, IReservation, Schedules } from "@/interfaces/Classes"
 
 const API_URL = process.env.NEXT_PUBLIC_API_URL || "http://localhost:3000";
 
@@ -13,6 +13,17 @@ export const getAllClasses = async (): Promise<Classes[]> => {
       return [];
     }
   };
+
+export const getAllSchedule = async (): Promise<Schedules[]> => {
+  try {
+    const { data } = await axios.get(`${API_URL}/schedules`)
+    console.log(data);
+    return data;
+  } catch (error) {
+    console.error("Error al traer los horarios: ", error);
+    return [];
+  }
+}
 
 export const resevedClass = async (scheduleId: string)  => {
   console.log(scheduleId);
@@ -82,3 +93,52 @@ export const cancelReservation = async (reservationId: string, token: string) =>
     throw new Error("error en cancelReservation");
   }
 }
+export const deleteReservation = async (reservationId: string, token: string) => {
+  try {
+    const response = await axios.delete(`${API_URL}/reservations/${reservationId}`,
+    {
+      headers: {
+        Authorization: `Bearer ${token}`
+      }
+    }
+  );
+    return response;
+  } catch (error) {
+    console.error(error);
+    throw new Error("error en deleteReservation");
+  }
+}
+
+export const getWeeklyStatus = async (userId: string) => {
+  try {
+    const { data } = await axios.get(`${API_URL}/reservations/user/${userId}/weekly-status`);
+    return data; 
+  } catch (error) {
+    console.error("Error verificando estado semanal:", error);
+    return { canReserveNewDay: false };
+  }
+};
+export const canReserveOnDay = async (userId: string, scheduleId: string) => {
+  try {
+    const token = localStorage.getItem("token");
+
+    if (!token) {
+      return { canReserve: false, reason: "No hay token disponible" };
+    }
+
+    const { data } = await axios.get(
+      `${API_URL}/reservations/can-reserve/${userId}/${scheduleId}`,
+      {
+        headers: {
+          Authorization: `Bearer ${token}`,
+        },
+      }
+    );
+
+    return data;
+
+  } catch (error) {
+    console.error(error);
+    return { canReserve: false, reason: "Alcanzaste el límite de reservas" };
+  }
+};

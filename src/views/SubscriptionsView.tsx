@@ -6,6 +6,7 @@ import { getAllPlans } from "@/services/plansService";
 import { createPreference } from "@/services/mpService";
 import { useAuth } from "@/context/AuthContext";
 import { Plan } from "@/interfaces/Plan";
+import { toast } from "sonner";
 
 
 const SubscriptionsView: React.FC = () => {
@@ -34,8 +35,8 @@ const handleSubscribe = async (planId: string) => {
     } else {
       console.error("No se recibió init_point desde el backend");
     }
-  } catch (error) {
-    console.error("Error al crear la preferencia:", error);
+  } catch (error:any) {
+    toast.error(error.message);
   }
 };
   return (

@@ -1,79 +1,28 @@
 import { Trash2 } from "lucide-react";
-import { useState } from "react";
+import { useState, useEffect } from "react";
+import { Schedules } from "@/interfaces/Classes";
+import { getAllSchedule } from "@/services/classesService";
 
-const activi = [
-    {
-    id: 1,
-    name: 'CrossFit',
-    description: 'High intensity functional training.',
-    requiresReservation: true,
-    maxCapacity: 10,
-    imageUrl: 'https://res.cloudinary.com/dxpqhpme3/image/upload/v1760749983/crossfit_ufv3qq.jpg',  
-    },
-     {
-    id: 5,
-    name: 'Algo mas',
-    description: 'High intensity functional training.',
-    requiresReservation: true,
-    maxCapacity: 10,
-    imageUrl: 'https://res.cloudinary.com/dxpqhpme3/image/upload/v1760749983/crossfit_ufv3qq.jpg',  
-    },
-     {
-    id: 2,
-    name: 'Pilates',
-    description: 'High intensity functional training.',
-    requiresReservation: true,
-    maxCapacity: 10,
-    imageUrl: 'https://res.cloudinary.com/dxpqhpme3/image/upload/v1760749983/crossfit_ufv3qq.jpg',  
-    },
-     {
-    id: 3,
-    name: 'Zumba',
-    description: 'High intensity functional training.',
-    requiresReservation: true,
-    maxCapacity: 10,
-    imageUrl: 'https://res.cloudinary.com/dxpqhpme3/image/upload/v1760749983/crossfit_ufv3qq.jpg',  
-    },
-     {
-    id: 4,
-    name: 'Algo',
-    description: 'High intensity functional training.',
-    requiresReservation: true,
-    maxCapacity: 10,
-    imageUrl: 'https://res.cloudinary.com/dxpqhpme3/image/upload/v1760749983/crossfit_ufv3qq.jpg',  
-    },
-]
-
-const clases = [
-    { 
-    dayOfWeek: 'Monday', 
-    startTime: '19:00', 
-    endTime: '20:00', 
-    trainer: 'Carlos López', 
-    activity: activi.find((e) => e.id === 3)?.name },
-       { 
-    dayOfWeek: 'Monday', 
-    startTime: '19:00', 
-    endTime: '20:00', 
-    trainer: 'Carlos López', 
-    activity: activi.find((e) => e.id === 1)?.name },   { 
-    dayOfWeek: 'Monday', 
-    startTime: '19:00', 
-    endTime: '20:00', 
-    trainer: 'Carlos López', 
-    activity: activi.find((e) => e.id === 4)?.name },
-       { 
-    dayOfWeek: 'Monday', 
-    startTime: '19:00', 
-    endTime: '20:00', 
-    trainer: 'Carlos López', 
-    activity: activi.find((e) => e.id === 5)?.name },
-]
 
 const ScheduleCards: React.FC = () =>  {
     const [modal, setModal] = useState(false)   
     const [iconDelete, setIconDelete] = useState(false)  
- 
+    const [classes, setClasses] = useState<Schedules[]>([]);
+
+    useEffect(() => {
+        const fetchData = async () => {
+            try {
+                const classes = await getAllSchedule();
+                console.log(classes);
+                setClasses(classes);
+            } catch (error) {
+                console.error("Error al traer las clases: ", error);
+                return [];
+            }
+        }
+        fetchData();
+    }, [])
+
      return (
 
         <div  className="min-h-screen  flex flex-col  bg-(--background) flex flex-wrap  mt-29">
@@ -95,11 +44,11 @@ const ScheduleCards: React.FC = () =>  {
                 </div>
 
                 <div className="flex flex-wrap justify-center gap-8 mt-15">
-                { clases.map((e) => {
+                { classes.map((e) => {
                 
                 // const requires = e.requiresReservation === "true" || e.requiresReservation === true
                 return(
-                    <div
+                    <div key={e.id}
                     className="bg-[hsl(var(--secondary))] 
                                 border border-white/10 
                                 rounded-2xl p-6 
@@ -123,11 +72,11 @@ const ScheduleCards: React.FC = () =>  {
                         </div>
 
                     <h2 className="text-2xl font-semibold text-(--primary) text-center w-full">
-                        {e.dayOfWeek}
+                        {e.trainer}
                     </h2>
 
                     <p className="text-gray-300 text-sm text-center leading-snug w-full italic">
-                        {e.activity}
+                        {e.dayOfWeek}
                     </p>
 
                     <div className="mt-3 flex flex-col gap-2 w-full">

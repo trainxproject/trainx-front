@@ -7,16 +7,16 @@ import Chat from "@/components/Chat";
 import MapView from "./MapView";
 import SubscriptionsView from "./SubscriptionsView";
 import TrainerSelection from "./TrainerSelectionView";
+import { useAuth } from "@/context/AuthContext";
+
+
 
 export default function DashboardUserView() {
     const [tabSelected, setTabSelected] = useState("class");
-    const [userId, setUserId] = useState<string>("");
+    const { user } = useAuth();
+    const userId = user?.id;
 
-    // ✅ Solo se ejecuta en el cliente
-    useEffect(() => {
-        const storedUserId = localStorage.getItem("userId");
-        if (storedUserId) setUserId(storedUserId);
-    }, []);
+
 
     const handleTrainerAssigned = (trainerId: string) => {
         console.log("Entrenador asignado:", trainerId);
@@ -56,12 +56,11 @@ export default function DashboardUserView() {
                 {String(tabSelected) === "location" && <MapView />}
                 {String(tabSelected) === "subscription" && <SubscriptionsView />}
 
-                {String(tabSelected) === "coach" && (
-                    <TrainerSelection
-                        userId={userId}
-                        onTrainerAssigned={handleTrainerAssigned}
-                    />
-                )}
+                {tabSelected === "coach" && userId && (
+    <TrainerSelection
+        onTrainerAssigned={handleTrainerAssigned}
+    />
+)}
             </div>
         </div>
     );

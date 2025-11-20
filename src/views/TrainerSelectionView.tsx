@@ -2,20 +2,27 @@
 
 import { useEffect, useState } from "react";
 import { getAllTrainers, selectTrainer } from "@/services/trainersService";
+import { canHaveTrainer } from "@/services/userService";
 import { Trainers } from "@/interfaces/Trainer";
 import { toast } from "sonner";
 import { FaRegStar } from "react-icons/fa";
+import { useAuth } from "@/context/AuthContext";
+import { rateTrainer } from "@/services/adminServices";
 
 interface TrainerSelectionProps {
   selectedTrainer?: string | null;
-  userId: string;
   onTrainerAssigned: (trainerId: string) => void;
 }
 
-const TrainerSelection = ({ selectedTrainer, userId, onTrainerAssigned }: TrainerSelectionProps) => {
+const TrainerSelection = ({ selectedTrainer, onTrainerAssigned }: TrainerSelectionProps) => {
   const [trainers, setTrainers] = useState<Trainers[]>([]);
   const [loading, setLoading] = useState(true);
   const [assigning, setAssigning] = useState(false);
+
+  const [ratingValue, setRatingValue] = useState<number>(0)
+
+  const { user } = useAuth();
+  const userId = user?.id;
 
   useEffect(() => {
     const fetchTrainers = async () => {
@@ -40,18 +47,31 @@ const TrainerSelection = ({ selectedTrainer, userId, onTrainerAssigned }: Traine
     return <p className="text-center text-gray-500">Cargando entrenadores...</p>;
   }
 
-  
   const handleSelectTrainer = async (trainerId: string) => {
-    setAssigning(true); 
+    if (!userId) {
+      toast.error("Error: el usuario no está cargado todavía.");
+      return;
+    }
+  
+    setAssigning(true);
+  
     try {
-      
-      await selectTrainer(userId, trainerId);
-      onTrainerAssigned(trainerId); 
+      const response = await selectTrainer(userId, trainerId);
+      onTrainerAssigned(trainerId);
       toast.success("Entrenador asignado correctamente");
-    } catch (error) {
-      toast.error("Error al asignar el entrenador");
+  
+    } catch (error: any) {
+  
+      //+ ALERTA DEL ERROR 403
+      if (error?.response?.status === 403) {
+        toast.error("Tu plan no permite asignar un entrenador.");
+        return;
+      }
+      toast.error("Error inesperado al asignar el entrenador");
+      console.error(error);
+  
     } finally {
-      setAssigning(false); 
+      setAssigning(false);
     }
   };
 

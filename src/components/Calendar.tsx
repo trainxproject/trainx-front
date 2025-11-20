@@ -2,10 +2,11 @@
 
   import { useState, useEffect } from "react";
   import { toast } from "sonner";
-  import { getAllClasses, resevedClass, filter as filterClasses, filter } from "@/services/classesService";
+  import { getAllClasses, resevedClass, filter as filterClasses, filter, getWeeklyStatus, canReserveOnDay } from "@/services/classesService";
   import { Classes } from "@/interfaces/Classes";
   import Image from "next/image";
-  import { IoClose } from "react-icons/io5";
+  import { useAuth } from "@/context/AuthContext";
+  import { getPlanUser } from "@/services/userService";
 
   interface CalendarClass {
     id: string;
@@ -15,7 +16,8 @@
     booked: number;
     capacity: number;
     description: string;
-    imageUrl: string
+    imageUrl: string;
+    limit: number
   }
 
   const weekDays = ["Lun", "Mar", "Mié", "Jue", "Vie"];
@@ -33,6 +35,7 @@
     const [selectedClass, setSelectedClass] = useState<CalendarClass | null>(null);
     const [isOpen, setIsOpen] = useState(false);
     const [activeFilters, setActiveFilters] = useState<string[]>([]);
+    const { user} = useAuth();
 
     const filtros = ["CrossFit", "Zumba", "Pilates", "Telas"];
 
@@ -55,7 +58,8 @@
             booked: 0,
             capacity: cls.maxCapacity ?? 0,
             description: cls.description,
-            imageUrl: cls.imageUrl
+            imageUrl: cls.imageUrl,
+            limit: sch.limit
           });
         });
       });
@@ -101,8 +105,34 @@
         toast.error("Error al filtrar las clases");
       }
     };
+    const handleReserve = async () => {
+  try {
     
+    const planInfo = await getPlanUser(user!.id);
 
+    if (!planInfo || planInfo.status !== "active") {
+      toast.error("Necesitas un plan activo para reservar.");
+      return;
+    }
+
+    const dayCheck = await canReserveOnDay(user!.id, selectedClass!.id);
+
+    if (!dayCheck!.canReserve) {
+      toast.error(dayCheck!.reason);
+      return;
+    }
+
+    await resevedClass(selectedClass!.id);
+
+    toast.success("Reserva creada con éxito");
+    setIsOpen(false);
+
+  } catch (error) {
+    toast.error("No se pudo realizar la reserva");
+  }
+};
+    
+  
     return (
         <div>
           <div>
@@ -160,7 +190,7 @@
                         <div className="h-2 flex-1 bg-(--muted-foreground) rounded-full overflow-hidden">
                           <div
                             className={`h-full rounded-full ${isAlmostFull ? "bg-yellow-500" : "bg-(--primary)"}`}
-                            style={{ width: `${(classData.booked / classData.capacity) * 100}%` }}
+                            style={{ width: `${(classData.limit / classData.capacity) * 100}%` }}
                           />
                         </div>
                         <p className="text-[11px] md:text-xs text-(--muted-foreground)">{spotsLeft}</p>
@@ -218,15 +248,8 @@
 
             {/* Botón de reserva */}
             <button
-              onClick={async () => {
-                try {
-                  await resevedClass(selectedClass.id);
-                  toast.success("Reserva creada con éxito");
-                  setIsOpen(false);
-                } catch (error) {
-                  toast.error("No se pudo realizar la reserva");
-                }
-              }}
+              onClick={() => handleReserve()}
+                
               className="w-full bg-(--primary) text-white py-2 rounded-xl hover:bg-(--primary)/90 transition"
             >
               Reservar clase
@@ -236,6 +259,7 @@
       </div>
     </div>
   )}
+
       </div>
       </div>
     );

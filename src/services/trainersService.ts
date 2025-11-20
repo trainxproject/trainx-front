@@ -1,5 +1,6 @@
 import axios from "axios";
 import { Trainers } from "@/interfaces/Trainer";
+import { toast } from "sonner";
 
 const API_URL = process.env.NEXT_PUBLIC_API_URL || "http://localhost:3000";
 
