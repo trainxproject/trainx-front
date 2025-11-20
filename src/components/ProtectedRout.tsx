@@ -17,11 +17,11 @@ export default function ProtectedRoutes({ children, adminOnly = false }: Protect
   useEffect(() => {
     if (!loading) {
       if (!user || !token) {
-        router.push('/login') // No logueado → login
+        router.push('/login') 
       } else if (adminOnly && !isAdmin) {
-        router.push('/dashboard/user') // Logueado pero no admin → home
+        router.push('/dashboard/user') 
       } else {
-        setChecked(true) // Todo listo, renderizar contenido
+        setChecked(true) 
       }
     }
   }, [user, token, loading, isAdmin, adminOnly, router])

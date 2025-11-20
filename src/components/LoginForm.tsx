@@ -12,16 +12,20 @@ import { toast } from "sonner";
 import { useEffect, useState } from "react";
 export default function LoginForm({ onClose }: { onClose?: () => void }) {
 const { openRegister } = useAuthModal();
-  const { login, user, loginWithGoogle, loading: authLoading } = useAuth();
+  const { login, user, loginWithGoogle, loading: authLoading, isAdmin } = useAuth();
   const router = useRouter();
   const [loading, setLoading] = useState(false);
  
 
-  useEffect(() => {
-    if (user) {
+useEffect(() => {
+  if (user) {
+    if (isAdmin) {
+      router.push("/dashboard/admin");
+    } else {
       router.push("/dashboard/user");
     }
-  }, [user, router]);
+  }
+}, [user, isAdmin, router]);
 
   const formik = useFormik<LoginFormValues>({
     initialValues: LoginInitialValues,
