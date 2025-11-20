@@ -21,11 +21,11 @@
   const weekDays = ["Lun", "Mar", "Mié", "Jue", "Vie"];
 
   const dayTranslations: Record<string, string> = {
-    Monday: "Lun",
-    Tuesday: "Mar",
-    Wednesday: "Mié",
-    Thursday: "Jue",
-    Friday: "Vie",
+    Lunes: "Lun",
+    Martes: "Mar",
+    Miercoles: "Mié",
+    Jueves: "Jue",
+    Viernes: "Vie",
   };
 
   const CalendarView = () => {
