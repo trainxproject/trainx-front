@@ -37,16 +37,17 @@ const ActivitiesCard: React.FC = () =>  {
         const handlerCreate = async (e: React.FormEvent) => {
             e.preventDefault()
 
-            const response = await createActivities(
-              name,
-              description,
-              requiresReservation,
-              maxCapacity,
-              imageUrl  
-            )
-
-            if(response) {
-                setModal(false);
+            try {
+                const response = await createActivities(
+                    name,
+                    description,
+                    requiresReservation,
+                    maxCapacity,
+                    imageUrl  
+                  )
+                  return
+            } catch (error) {
+                
             }
         }
 
