@@ -1,8 +1,11 @@
+'use client'
+
 import { Trash2 } from "lucide-react";
 import { useState, useEffect } from "react";
 import { getAllClasses } from "@/services/classesService";
 import { Classes } from "@/interfaces/Classes";
 import { createActivities, deleteActivities } from "@/services/adminServices";
+import { uploadCloudinaryService } from "@/services/uploadCloudinaryService";
 import { toast } from "sonner";
 
 const ActivitiesCard: React.FC = () => {
@@ -16,7 +19,7 @@ const ActivitiesCard: React.FC = () => {
     const [description, setDescrition] = useState("");
     const [requiresReservation, setRequieresReservation] = useState(false);
     const [maxCapacity, setMaxCapacity] = useState(0);
-    const [imageUrl, setImageUrl] = useState("");
+    const [file, setFile] = useState<File | null>(null);
 
     const fetchData = async () => {
         try {
@@ -35,22 +38,33 @@ const ActivitiesCard: React.FC = () => {
         e.preventDefault();
 
         try {
+            let uploadedImageUrl = "";
+
+            if (file) {
+                const token = localStorage.getItem("token") || "";
+                uploadedImageUrl = await uploadCloudinaryService(file, token);
+            }
+
             const response = await createActivities(
                 name,
                 description,
                 requiresReservation,
                 maxCapacity,
-                imageUrl
+                uploadedImageUrl
             );
-            await fetchData();
-            setModal(false);
 
-            // Limpieza opcional
-            setName("");
-            setDescrition("");
-            setRequieresReservation(false);
-            setMaxCapacity(0);
-            setImageUrl("");
+            if (response) {
+                toast.success("Actividad creada correctamente");
+                await fetchData();
+                setModal(false);
+
+                // Limpiar formulario
+                setName("");
+                setDescrition("");
+                setRequieresReservation(false);
+                setMaxCapacity(0);
+                setFile(null);
+            }
 
             return response;
         } catch (error) {
@@ -63,9 +77,7 @@ const ActivitiesCard: React.FC = () => {
     const handlerDelete = async (id: string) => {
         try {
             const response = await deleteActivities(id);
-
             await fetchData();
-
             return response;
         } catch (error) {
             console.error("Error al eliminar la actividad:", error);
@@ -201,7 +213,7 @@ const ActivitiesCard: React.FC = () => {
                                 <input
                                     type="file"
                                     className="w-full border rounded-lg px-3 py-2"
-                                    onChange={(e) => setImageUrl(e.target.value)}
+                                    onChange={(e) => setFile(e.target.files ? e.target.files[0] : null)}
                                 />
                             </div>
 
