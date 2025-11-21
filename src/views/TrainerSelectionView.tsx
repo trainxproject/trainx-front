@@ -98,12 +98,12 @@ const TrainerSelection = ({ selectedTrainer, onTrainerAssigned }: TrainerSelecti
             : "border-gray-300 hover:border-orange-400"
         }`}
       >
-        <div className="relative h-48 overflow-hidden">
-          <img
-            src={trainer.imageUrl}
-            alt={trainer.name}
-            className="w-full h-full object-cover"
-          />
+        <div className="relative w-full aspect-[4/5] overflow-hidden rounded-t-xl">
+  <img
+    src={trainer.imageUrl}
+    alt={trainer.name}
+    className="absolute inset-0 w-full h-full object-cover"
+  />
           {selectedTrainer === trainer.id && (
             <div className="absolute top-3 right-3 w-8 h-8 rounded-full flex items-center justify-center bg-orange-500 text-black text-lg font-bold">
               ✓

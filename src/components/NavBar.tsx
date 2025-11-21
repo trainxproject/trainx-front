@@ -6,11 +6,16 @@ import { useAuth } from "@/context/AuthContext";
 import { useRouter } from "next/navigation";
 
 export function NavBar() {
-  const { openLogin } = useAuthModal();
+  const { openLogin, closeModal } = useAuthModal();
   const { user, logout, isAdmin } = useAuth();
   const router = useRouter();
 
   const isLoggedIn = !!user;
+
+   const handleLogout = () => {
+    closeModal();
+    logout();
+  };
 
   return (
     <header
@@ -71,7 +76,7 @@ export function NavBar() {
 
               {/* Logout */}
               <button
-                onClick={logout}
+                onClick={handleLogout}
                 className="p-2 rounded hover:bg-gray-700 transition-colors"
               >
                 <LogOut className="w-5 h-5 text-muted-foreground" />
