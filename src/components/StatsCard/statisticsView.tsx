@@ -5,133 +5,108 @@ import { getThreeDayPlan, getFiveDayPlan, getMonthlyCollection } from "@/service
 import { useEffect, useState } from "react";
 import { getAllUsers } from "@/services/userService";
 import { getAllTrainers } from "@/services/trainersService";
-import { Classes } from "@/interfaces/Classes";
 import { Trainers } from "@/interfaces/Trainer";
+// Asumo que tienes una interfaz IUser, la corregí aquí para evitar el error de Classes[]
+import { IUser } from "@/interfaces/User"; 
 
-const Statistics: React.FC =  () => {
+const Statistics: React.FC = () => {
 
-    const [threeDay, setThreeDay] = useState<ThreeDay | null>()
-    const [fiveDay, setFiveDay] = useState<FiveDay | null>()
-    const [MonthlyCollection, setMonthlyCollection] = useState<Collection | null>()
+    const [threeDay, setThreeDay] = useState<ThreeDay | null>(null);
+    const [fiveDay, setFiveDay] = useState<FiveDay | null>(null);
+    const [monthlyCollection, setMonthlyCollection] = useState<Collection | null>(null);
+    const [users, setUsers] = useState<IUser[]>([]); // Corregido el tipo
+    const [trainers, setTrainers] = useState<Trainers[]>([]);
 
     useEffect(() => {
         const fetchData = async () => {
             try {
-                const threeDay = await getThreeDayPlan();
-                console.log(threeDay);
-                setThreeDay(threeDay);
+                // Ejecutamos todas las peticiones en paralelo para mayor velocidad
+                const [
+                    threeDayData,
+                    fiveDayData,
+                    collectionData,
+                    usersData,
+                    trainersData
+                ] = await Promise.all([
+                    getThreeDayPlan(),
+                    getFiveDayPlan(),
+                    getMonthlyCollection(),
+                    getAllUsers(),
+                    getAllTrainers()
+                ]);
+
+                setThreeDay(threeDayData);
+                setFiveDay(fiveDayData);
+                setMonthlyCollection(collectionData);
+                setUsers(usersData || []);
+                setTrainers(trainersData || []);
+
             } catch (error) {
-                console.error("Error al traer los planes de tres días: ", error);
-                return[]
+                console.error("Error al cargar las estadísticas: ", error);
             }
-        }
-        fetchData()
+        };
+        fetchData();
     }, []);
 
-    useEffect(() => {
-        const fetchData = async () => {
-            try {
-                const fiveDay = await getFiveDayPlan();
-                console.log(fiveDay);
-                setFiveDay(fiveDay);
-            } catch (error) {
-                console.error("Error al traer los planes de cinco días: ", error);
-                return[]
-            }
-        }
-        fetchData()
-    }, []);
+    // Componente reutilizable para las Cards (hace el código más limpio)
+    const StatCard = ({ title, value, isMoney = false }: { title: string, value: string | number | undefined, isMoney?: boolean }) => (
+        <div className="flex flex-col items-center justify-center py-6 px-4 rounded-2xl border border-white/10 bg-white/5 shadow-lg backdrop-blur-sm hover:bg-white/10 transition-all">
+            <h3 className="text-lg sm:text-xl font-semibold text-gray-400 text-center">
+                {title}
+            </h3>
+            <span className={`mt-2 text-2xl sm:text-3xl font-bold ${isMoney ? 'text-green-400' : 'text-orange-500'}`}>
+                {isMoney && "$"}{value ?? 0}
+            </span>
+        </div>
+    );
 
-    useEffect(() => {
-        const fetchData = async () => {
-            try {
-                const recaudacion = await getMonthlyCollection();
-                console.log(recaudacion);
-                setMonthlyCollection(recaudacion);
-            } catch (error) {
-                console.error("Error al traer la recaudacion mensual: ", error);
-                return[];
-            }
-        }
-        fetchData()
-    }, []);
-
-
-    useEffect(() => {
-        const fetchData = async () => {
-            try {
-                const response = await getAllUsers()
-                setUsers(response)
-            } catch (error) {
-                console.error("Error al traer los usuarios");
-                return null
-            }
-        }
-        fetchData()
-    }, [])
-    
-    useEffect(() => {
-        const fetchData = async () => {
-          try {
-            const response = await getAllTrainers();
-            setTrainers(response);
-          } catch (error) {
-            console.error("Error al traer los entrenadores");
-            return null;
-          }  
-        }
-        fetchData()
-    }, [])
-
-    const [users, setUsers] = useState<Classes[]>([])
-    const [trainers, setTrainers] = useState<Trainers[]>([])
-
-    return(
-        <div className="flex flex-col">
-            <div>
-                <h1 className="text-4xl text-[--foreground] font-semibold">
-                    Estadisticas generales
+    return (
+        <div className="flex flex-col w-full max-w-7xl mx-auto px-4">
+            
+            {/* Títulos */}
+            <div className="mb-8">
+                <h1 className="text-3xl sm:text-4xl text-white font-semibold">
+                    Estadísticas generales
                 </h1>
-                <p className="text-md text-[--foreground] font-light py-4">
+                <p className="text-md text-gray-400 font-light py-2">
                     Visualiza el rendimiento de tu gimnasio
                 </p>
             </div>
-            <div className="grid grid-cols-3 items-center mt-15">
-            <div className="flex flex-col items-center py-4 px-6 rounded-2xl border-2 border-(--border) bg-(--secondary)/45">
-                    <h3 className="text-xl font-semibold text-(--foreground) text-(--muted-foreground)">
-                        Ingresos mensuales
-                    </h3>
-                    <span className="mt-2 text-lg font-bold text-(--primary)">${MonthlyCollection?.totalMonthlyRevenue}</span>
+
+            <div className="flex flex-col gap-6">
+                
+                {/* PRIMERA FILA: 2 CARDS (Socios y Entrenadores) */}
+                <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+                    <StatCard 
+                        title="Socios Totales" 
+                        value={users.length} 
+                    />
+                    <StatCard 
+                        title="Entrenadores Activos" 
+                        value={trainers.length} 
+                    />
                 </div>
-                <div className="flex flex-col items-center py-4 px-6 rounded-2xl border-2 border-(--border) bg-(--secondary)/45">
-                    <h3 className="text-xl font-semibold text-(--foreground) text-(--muted-foreground)">
-                        Planes de tres días
-                    </h3>
-                    <span className="mt-2 text-lg font-bold text-(--primary)">{threeDay?.count}</span>
+
+                {/* SEGUNDA FILA: 3 CARDS (Dinero y Planes) */}
+                <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
+                    <StatCard 
+                        title="Ingresos Mensuales" 
+                        value={monthlyCollection?.totalMonthlyRevenue} 
+                        isMoney 
+                    />
+                    <StatCard 
+                        title="Planes de 3 días" 
+                        value={threeDay?.count} 
+                    />
+                    <StatCard 
+                        title="Planes de 5 días" 
+                        value={fiveDay?.count} 
+                    />
                 </div>
-                <div className="flex flex-col items-center py-4 px-6 rounded-2xl border-2 border-(--border) bg-(--secondary)/45">
-                    <h3 className="text-xl font-semibold text-(--foreground) text-(--muted-foreground)">
-                        Planes de cinco días
-                    </h3>
-                    <span className="mt-2 text-lg font-bold text-(--primary)">{fiveDay?.count}</span>
-                </div>
-            </div>
-            <div className="grid grid-cols-2 justify-center items gap-10">
-                <div className="flex flex-col items-center justify-center w-50 rounded-2xl border-2 border-(--border) bg-(--secondary)/45">
-                    <h3 className="text-xl font-semibold text-(--foreground) text-(--muted-foreground)">
-                        Socios Totales
-                    </h3>
-                    <span className="mt-2 text-lg font-bold text-(--primary)">${users.length}</span>
-                </div>
-                <div className="flex flex-col items-center justify-center w-50 p-3 rounded-2xl border-2 border-(--border) bg-(--secondary)/45">
-                    <h3 className="text-xl font-semibold text-(--foreground) text-(--muted-foreground)">
-                        Cantidad de enrtenadores
-                    </h3>
-                    <span className="mt-2 text-lg font-bold text-(--primary)">${trainers.length}</span>
-                </div>
+
             </div>
         </div>
-    )
+    );
 }
 
 export default Statistics;
