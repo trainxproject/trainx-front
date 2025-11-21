@@ -1,22 +1,24 @@
 'use client';
-import {  User, LogOut, LogIn, Dumbbell } from "lucide-react";
+import { User, LogOut, LogIn, Dumbbell } from "lucide-react";
 import Image from "next/image";
 import { useAuthModal } from "@/context/AuthModalContext";
 import { useAuth } from "@/context/AuthContext";
 import { useRouter } from "next/navigation";
+
 export function NavBar() {
-  const { openLogin } = useAuthModal(); // Contexto para abrir modal
-  const { user, logout } = useAuth();   // Contexto de autenticación
- const router = useRouter();
+  const { openLogin } = useAuthModal();
+  const { user, logout, isAdmin } = useAuth();
+  const router = useRouter();
+
   const isLoggedIn = !!user;
- 
 
   return (
-      <header
+    <header
       className="border-b sticky top-0 z-50"
       style={{ backgroundColor: "var(--card)", borderColor: "var(--border)" }}
     >
       <div className="container mx-auto px-6 py-4 flex items-center justify-between">
+
         {/* Logo */}
         <div className="flex items-center gap-3">
           <Image
@@ -36,21 +38,29 @@ export function NavBar() {
 
         {/* Acciones */}
         <div className="flex items-center gap-4">
+
           {isLoggedIn ? (
             <>
-               {/* Notificaciones */}
-              <button 
-              onClick={() => router.push("/dashboard/user")}
-              className="flex items-center gap-2 p-2 rounded hover:bg-gray-700 transition-colors">
+              {/* Dashboard */}
+              <button
+                onClick={() => {
+                  if (isAdmin) {
+                    router.push("/dashboard/admin");
+                  } else {
+                    router.push("/dashboard/user");
+                  }
+                }}
+                className="flex items-center gap-2 p-2 rounded hover:bg-gray-700 transition-colors"
+              >
                 <Dumbbell className="w-5 h-5 text-muted-foreground" />
                 <span className="text-[13px] text-muted-foreground">
-                  Dashboard
+                  {isAdmin ? "Admin Panel" : "Dashboard"}
                 </span>
               </button>
 
-              {/* Botón de usuario */}
+              {/* Usuario */}
               <button
-                onClick={()=>router.push("/userProfile")}
+                onClick={() => router.push("/userProfile")}
                 className="flex items-center gap-2 p-2 rounded hover:bg-gray-700 transition-colors"
               >
                 <User className="w-5 h-5 text-muted-foreground" />
@@ -77,6 +87,7 @@ export function NavBar() {
               Iniciar Sesión
             </button>
           )}
+
         </div>
       </div>
     </header>
