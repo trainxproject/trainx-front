@@ -1,49 +1,105 @@
 import { Trash2 } from "lucide-react";
 import { useState, useEffect } from "react";
-import { Schedules } from "@/interfaces/Classes";
-import { getAllSchedule } from "@/services/classesService";
-import { deleteSchedules } from "@/services/adminServices";
+import { Classes, Schedules } from "@/interfaces/Classes";
+import { getAllClasses, getAllSchedule } from "@/services/classesService";
+import { deleteSchedules, createSchedule, getAllUsers } from "@/services/adminServices";
 import { toast } from "sonner";
+import { Trainers } from "@/interfaces/Trainer";
+import { getAllTrainers } from "@/services/trainersService";
 
 const ScheduleCards: React.FC = () =>  {
     const [modal, setModal] = useState(false)   
     const [iconDelete, setIconDelete] = useState(false)  
-    const [classes, setClasses] = useState<Schedules[]>([]);
+    const [Schedules, setSchedules] = useState<Schedules[]>([]);
     const [scheduleId, setScheduleId] = useState<string>("");
+    const [trainers, setTrainers] = useState<Trainers[]>([])
+    const [activities, setActivities] = useState<Classes[]>([])
 
-    const handlerDelete = async () => {
+    //+ ESTADOS PARA CREAR LA CLASE
+
+    const [activityId, setActivityId] = useState<string>("");
+    const [date, setDate] = useState<string>("");
+    const [startTime, setStartTime] = useState<string>("");
+    const [endTime, setEndTime] = useState<string>("");
+    const [trainer, setTrainer] = useState<string>("");
+
+    const days = [
+        "Lunes",
+        "Martes",
+        "Miércoles",
+        "Jueves",
+        "Viernes",
+        "Sábado",
+        "Domingo"
+    ];
+
+    const handlerCreate = async (e: React.FormEvent<HTMLFormElement>) => {
+        e.preventDefault()
         try {
-            const response = await deleteSchedules(scheduleId)
-                console.log(response);
-                if(response?.status === 200) {
-                    toast.success("Clase eliminada")
-                    return response
-                }
-        } catch (error: any) {
-            
-            const status = error?.response?.status;
+            const response = await createSchedule(
+                activityId,
+                date,
+                startTime,
+                endTime,
+                trainer
+            )
+            console.log(response);
+            return response
+        } catch (error) {
+            console.error("Error al crear la clase: ", error);
+            return null
+        }
+    }
+
+    const handlerDelete = async (scheduleId: string) => {
+        try {
+            const response = await deleteSchedules(scheduleId);
+            console.log(response);
+            return response
+        } catch (error) {
             console.error("Error al eliminar la clase: ", error);
-            if(status === 401) {
-                toast.error("No tienes los permisos necesarios para realizar esta accion")
-                return null
-            } else if ( status === 500) {
-                toast.error("Error al eliminar la clase")
-            }
+            return null
         }
     }
 
     useEffect(() => {
         const fetchData = async () => {
             try {
-                const classes = await getAllSchedule();
-                console.log(classes);
-                setClasses(classes);
+                const schedules = await getAllSchedule();
+                console.log(schedules);
+                setSchedules(schedules);
             } catch (error) {
                 console.error("Error al traer las clases: ", error);
                 return [];
             }
         }
         fetchData();
+    }, [])
+
+    useEffect(() => {
+        const fetchData = async () => {
+            try {
+                const response = await getAllClasses()
+                setActivities(response);
+            } catch (error) {
+                console.log("Error al obtener las Actividades: ", error);
+                return null
+            }
+        }
+        fetchData();
+    }, [])
+
+    useEffect(() => {
+        const fetchData = async () => {
+            try {
+                const response = await getAllTrainers();
+                setTrainers(response);
+            } catch (error) {
+                console.error("Error al obtener los entrenadores: ", error);
+                return null
+            }
+        }
+        fetchData()
     }, [])
 
      return (
@@ -67,7 +123,7 @@ const ScheduleCards: React.FC = () =>  {
                 </div>
 
                 <div className="flex flex-wrap justify-center gap-8 mt-15">
-                { classes.map((e) => {
+                { Schedules.map((e) => {
                 
                 // const requires = e.requiresReservation === "true" || e.requiresReservation === true
                 return(
@@ -148,7 +204,7 @@ const ScheduleCards: React.FC = () =>  {
                             </button>
 
                             <button
-                            onClick={() => handlerDelete()}
+                            onClick={() => handlerDelete(scheduleId)}
                             className="px-5 py-2 rounded-xl bg-red-600/90 hover:bg-red-700 text-white font-medium transition duration-200"
                             >
                             Eliminar
@@ -184,106 +240,102 @@ const ScheduleCards: React.FC = () =>  {
                 </h2>
 
              
-                            <form className="flex flex-col gap-5">
-                <div>
-                    <label className="block text-sm font-medium text-white mb-1">
-                    Día de la Clase
-                    </label>
-                    <input
-                    type="text"
-                    name="dayOfWeek"
-                    style={{
-                    color: 'black',
-                    background: 'rgba(255, 255, 255, 1)',
-                    border: '1px solid rgba(255, 253, 253, 1)',
-                }}
-                    className="w-full bg-white/10 border border-white/20 rounded-lg px-3 py-2 
-                                text-white placeholder-gray-400 
-                                focus:outline-none focus:ring-2 
-                                transition"
-                    />
-                </div>
+                <form
+                    className="flex flex-col gap-5"
+                    onSubmit={handlerCreate}
+                    >
+                    {/* Día de la clase (ENUM HARCODEADO) */}
+                    <div>
+                        <label className="block text-sm font-medium text-white mb-1">
+                        Día de la Clase
+                        </label>
 
-                <div>
-                    <label className="block text-sm font-medium text-white mb-1">
-                    Inicio de la Clase
-                    </label>
-                    <input
-                    type="time"
-                    name="startTime"
-                    style={{
-                    color: 'black',
-                    background: 'rgba(255, 255, 255, 1)',
-                    border: '1px solid rgba(255, 253, 253, 1)',
-                }}
-                    className="w-full bg-white/10 border border-white/20 rounded-lg px-3 py-2 
-                                text-white placeholder-gray-400 
-                                focus:outline-none focus:ring-2 transition"
-                    />
-                </div>
+                        <select
+                        value={date}
+                        onChange={(e) => setDate(e.target.value)}
+                        className="w-full bg-white text-black border border-white/20 rounded-lg px-3 py-2 focus:outline-none"
+                        >
+                        <option value="">Selecciona un día</option>
+                        {days.map((d) => (
+                            <option key={d} value={d}>
+                            {d}
+                            </option>
+                        ))}
+                        </select>
+                    </div>
 
-                <div>
-                    <label className="block text-sm font-medium text-white mb-1">
-                    Final de la Clase
-                    </label>
-                    <input
-                    type="time"
-                    name="endTime"
-                    style={{
-                    color: 'black',
-                    background: 'rgba(255, 255, 255, 1)',
-                   border: '1px solid rgba(255, 253, 253, 1)',
-                }}
-                    className="w-full bg-white/10 border border-white/20 rounded-lg px-3 py-2 
-                                text-white placeholder-gray-400 
-                                focus:outline-none focus:ring-2 transition"
-                    />
-                </div>
+                    {/* Inicio */}
+                    <div>
+                        <label className="block text-sm font-medium text-white mb-1">
+                        Inicio de la Clase
+                        </label>
+                        <input
+                        type="time"
+                        value={startTime}
+                        onChange={(e) => setStartTime(e.target.value)}
+                        className="w-full bg-white text-black border border-white/20 rounded-lg px-3 py-2"
+                        />
+                    </div>
 
-                <div>
-                    <label className="block text-sm font-medium text-white mb-1">
-                    Entrenador
-                    </label>
-                    <input
-                    type="text"
-                    name="trainer"
-                    style={{
-                    color: 'black',
-                    background: 'rgba(255, 255, 255, 1)',
-                    border: '1px solid rgba(255, 253, 253, 1)',
-                }}
-                    id="requiresReservation"
-                    className="w-full bg-white/10 border border-white/20 rounded-lg px-3 py-2 
-                                text-white placeholder-gray-400 
-                                focus:outline-none focus:ring-2 transition"
-                    />
-                </div>
+                    {/* Final */}
+                    <div>
+                        <label className="block text-sm font-medium text-white mb-1">
+                        Final de la Clase
+                        </label>
+                        <input
+                        type="time"
+                        value={endTime}
+                        onChange={(e) => setEndTime(e.target.value)}
+                        className="w-full bg-white text-black border border-white/20 rounded-lg px-3 py-2"
+                        />
+                    </div>
 
-                <div>
-                    <label className="block text-sm font-medium text-white mb-1">
-                    Actividad
-                    </label>
-                    <input
-                    type="text"
-                    name="activity"
-                    style={{
-                    color: 'black',
-                    background: 'rgba(255, 255, 255, 1)',
-                   border: '1px solid rgba(255, 253, 253, 1)',
-                }}
-                    className="w-full bg-white/10 border border-white/20 rounded-lg px-3 py-2 
-                                text-white placeholder-gray-400 
-                                focus:outline-none focus:ring-2  transition"
-                    />
-                </div>
+                    {/* Entrenador (ENUM DESDE BACKEND) */}
+                    <div>
+                        <label className="block text-sm font-medium text-white mb-1">
+                        Entrenador
+                        </label>
 
-                <button
-                    type="submit"
-                    className="mt-2 bg-white text-black font-medium px-4 py-2 rounded-lg 
-                            hover:bg-gray-300 transition active:scale-[0.98]"
-                >
-                    Crear Clase
-                </button>
+                        <select
+                        value={trainer}
+                        onChange={(e) => setTrainer(e.target.value)}
+                        className="w-full bg-white text-black border border-white/20 rounded-lg px-3 py-2"
+                        >
+                        <option value="">Selecciona un entrenador</option>
+                        {trainers.map((t) => (
+                            <option key={t.id} value={t.name}>
+                            {t.name}
+                            </option>
+                        ))}
+                        </select>
+                    </div>
+
+                    {/* Actividad (ENUM DESDE BACKEND) */}
+                    <div>
+                        <label className="block text-sm font-medium text-white mb-1">
+                        Actividad
+                        </label>
+
+                        <select
+                        value={activityId}
+                        onChange={(e) => setActivityId(e.target.value)}
+                        className="w-full bg-white text-black border border-white/20 rounded-lg px-3 py-2"
+                        >
+                        <option value="">Selecciona una actividad</option>
+                        {activities.map((a) => (
+                            <option key={a.id} value={a.id}>
+                            {a.name}
+                            </option>
+                        ))}
+                        </select>
+                    </div>
+
+                    <button
+                        type="submit"
+                        className="mt-2 bg-white text-black font-medium px-4 py-2 rounded-lg hover:bg-gray-300 transition"
+                    >
+                        Crear Clase
+                    </button>
                 </form>
         </div>
     </div>
