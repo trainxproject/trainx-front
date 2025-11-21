@@ -252,14 +252,18 @@ export const deleteSchedules = async (ScheduleId: string): Promise<AxiosResponse
             }}
         );
         console.log(response);
+        if(response.status === 200) {
+            toast.success("Clase Eliminada")
+        }
         return response
     } catch (error) {
         console.error("Error al eliminar la clase: ", error);
+        toast.error("Error al eliminar la clase")
         return null;
     }
 }
 
-export const createSchedule = async (scheduleId: string): Promise<Scheduler | null> => {
+export const createSchedule = async (activityId: string, date: string, startTime: string, endTime: string, trainer: string): Promise<Scheduler | null> => {
     const token = localStorage.getItem('token');
     console.log(token);
     if(!token) {
@@ -268,11 +272,16 @@ export const createSchedule = async (scheduleId: string): Promise<Scheduler | nu
     }
 
     try {
-        const response = await axios.post(`${API_URL}/schedules/${scheduleId}`,
-            {headers: {
-                Authorization: `Bearer ${token}`
-            }}
-        );
+        const response = await axios.post(`${API_URL}/schedules`,{
+            activityId: activityId,
+            date: date,
+            startTime: startTime,
+            endTime: endTime,
+            trainer: trainer,
+        }, {headers: {
+            Authorization: `Bearer ${token}`
+        }});
+
         if(response.status === 201) {
             toast.success("Clase creada");
         }
