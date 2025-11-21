@@ -30,7 +30,7 @@ export function Footer() {
           </div>
 
           
-          <div>
+          {/* <div>
             <h3 className="text-[16px] font-semibold mb-4">Información</h3>
             <ul className="space-y-2">
               <li>
@@ -54,8 +54,8 @@ export function Footer() {
                 </a>
               </li>
             </ul>
-          </div>
-
+          </div> */}
+            
           
           <div>
             <h3 className="text-[16px] font-semibold mb-4">Contacto</h3>

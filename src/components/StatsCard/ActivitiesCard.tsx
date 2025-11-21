@@ -7,6 +7,8 @@ import { Classes } from "@/interfaces/Classes";
 import { createActivities, deleteActivities } from "@/services/adminServices";
 import { uploadCloudinaryService } from "@/services/uploadCloudinaryService";
 import { toast } from "sonner";
+import { date } from "yup";
+import { timeEnd } from "console";
 
 const ActivitiesCard: React.FC = () => {
     const [modal, setModal] = useState(false);
@@ -36,7 +38,6 @@ const ActivitiesCard: React.FC = () => {
 
     const handlerCreate = async (e: React.FormEvent) => {
         e.preventDefault();
-
         try {
             let uploadedImageUrl = "";
 
