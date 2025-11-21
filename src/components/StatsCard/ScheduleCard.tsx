@@ -1,21 +1,124 @@
+// import { Trash2 } from "lucide-react";
+// import { useState, useEffect } from "react";
+// import { Classes, Schedules } from "@/interfaces/Classes";
+// import { getAllClasses, getAllSchedule } from "@/services/classesService";
+// import { deleteSchedules, createSchedule, getAllUsers } from "@/services/adminServices";
+// import { toast } from "sonner";
+// import { Trainers } from "@/interfaces/Trainer";
+// import { getAllTrainers } from "@/services/trainersService";
+
+// const ScheduleCards: React.FC = () =>  {
+//     const [modal, setModal] = useState(false)   
+//     const [iconDelete, setIconDelete] = useState(false)  
+//     const [Schedules, setSchedules] = useState<Schedules[]>([]);
+//     const [scheduleId, setScheduleId] = useState<string>("");
+//     const [trainers, setTrainers] = useState<Trainers[]>([])
+//     const [activities, setActivities] = useState<Classes[]>([])
+
+//     //+ ESTADOS PARA CREAR LA CLASE
+
+//     const [activityId, setActivityId] = useState<string>("");
+//     const [date, setDate] = useState<string>("");
+//     const [startTime, setStartTime] = useState<string>("");
+//     const [endTime, setEndTime] = useState<string>("");
+//     const [trainer, setTrainer] = useState<string>("");
+
+//     const days = [
+//         "Lunes",
+//         "Martes",
+//         "Miércoles",
+//         "Jueves",
+//         "Viernes",
+//     ];
+
+//     const handlerCreate = async (e: React.FormEvent<HTMLFormElement>) => {
+//         e.preventDefault()
+//         try {
+//             const response = await createSchedule(
+//                 activityId,
+//                 date,
+//                 startTime,
+//                 endTime,
+//                 trainer
+//             )
+//             console.log(response);
+//             return response
+//         } catch (error) {
+//             console.error("Error al crear la clase: ", error);
+//             return null
+//         }
+//     }
+
+//     const handlerDelete = async (scheduleId: string) => {
+//         try {
+//             const response = await deleteSchedules(scheduleId);
+//             console.log(response);
+//             return response
+//         } catch (error) {
+//             console.error("Error al eliminar la clase: ", error);
+//             return null
+//         }
+//     }
+
+//     useEffect(() => {
+//         const fetchData = async () => {
+//             try {
+//                 const schedules = await getAllSchedule();
+//                 console.log(schedules);
+//                 setSchedules(schedules);
+//             } catch (error) {
+//                 console.error("Error al traer las clases: ", error);
+//                 return [];
+//             }
+//         }
+//         fetchData();
+//     }, [])
+
+//     useEffect(() => {
+//         const fetchData = async () => {
+//             try {
+//                 const response = await getAllClasses()
+//                 setActivities(response);
+//             } catch (error) {
+//                 console.log("Error al obtener las Actividades: ", error);
+//                 return null
+//             }
+//         }
+//         fetchData();
+//     }, [])
+
+//     useEffect(() => {
+//         const fetchData = async () => {
+//             try {
+//                 const response = await getAllTrainers();
+//                 setTrainers(response);
+//             } catch (error) {
+//                 console.error("Error al obtener los entrenadores: ", error);
+//                 return null
+//             }
+//         }
+//         fetchData()
+//     }, [])
+
+
 import { Trash2 } from "lucide-react";
 import { useState, useEffect } from "react";
 import { Classes, Schedules } from "@/interfaces/Classes";
 import { getAllClasses, getAllSchedule } from "@/services/classesService";
-import { deleteSchedules, createSchedule, getAllUsers } from "@/services/adminServices";
+import { deleteSchedules, createSchedule } from "@/services/adminServices";
 import { toast } from "sonner";
 import { Trainers } from "@/interfaces/Trainer";
 import { getAllTrainers } from "@/services/trainersService";
 
 const ScheduleCards: React.FC = () =>  {
-    const [modal, setModal] = useState(false)   
-    const [iconDelete, setIconDelete] = useState(false)  
+
+    const [modal, setModal] = useState(false);
+    const [iconDelete, setIconDelete] = useState(false);
     const [Schedules, setSchedules] = useState<Schedules[]>([]);
     const [scheduleId, setScheduleId] = useState<string>("");
-    const [trainers, setTrainers] = useState<Trainers[]>([])
-    const [activities, setActivities] = useState<Classes[]>([])
 
-    //+ ESTADOS PARA CREAR LA CLASE
+    const [trainers, setTrainers] = useState<Trainers[]>([]);
+    const [activities, setActivities] = useState<Classes[]>([]);
 
     const [activityId, setActivityId] = useState<string>("");
     const [date, setDate] = useState<string>("");
@@ -23,16 +126,34 @@ const ScheduleCards: React.FC = () =>  {
     const [endTime, setEndTime] = useState<string>("");
     const [trainer, setTrainer] = useState<string>("");
 
-    const days = [
-        "Lunes",
-        "Martes",
-        "Miércoles",
-        "Jueves",
-        "Viernes",
-    ];
+    const days = ["Lunes", "Martes", "Miércoles", "Jueves", "Viernes"];
 
+    // 🔥 FUNCIONES DE REFRESH
+    const refreshSchedules = async () => {
+        try {
+            const data = await getAllSchedule();
+            setSchedules(data);
+        } catch (error) {
+            console.error("Error refrescando las clases", error);
+        }
+    };
+
+    const refreshDependencies = async () => {
+        try {
+            const [c, t] = await Promise.all([
+                getAllClasses(),
+                getAllTrainers(),
+            ]);
+            setActivities(c);
+            setTrainers(t);
+        } catch (error) {
+            console.error("Error cargando dependencias", error);
+        }
+    };
+
+    // 🔥 REFRESH AUTOMÁTICO AL CREAR
     const handlerCreate = async (e: React.FormEvent<HTMLFormElement>) => {
-        e.preventDefault()
+        e.preventDefault();
         try {
             const response = await createSchedule(
                 activityId,
@@ -40,66 +161,46 @@ const ScheduleCards: React.FC = () =>  {
                 startTime,
                 endTime,
                 trainer
-            )
-            console.log(response);
-            return response
+            );
+
+            if (response) {
+                toast.success("Clase creada correctamente");
+                await refreshSchedules();   // <--- recarga
+                setModal(false);            // <--- cierre modal
+            }
+
+            return response;
+
         } catch (error) {
             console.error("Error al crear la clase: ", error);
-            return null
+            return null;
         }
-    }
+    };
 
+    // 🔥 REFRESH AUTOMÁTICO AL ELIMINAR
     const handlerDelete = async (scheduleId: string) => {
         try {
             const response = await deleteSchedules(scheduleId);
-            console.log(response);
-            return response
+
+            if (response) {
+                toast.success("Clase eliminada");
+                await refreshSchedules();  // <--- recarga
+            }
+
+            return response;
+
         } catch (error) {
             console.error("Error al eliminar la clase: ", error);
-            return null
+            return null;
         }
-    }
+    };
 
+    // 🔥 CARGA INICIAL
     useEffect(() => {
-        const fetchData = async () => {
-            try {
-                const schedules = await getAllSchedule();
-                console.log(schedules);
-                setSchedules(schedules);
-            } catch (error) {
-                console.error("Error al traer las clases: ", error);
-                return [];
-            }
-        }
-        fetchData();
-    }, [])
-
-    useEffect(() => {
-        const fetchData = async () => {
-            try {
-                const response = await getAllClasses()
-                setActivities(response);
-            } catch (error) {
-                console.log("Error al obtener las Actividades: ", error);
-                return null
-            }
-        }
-        fetchData();
-    }, [])
-
-    useEffect(() => {
-        const fetchData = async () => {
-            try {
-                const response = await getAllTrainers();
-                setTrainers(response);
-            } catch (error) {
-                console.error("Error al obtener los entrenadores: ", error);
-                return null
-            }
-        }
-        fetchData()
-    }, [])
-
+        refreshSchedules();
+        refreshDependencies();
+    }, []);
+    
      return (
 
         <div  className="min-h-screen  flex flex-col  bg-(--background) flex flex-wrap  mt-29">

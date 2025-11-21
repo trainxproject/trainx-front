@@ -41,10 +41,14 @@ export const createActivities = async (name: string, description: string, requir
                 Authorization: `Bearer ${token}`
             }} 
         )
+        if(response.status === 201) {
+            toast.success("Actividad creada correctamente.")
+        }
         console.log(response);
         return response.data
         } catch (error) {
             console.error("Error al crear la activiadad: ", error);
+            toast.error("Error al crear la actividad")
             return null;
         }
 }
