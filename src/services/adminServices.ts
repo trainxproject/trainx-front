@@ -146,7 +146,7 @@ export const deleteActivities = async (activityId: string) => {
     }
 }
 
-export const usersStatus = async (userId: string, userStatus: string) => {
+export const usersStatus = async (userId: string, status: string) => {
     const token = localStorage.getItem('token');
         if(!token) {
             console.error("error al obtener el token");
@@ -158,7 +158,7 @@ export const usersStatus = async (userId: string, userStatus: string) => {
     try {
         const response = await axios.patch(`${API_URL}/admin/users/${userId}/status`,
         {
-            userStatus: userStatus
+            status: status
         }, {headers: {
             Authorization: `Bearer ${token}`
         }}

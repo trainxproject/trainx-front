@@ -3,6 +3,10 @@
 import { FiveDay, ThreeDay, Collection } from "@/interfaces/Plan";
 import { getThreeDayPlan, getFiveDayPlan, getMonthlyCollection } from "@/services/adminServices";
 import { useEffect, useState } from "react";
+import { getAllUsers } from "@/services/userService";
+import { getAllTrainers } from "@/services/trainersService";
+import { Classes } from "@/interfaces/Classes";
+import { Trainers } from "@/interfaces/Trainer";
 
 const Statistics: React.FC =  () => {
 
@@ -52,6 +56,36 @@ const Statistics: React.FC =  () => {
         fetchData()
     }, []);
 
+
+    useEffect(() => {
+        const fetchData = async () => {
+            try {
+                const response = await getAllUsers()
+                setUsers(response)
+            } catch (error) {
+                console.error("Error al traer los usuarios");
+                return null
+            }
+        }
+        fetchData()
+    }, [])
+    
+    useEffect(() => {
+        const fetchData = async () => {
+          try {
+            const response = await getAllTrainers();
+            setTrainers(response);
+          } catch (error) {
+            console.error("Error al traer los entrenadores");
+            return null;
+          }  
+        }
+        fetchData()
+    }, [])
+
+    const [users, setUsers] = useState<Classes[]>([])
+    const [trainers, setTrainers] = useState<Trainers[]>([])
+
     return(
         <div className="flex flex-col">
             <div>
@@ -62,8 +96,8 @@ const Statistics: React.FC =  () => {
                     Visualiza el rendimiento de tu gimnasio
                 </p>
             </div>
-            <div className="flex justify-around items-center mt-15">
-                <div className="flex flex-col items-center py-4 px-6 rounded-2xl border-2 border-(--border) bg-(--secondary)/45">
+            <div className="grid grid-cols-3 items-center mt-15">
+            <div className="flex flex-col items-center py-4 px-6 rounded-2xl border-2 border-(--border) bg-(--secondary)/45">
                     <h3 className="text-xl font-semibold text-(--foreground) text-(--muted-foreground)">
                         Ingresos mensuales
                     </h3>
@@ -80,6 +114,20 @@ const Statistics: React.FC =  () => {
                         Planes de cinco días
                     </h3>
                     <span className="mt-2 text-lg font-bold text-(--primary)">{fiveDay?.count}</span>
+                </div>
+            </div>
+            <div className="grid grid-cols-2 justify-center items gap-10">
+                <div className="flex flex-col items-center justify-center w-50 rounded-2xl border-2 border-(--border) bg-(--secondary)/45">
+                    <h3 className="text-xl font-semibold text-(--foreground) text-(--muted-foreground)">
+                        Socios Totales
+                    </h3>
+                    <span className="mt-2 text-lg font-bold text-(--primary)">${users.length}</span>
+                </div>
+                <div className="flex flex-col items-center justify-center w-50 p-3 rounded-2xl border-2 border-(--border) bg-(--secondary)/45">
+                    <h3 className="text-xl font-semibold text-(--foreground) text-(--muted-foreground)">
+                        Cantidad de enrtenadores
+                    </h3>
+                    <span className="mt-2 text-lg font-bold text-(--primary)">${trainers.length}</span>
                 </div>
             </div>
         </div>
