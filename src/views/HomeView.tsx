@@ -24,7 +24,6 @@ const Icons = {
 
 export default function HomeView() {
   const [showLogin, setShowLogin] = useState(false);
-  const [users, setUsers] = useState<IUser[] | null>([])
   const { user, loading } = useAuth();
   const router = useRouter();
 
@@ -207,7 +206,7 @@ useEffect(() => {
         
           <h3 className="text-xl font-bold mb-2">{plan.name}</h3>
           <p className="text-[32px] font-semibold text-(--primary) mb-1">
-            ${plan.price.toFixed(2)}
+            ${plan.price.toFixed(3)}
           </p>
           <p className="text-md text-muted-foreground mb-4">{plan.frequency}</p>
 

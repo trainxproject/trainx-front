@@ -282,22 +282,23 @@ export const createSchedule = async (activityId: string, date: string, startTime
     }
 
     try {
+        
         const response = await axios.post(`${API_URL}/schedules`,{
             activityId: activityId,
-            date: date,
+            dayOfWeek: date,
             startTime: startTime,
             endTime: endTime,
             trainer: trainer,
         }, {headers: {
             Authorization: `Bearer ${token}`
         }});
-
+        console.log("Datos de peticion 2: ", activityId, date, startTime, endTime, trainer);
         if(response.status === 201) {
             toast.success("Clase creada");
         }
         return response.data;
-    } catch (error) {
-        console.error("Error al crear la clase: ", error);
+    } catch (error: any) {
+        console.error("Error al crear la clase: ", error?.response.status);
         toast.error("Error al crear la clase")
         return null
     }
