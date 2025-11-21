@@ -200,7 +200,7 @@ const ScheduleCards: React.FC = () =>  {
         refreshSchedules();
         refreshDependencies();
     }, []);
-    
+
      return (
 
         <div  className="min-h-screen  flex flex-col  bg-(--background) flex flex-wrap  mt-29">
@@ -260,21 +260,21 @@ const ScheduleCards: React.FC = () =>  {
                     <div className="mt-3 flex flex-col gap-2 w-full">
                         <div className="flex items-center justify-between bg-white/5 rounded-lg px-3 py-2">
                         <h3 className="text-gray-400 text-xs uppercase tracking-wide">
-                            Entrenador
+                            Día:
                         </h3>
-                        <span className="text-white font-medium">{e.trainer}</span>
+                        <span className="text-white font-medium">{e.dayOfWeek}</span>
                         </div>
 
                         <div className="flex items-center justify-between bg-white/5 rounded-lg px-3 py-2">
                         <h3 className="text-gray-400 text-xs uppercase tracking-wide">
-                            Inicio
+                            Inicio:
                         </h3>
                         <span className="text-white font-medium">{e.startTime}</span>
                         </div>
 
                         <div className="flex items-center justify-between bg-white/5 rounded-lg px-3 py-2">
                         <h3 className="text-gray-400 text-xs uppercase tracking-wide">
-                            Final
+                            Final:
                         </h3>
                         <span className="text-white font-medium">{e.endTime}</span>
                         </div>
