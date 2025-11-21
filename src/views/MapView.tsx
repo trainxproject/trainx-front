@@ -59,6 +59,8 @@ const MapView: React.FC = () => {
 
           <Link 
             href="https://www.google.com/maps/dir//Club+N%C3%A1utico+Pergamino,+Int.+Biscayart+sur+452,+B2700+Pergamino,+Provincia+de+Buenos+Aires/@-33.9038557,-60.5761448,176m/data=!3m1!1e3!4m17!1m7!3m6!1s0x95b9b5fdb5968f3b:0x6a50115ae9c8ec5a!2sClub+N%C3%A1utico+Pergamino!8m2!3d-33.9039177!4d-60.5760481!16s%2Fg%2F11sq54yg_4!4m8!1m0!1m5!1m1!1s0x95b9b5fdb5968f3b:0x6a50115ae9c8ec5a!2m2!1d-60.576032!2d-33.9038816!3e1?entry=ttu&g_ep=EgoyMDI1MTAyMi4wIKXMDSoASAFQAw%3D%3D"
+            target="_blank"
+            rel="noopener noreferrer"
             className="bg-[var(--primary)]/70 hover:bg-[var(--primary)] hover:shadow-xl hover:shadow-[var(--primary)] py-3 px-12 rounded-2xl mt-6 text-center"
           >
             <span className="text-xl font-bold text-black">Cómo llegar</span>

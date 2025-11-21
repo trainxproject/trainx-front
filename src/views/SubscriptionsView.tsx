@@ -40,7 +40,7 @@ const handleSubscribe = async (planId: string) => {
   }
 };
   return (
-    <div className="flex flex-wrap gap-8 mt-8">
+    <div className="flex flex-wrap justify-center gap-8 mt-8 pb-20">
   {plans.map((plan, index) => (
     <div
       key={index}
