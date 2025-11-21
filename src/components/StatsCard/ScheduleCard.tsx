@@ -1,106 +1,3 @@
-// import { Trash2 } from "lucide-react";
-// import { useState, useEffect } from "react";
-// import { Classes, Schedules } from "@/interfaces/Classes";
-// import { getAllClasses, getAllSchedule } from "@/services/classesService";
-// import { deleteSchedules, createSchedule, getAllUsers } from "@/services/adminServices";
-// import { toast } from "sonner";
-// import { Trainers } from "@/interfaces/Trainer";
-// import { getAllTrainers } from "@/services/trainersService";
-
-// const ScheduleCards: React.FC = () =>  {
-//     const [modal, setModal] = useState(false)   
-//     const [iconDelete, setIconDelete] = useState(false)  
-//     const [Schedules, setSchedules] = useState<Schedules[]>([]);
-//     const [scheduleId, setScheduleId] = useState<string>("");
-//     const [trainers, setTrainers] = useState<Trainers[]>([])
-//     const [activities, setActivities] = useState<Classes[]>([])
-
-//     //+ ESTADOS PARA CREAR LA CLASE
-
-//     const [activityId, setActivityId] = useState<string>("");
-//     const [date, setDate] = useState<string>("");
-//     const [startTime, setStartTime] = useState<string>("");
-//     const [endTime, setEndTime] = useState<string>("");
-//     const [trainer, setTrainer] = useState<string>("");
-
-//     const days = [
-//         "Lunes",
-//         "Martes",
-//         "Miércoles",
-//         "Jueves",
-//         "Viernes",
-//     ];
-
-//     const handlerCreate = async (e: React.FormEvent<HTMLFormElement>) => {
-//         e.preventDefault()
-//         try {
-//             const response = await createSchedule(
-//                 activityId,
-//                 date,
-//                 startTime,
-//                 endTime,
-//                 trainer
-//             )
-//             console.log(response);
-//             return response
-//         } catch (error) {
-//             console.error("Error al crear la clase: ", error);
-//             return null
-//         }
-//     }
-
-//     const handlerDelete = async (scheduleId: string) => {
-//         try {
-//             const response = await deleteSchedules(scheduleId);
-//             console.log(response);
-//             return response
-//         } catch (error) {
-//             console.error("Error al eliminar la clase: ", error);
-//             return null
-//         }
-//     }
-
-//     useEffect(() => {
-//         const fetchData = async () => {
-//             try {
-//                 const schedules = await getAllSchedule();
-//                 console.log(schedules);
-//                 setSchedules(schedules);
-//             } catch (error) {
-//                 console.error("Error al traer las clases: ", error);
-//                 return [];
-//             }
-//         }
-//         fetchData();
-//     }, [])
-
-//     useEffect(() => {
-//         const fetchData = async () => {
-//             try {
-//                 const response = await getAllClasses()
-//                 setActivities(response);
-//             } catch (error) {
-//                 console.log("Error al obtener las Actividades: ", error);
-//                 return null
-//             }
-//         }
-//         fetchData();
-//     }, [])
-
-//     useEffect(() => {
-//         const fetchData = async () => {
-//             try {
-//                 const response = await getAllTrainers();
-//                 setTrainers(response);
-//             } catch (error) {
-//                 console.error("Error al obtener los entrenadores: ", error);
-//                 return null
-//             }
-//         }
-//         fetchData()
-//     }, [])
-
-
 import { Trash2 } from "lucide-react";
 import { useState, useEffect } from "react";
 import { Classes, Schedules } from "@/interfaces/Classes";
@@ -128,7 +25,6 @@ const ScheduleCards: React.FC = () =>  {
 
     const days = ["Lunes", "Martes", "Miércoles", "Jueves", "Viernes"];
 
-    // 🔥 FUNCIONES DE REFRESH
     const refreshSchedules = async () => {
         try {
             const data = await getAllSchedule();
@@ -151,7 +47,6 @@ const ScheduleCards: React.FC = () =>  {
         }
     };
 
-    // 🔥 REFRESH AUTOMÁTICO AL CREAR
     const handlerCreate = async (e: React.FormEvent<HTMLFormElement>) => {
         e.preventDefault();
         try {
@@ -165,8 +60,8 @@ const ScheduleCards: React.FC = () =>  {
 
             if (response) {
                 toast.success("Clase creada correctamente");
-                await refreshSchedules();   // <--- recarga
-                setModal(false);            // <--- cierre modal
+                await refreshSchedules();
+                setModal(false);
             }
 
             return response;
@@ -177,14 +72,13 @@ const ScheduleCards: React.FC = () =>  {
         }
     };
 
-    // 🔥 REFRESH AUTOMÁTICO AL ELIMINAR
     const handlerDelete = async (scheduleId: string) => {
         try {
             const response = await deleteSchedules(scheduleId);
 
             if (response) {
                 toast.success("Clase eliminada");
-                await refreshSchedules();  // <--- recarga
+                await refreshSchedules();
             }
 
             return response;
@@ -195,7 +89,6 @@ const ScheduleCards: React.FC = () =>  {
         }
     };
 
-    // 🔥 CARGA INICIAL
     useEffect(() => {
         refreshSchedules();
         refreshDependencies();
@@ -224,7 +117,6 @@ const ScheduleCards: React.FC = () =>  {
                 <div className="flex flex-wrap justify-center gap-8 mt-15">
                 { Schedules.map((e) => {
                 
-                // const requires = e.requiresReservation === "true" || e.requiresReservation === true
                 return(
                     <div key={e.id}
                     className="bg-[hsl(var(--secondary))] 
@@ -338,7 +230,7 @@ const ScheduleCards: React.FC = () =>  {
                     className="flex flex-col gap-5"
                     onSubmit={handlerCreate}
                     >
-                    {/* Día de la clase (ENUM HARCODEADO) */}
+                    {/* Día de la clase */}
                     <div>
                         <label className="block text-sm font-medium text-white mb-1">
                         Día de la Clase
@@ -384,7 +276,7 @@ const ScheduleCards: React.FC = () =>  {
                         />
                     </div>
 
-                    {/* Entrenador (ENUM DESDE BACKEND) */}
+                    {/* Entrenador */}
                     <div>
                         <label className="block text-sm font-medium text-(--foreground) mb-1">
                         Entrenador
@@ -404,7 +296,7 @@ const ScheduleCards: React.FC = () =>  {
                         </select>
                     </div>
 
-                    {/* Actividad (ENUM DESDE BACKEND) */}
+                    {/* Actividad */}
                     <div>
                         <label className="block text-sm font-medium text-white mb-1">
                         Actividad

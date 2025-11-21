@@ -1,3 +1,5 @@
+'use clinet'
+
 import { getAllUsers } from "@/services/userService";
 import { Search, CheckCircle, Ban, Timer, UserCheck2Icon, UserX2 } from "lucide-react";
 import { useEffect, useState } from "react";
@@ -43,7 +45,6 @@ const UserStatsCard: React.FC = () => {
     fetchData();
   }, []);
 
-  // 🔥 CAMBIAR ESTADO DEL USUARIO
   const handlerUserStatus = async () => {
     try {
       startLoading();
@@ -61,7 +62,6 @@ const UserStatsCard: React.FC = () => {
     }
   };
 
-  // 🔥 FILTRADO
   const hanlderFilter = async (status: string) => {
     try {
       startLoading();
@@ -75,7 +75,6 @@ const UserStatsCard: React.FC = () => {
     }
   };
 
-  // 🔥 TRAER TODOS LOS USUARIOS
   const handlerAllUser = async () => {
     try {
       startLoading();
@@ -134,7 +133,6 @@ const UserStatsCard: React.FC = () => {
           </div>
         )}
 
-        {/* SOLO SE MUESTRAN LOS USUARIOS CUANDO NO ESTÁ CARGANDO */}
         {!loading && (
           <>
             {/* BUSCADOR Y PAGINADO */}
@@ -172,7 +170,7 @@ const UserStatsCard: React.FC = () => {
               </div>
             </div>
 
-            {/* ENCABEZADOS (DESKTOP) */}
+            {/* ENCABEZADOS */}
             <div className="hidden lg:grid grid-cols-5 text-white font-semibold text-center py-3 bg-white/10 border border-white/20 rounded-t-xl">
               <div>Usuario</div>
               <div>Plan</div>
@@ -181,7 +179,6 @@ const UserStatsCard: React.FC = () => {
               <div>Estado</div>
             </div>
 
-            {/* FILAS */}
             {currentUsers?.map((e, i) => (
               <div
                 key={i}
