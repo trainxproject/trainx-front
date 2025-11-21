@@ -30,7 +30,7 @@ const UserStatsCard: React.FC = () => {
   const startLoading = () => setLoading(true);
   const stopLoading = () => setLoading(false);
   const [activeFilter, setActiveFilter] = useState<string>("all");
-  const [userStatus, setUserStatus] = useState<string | null>("");
+  const [status, setStatus] = useState<string | null>("");
 
   useEffect(() => {
     const fetchData = async () => {
@@ -58,9 +58,10 @@ const UserStatsCard: React.FC = () => {
   }
 
   const handlerUserStatus = async () => {
+    console.log("status: ",status)
     try {
       startLoading();
-      const response = await usersStatus(userId, userStatus ?? "");
+      const response = await usersStatus(userId, status ?? "");
       if (response?.status === 200) {
         toast.success("Estado del usuario modificado");
         handlerAllUser(); // refresca los usuarios
@@ -244,7 +245,7 @@ const UserStatsCard: React.FC = () => {
                       <UserCheck2Icon className="text-green-400" />
                       <span className="text-green-400 text-sm">{e.status}</span>
                       <button
-                        onClick={() => { setUserStatus(e.status ?? null), setUserId(e.id), setActive(true)}}
+                        onClick={() => { setStatus("inactive"), setUserId(e.id), setActive(true)}}
                         className="p-1 hover:bg-white/10 rounded-full"
                       >
                         <IoIosOptions className="w-5 h-5 text-gray-300 hover:text-white" />
@@ -257,7 +258,7 @@ const UserStatsCard: React.FC = () => {
                       <UserX2 className="text-red-400" />
                       <span className="text-red-400 text-sm">{e.status}</span>
                       <button
-                        onClick={() => {setUserId(e.id), setUserStatus(e.status ?? null),setInactive(true)}}
+                        onClick={() => {setUserId(e.id), setStatus("active"),setInactive(true)}}
                         className="p-1 hover:bg-white/10 rounded-full"
                       >
                         <IoIosOptions className="w-5 h-5 text-gray-300 hover:text-white" />
@@ -290,7 +291,7 @@ const UserStatsCard: React.FC = () => {
 
               <button
                 className="px-5 py-2 rounded-xl bg-red-600 text-white"
-                onClick={() => { handlerUserStatus; setActive(false); }}
+                onClick={() => { handlerUserStatus(); setActive(false);}}
               >
                 Inhabilitar
               </button>
@@ -316,7 +317,8 @@ const UserStatsCard: React.FC = () => {
                 Cancelar
               </button>
 
-              <button className="px-5 py-2 rounded-xl bg-emerald-600 text-white">
+              <button className="px-5 py-2 rounded-xl bg-emerald-600 text-white"
+              onClick={() => {handlerUserStatus(); setActive(false);}}>
                 Reactivar
               </button>
             </div>
