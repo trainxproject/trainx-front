@@ -17,16 +17,6 @@ const { openRegister } = useAuthModal();
   const [loading, setLoading] = useState(false);
  
 
-useEffect(() => {
-  if (user) {
-    if (isAdmin) {
-      router.push("/dashboard/admin");
-    } else {
-      router.push("/dashboard/user");
-    }
-  }
-}, [user, isAdmin, router]);
-
   const formik = useFormik<LoginFormValues>({
     initialValues: LoginInitialValues,
     validationSchema: LoginValidationSchema,
@@ -36,6 +26,8 @@ useEffect(() => {
         await login({ email: values.email, password: values.password });
         toast.success("Login exitoso");
         onClose?.();
+        if (isAdmin) router.push("/dashboard/admin");
+        else router.push("/dashboard/user");
       } catch (error: any) {
         console.error(error);
         const message = error?.response?.data?.message || "Error en login, revisa tus credenciales";
