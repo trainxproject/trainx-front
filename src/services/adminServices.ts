@@ -218,9 +218,13 @@ export const rateTrainer = async (userId: string, rating: number): Promise<Train
         }}
     )
     console.log(response);
+    if(response.status === 201) {
+        toast.success("Su calificación fue inviada.")
+    }
     return response.data
     } catch (error) {
         console.error("Error al calificar el entrenador", error);
+        toast.error("El entrenador no pudo ser calificado");
         return null
     }
 }

@@ -4,8 +4,8 @@ import { Star, Trash2 } from "lucide-react";
 import { useEffect, useState } from "react";
 import { getAllTrainers } from "@/services/trainersService";
 import { Trainers } from "@/interfaces/Trainer";
-import { createTrainer } from "@/services/adminServices";
-import { deleteTrainer } from "@/services/adminServices";
+import { createTrainer, deleteTrainer } from "@/services/adminServices";
+import { uploadCloudinaryService } from "@/services/uploadCloudinaryService";
 import { toast } from "sonner";
 
 const TrainersCard: React.FC = () =>  {
@@ -14,14 +14,13 @@ const TrainersCard: React.FC = () =>  {
     const [iconDelete, setIconDelete] = useState(false);
     const [trainers, setTrainers] = useState<Trainers[]>([]);
     const [trainerId, setTrainerId] = useState<string>("");
+    const [file, setFile] = useState<File | null>(null);
 
     // Crear entrenador
     const [name, setName] = useState<string>("");
     const [specialization, setSpecialization] = useState<string>("");
     const [formation, setFormation] = useState<string>("");
-    const [imageUrl, setImageUrl] = useState<string>("");
     const [available, setAvailable] = useState<boolean>(true);
-
 
     useEffect(() => {
         const savedModal = localStorage.getItem("trainerModal");
@@ -32,7 +31,6 @@ const TrainersCard: React.FC = () =>  {
         if (savedDelete === "true") setIconDelete(true);
         if (savedTrainerId) setTrainerId(savedTrainerId);
     }, []);
-
 
     const openModal = () => {
         setModal(true);
@@ -69,33 +67,40 @@ const TrainersCard: React.FC = () =>  {
         loadTrainers();
     }, []);
 
+    // Handler para crear entrenador con subida de imagen a Cloudinary
     const handlerCreate = async (e: React.FormEvent) => {
-        e.preventDefault(); // evita refresco
+        e.preventDefault();
 
         try {
+            let uploadedImageUrl = "";
+
+            if (file) {
+                const token = localStorage.getItem("token") || "";
+                uploadedImageUrl = await uploadCloudinaryService(file, token);
+            }
+
             const response = await createTrainer(
                 name,
                 specialization,
                 formation,
-                imageUrl,
+                uploadedImageUrl,
                 available
             );
 
-            if(response) {
+            if (response) {
                 toast.success("Entrenador creado correctamente");
-
                 await loadTrainers();
-
                 closeModal();
                 setName("");
                 setSpecialization("");
                 setFormation("");
-                setImageUrl("");
+                setFile(null);
                 return response;
             }
 
         } catch (error) {
             console.error("Error al crear el entrenador", error);
+            toast.error("Error al subir la imagen o crear el entrenador");
             return null;
         }
     };
@@ -106,30 +111,21 @@ const TrainersCard: React.FC = () =>  {
 
             if (response?.status === 200) {
                 toast.success("Entrenador eliminado");
-
                 await loadTrainers();
                 closeDelete();
                 return response;
             }
 
         } catch (error: any) {
-
             const status = error?.response?.status;
-            if (status === 401) {
-                toast.error("No posees los permisos necesarios");
-                return null;
-            } else if (status === 500) {
-                toast.error("Error interno al eliminar");
-                return null;
-            }
-
+            if (status === 401) toast.error("No posees los permisos necesarios");
+            else if (status === 500) toast.error("Error interno al eliminar");
             console.error("Error al eliminar el entrenador: ", error);
             return null;
         }
     };
 
     return (
-
         <div className="min-h-screen flex flex-col bg-(--background) mt-29">
 
             <div className="mb-3 flex flex-col gap-1 items-center">
@@ -158,7 +154,6 @@ const TrainersCard: React.FC = () =>  {
                                    w-full sm:w-[300px] md:w-[350px] lg:w-[380px]
                                    shadow-lg hover:scale-[1.02] transition-all"
                     >
-
                         <div className="flex items-center">
                             <button
                                 onClick={() => openDelete(t.id)}
@@ -206,15 +201,12 @@ const TrainersCard: React.FC = () =>  {
                 <div className="fixed inset-0 bg-black/60 flex items-center justify-center z-50">
                     <div className="bg-(--card) p-8 rounded-2xl">
                         <div className="flex flex-col items-center gap-6 text-center">
-
                             <h2 className="text-2xl font-semibold text-white">
                                 Eliminar Entrenador
                             </h2>
-
                             <p className="text-(--foreground) text-sm">
                                 Borre las actividades y clases vinculadas al entrenador.
                             </p>
-
                             <div className="flex gap-4">
                                 <button
                                     onClick={closeDelete}
@@ -222,7 +214,6 @@ const TrainersCard: React.FC = () =>  {
                                 >
                                     Cancelar
                                 </button>
-
                                 <button
                                     onClick={handlerDelete}
                                     className="px-5 py-2 bg-red-600 text-white rounded-xl"
@@ -230,7 +221,6 @@ const TrainersCard: React.FC = () =>  {
                                     Eliminar
                                 </button>
                             </div>
-
                         </div>
                     </div>
                 </div>
@@ -243,7 +233,6 @@ const TrainersCard: React.FC = () =>  {
                         className="bg-(--secondary) rounded-2xl p-8 w-11/12 max-w-md relative"
                         onClick={(e) => e.stopPropagation()}
                     >
-
                         <button
                             onClick={closeModal}
                             className="absolute top-3 right-3 text-3xl font-semibold text-(--foreground)"
@@ -260,7 +249,7 @@ const TrainersCard: React.FC = () =>  {
                                 <label className="block text-sm text-(--foreground) mb-1">Foto</label>
                                 <input
                                     type="file"
-                                    onChange={(e) => setImageUrl(e.target.value)}
+                                    onChange={(e) => setFile(e.target.files ? e.target.files[0] : null)}
                                     className="w-full border rounded-lg px-3 py-2 bg-gray-50"
                                 />
                             </div>
@@ -298,7 +287,6 @@ const TrainersCard: React.FC = () =>  {
                             >
                                 Agregar
                             </button>
-
                         </form>
 
                     </div>
