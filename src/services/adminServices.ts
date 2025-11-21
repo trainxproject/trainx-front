@@ -146,7 +146,7 @@ export const deleteActivities = async (activityId: string) => {
     }
 }
 
-export const userStatus = async (userId: string) => {
+export const usersStatus = async (userId: string, userStatus: string) => {
     const token = localStorage.getItem('token');
         if(!token) {
             console.error("error al obtener el token");
@@ -156,10 +156,12 @@ export const userStatus = async (userId: string) => {
     console.log(token);
 
     try {
-        const response = await axios.patch(`${API_URL}admin/users/${userId}/status`,
-            {headers: {
-                Authorization: `Bearer ${token}`
-            }}
+        const response = await axios.patch(`${API_URL}/admin/users/${userId}/status`,
+        {
+            userStatus: userStatus
+        }, {headers: {
+            Authorization: `Bearer ${token}`
+        }}
         );
         console.log(response);
         return response;
@@ -319,6 +321,25 @@ export const filterUser = async (status: string): Promise<IUser[] | null> => {
 }
 
 //https://trainx.onrender.com/admin/seek?searchTerm
-export const searchUser = () => {
+export const searchUser = async (searchTerm: string): Promise<IUser[] | null>=> {
+    const token = localStorage.getItem('token');
+    if(!token) {
+        console.error("Error al obtener el token");
+        return null;
+    }
 
+    try {
+        const response = await axios.get(`${API_URL}/admin/seek?searchTerm=${searchTerm}`,
+            {
+                headers: {
+                    Authorization: `Bearer ${token}`
+                }
+            }
+        )
+        console.log(response);
+        return response.data;
+    } catch (error) {
+        console.log("Error al buscar le usuario: ", error);
+        return null
+    }
 }

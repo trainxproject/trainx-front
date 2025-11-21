@@ -95,7 +95,6 @@ const StatisticsCard: React.FC = () =>  {
                 <div className="flex flex-wrap justify-center gap-8 mt-15">
                 { clases.map((e) => {
                 
-                // const requires = e.requiresReservation === "true" || e.requiresReservation === true
                 return(
                     <div
                     className="bg-[hsl(var(--secondary))] 

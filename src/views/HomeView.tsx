@@ -10,6 +10,8 @@ import { quickStats } from "@/mocks/quickStats";
 import { plans } from "@/mocks/subscriptions";
 import { useRouter } from "next/navigation";
 import { useAuth } from "@/context/AuthContext";
+import { getAllUsers } from "@/services/adminServices";
+import { IUser } from "@/interfaces/User";
 
 const Icons = {
   Calendar,
@@ -22,6 +24,7 @@ const Icons = {
 
 export default function HomeView() {
   const [showLogin, setShowLogin] = useState(false);
+  const [users, setUsers] = useState<IUser[] | null>([])
   const { user, loading } = useAuth();
   const router = useRouter();
 
