@@ -302,7 +302,7 @@ const UserStatsCard: React.FC = () => {
 
       {/* MODAL INACTIVE */}
       {inactive && (
-        <div className="fixed inset-0 bg-black/70 flex items-center justify_center z-50">
+        <div className="fixed inset-0 bg-black/70 flex items-center justify-center z-50">
           <div className="bg-(--secondary) border border-white/10 rounded-2xl p-6 w-full max-w-sm mx-4">
             <h2 className="text-2xl font-semibold text-white text-center">¿Deseas reactivar esta cuenta?</h2>
             <p className="text-gray-400 text-center mt-2 text-sm">
