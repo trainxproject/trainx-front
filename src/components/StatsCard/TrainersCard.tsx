@@ -168,12 +168,12 @@ const TrainersCard: React.FC = () =>  {
                     
             {iconDelete && (
                     <div className="fixed inset-0 bg-gradient-to-b from-black/0 to-black/100 flex items-center justify-center z-50">
-                        <div className="relative bg-[hsl(var(--secondary))] bg-black/100 bg-blend-overlay border border-white/10 rounded-2xl p-8 w-11/12 max-w-md shadow-lg animate-fadeIn">
+                        <div className="relative bg-(--card) bg-blend-overlay border border-white/10 rounded-2xl p-8 w-11/12 max-w-md shadow-lg animate-fadeIn">
                         <div className="flex flex-col items-center text-center gap-6">
                             <h2 className="text-2xl font-semibold text-white">
                             Eliminar Entrenador
                             </h2>
-                            <p className="text-gray-400 text-sm">
+                            <p className="text-(--foreground) text-sm">
                             Borre las actividades y clases vinculadas al entrenador.
                             </p>
 
@@ -187,7 +187,7 @@ const TrainersCard: React.FC = () =>  {
 
                             <button
                             onClick={()=> {handlerDelete(), setIconDelete(false)}}
-                            className="px-5 py-2 rounded-xl bg-red-600/90 hover:bg-red-700 text-white font-medium transition duration-200"
+                            className="px-5 py-2 rounded-xl bg-red-600/90 hover:bg-red-700 text-white hover:text-black font-medium transition duration-200"
                             >
                             Eliminar
                             </button>
@@ -203,104 +203,84 @@ const TrainersCard: React.FC = () =>  {
                 ">
 
                 <div
-                style={{
-                    background: "rgba(70, 70, 70, 1)"
-                }}
-                className="rounded-2xl p-8 w-11/12 max-w-md relative border-none"
+                className="bg-(--secondary) rounded-2xl p-8 w-11/12 max-w-md relative border-none"
                 onClick={(e) => e.stopPropagation()}
                 >
             
                 <button
                     onClick={() => setModal(false)}
-                    className="absolute top-3 right-3 text-white hover:text-gray-800 transition"
+                    className="absolute top-3 right-3 text-3xl font-semibold text-(--foreground) hover:text-black/70 transition"
                 >
                     &times;
                 </button>
 
-                <h2 className="text-2xl font-semibold text-white mb-6 text-center">
+                <h2 className="text-2xl font-bold text-(--primary) mb-6 text-center">
                     Datos del Entrenador
                 </h2>
 
              
                 <form className="flex flex-col gap-5" onSubmit={handlerCreate}>
                     <div>
-                    <label className="block text-sm font-medium text-white mb-1">
+                    <label className="block text-sm font-medium text-(--foreground) mb-1">
                     Foto
                     </label>
                     <input
                         type="file"
                         onChange={(e) => setImageUrl(e.target.value)}
                         name="imageUrl"
-                        style={{
-                    color: 'black',
-                    background: 'rgba(255, 255, 255, 1)',
-                    border: '1px solid rgba(255, 253, 253, 1)',
-                }}
                         className="w-full border border-gray-300 rounded-lg px-3 py-2 text-gray-700 cursor-pointer bg-gray-50 hover:bg-gray-100 focus:outline-none focus:ring-2"
                     />
                     </div>
                 <div>
-                    <label className="block text-sm font-medium text-white mb-1">
+                    <label className="block text-sm font-medium text-(--foreground) mb-1">
                     Nombre
                     </label>
                     <input
                     type="text"
                     onChange={(e) => setName(e.target.value)}
                     name="dayOfWeek"
-                    style={{
-                    color: 'black',
-                    background: 'rgba(255, 255, 255, 1)',
-                    border: '1px solid rgba(255, 253, 253, 1)',
-                }}
+                    placeholder="nombre del entrenador"
                     className="w-full bg-white/10 border border-white/20 rounded-lg px-3 py-2 
-                                text-white placeholder-gray-400 
+                                text-(--foreground) placeholder-(--foreground) 
                                 focus:outline-none focus:ring-2 
                                 transition"
                     />
                 </div>
 
                 <div>
-                    <label className="block text-sm font-medium text-white mb-1">
+                    <label className="block text-sm font-medium text-(--foreground) mb-1">
                     Formación
                     </label>
                     <input
                     type="text"
                     onChange={(e) => setFormation(e.target.value)}
                     name="startTime"
-                    style={{
-                    color: 'black',
-                    background: 'rgba(255, 255, 255, 1)',
-                    border: '1px solid rgba(255, 253, 253, 1)',
-                }}
+                    placeholder="Formación del entrenador"
                     className="w-full bg-white/10 border border-white/20 rounded-lg px-3 py-2 
-                                text-white placeholder-gray-400 
+                                text-white placeholder-(--foreground) 
                                 focus:outline-none focus:ring-2 transition"
                     />
                 </div>
 
                 <div>
-                    <label className="block text-sm font-medium text-white mb-1">
+                    <label className="block text-sm font-medium text-(--foreground) mb-1">
                     Especialización
                     </label>
                     <input
                     type="text"
                     onChange={(e) => setSpecialization(e.target.value)}
                     name="endTime"
-                    style={{
-                    color: 'black',
-                    background: 'rgba(255, 255, 255, 1)',
-                   border: '1px solid rgba(255, 253, 253, 1)',
-                }}
-                    className="w-full bg-white/10 border border-white/20 rounded-lg px-3 py-2 
-                                text-white placeholder-gray-400 
+                    placeholder="Especialización del entrenador"
+                    className="w-full bg-(--secondary) border border-red-600 rounded-lg px-3 py-2 
+                                text-white placeholder-(--foreground) 
                                 focus:outline-none focus:ring-2 transition"
                     />
                 </div>
 
                 <button
                     type="submit"
-                    className="mt-2 bg-white text-black font-medium px-4 py-2 rounded-lg 
-                            hover:bg-gray-300 transition active:scale-[0.98]"
+                    className="mt-2 bg-(--primary)/80 hover:bg-(--primary) text-black font-medium px-4 py-2 rounded-lg transition active:scale-[0.98]
+                    hover:shadow-xl/65 hover:shadow-black/80"
                 >
                     Agregar
                 </button>

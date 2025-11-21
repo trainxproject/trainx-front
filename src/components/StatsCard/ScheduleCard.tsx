@@ -29,8 +29,6 @@ const ScheduleCards: React.FC = () =>  {
         "Miércoles",
         "Jueves",
         "Viernes",
-        "Sábado",
-        "Domingo"
     ];
 
     const handlerCreate = async (e: React.FormEvent<HTMLFormElement>) => {
@@ -186,12 +184,12 @@ const ScheduleCards: React.FC = () =>  {
 
             {iconDelete && (
                     <div className="fixed inset-0 bg-gradient-to-b from-black/0 to-black/100 flex items-center justify-center z-50">
-                        <div className="relative bg-[hsl(var(--secondary))] bg-black/100 bg-blend-overlay border border-white/10 rounded-2xl p-8 w-11/12 max-w-md shadow-lg animate-fadeIn">
+                        <div className="relative bg-(--secondary) bg-blend-overlay border border-white/10 rounded-2xl p-8 w-11/12 max-w-md shadow-lg animate-fadeIn">
                         <div className="flex flex-col items-center text-center gap-6">
-                            <h2 className="text-2xl font-semibold text-white">
+                            <h2 className="text-2xl font-semibold text-white/75">
                             Borrar Clase
                             </h2>
-                            <p className="text-gray-400 text-sm">
+                            <p className="text-(--foreground)/ text-sm">
                             Al crear una nueva clase, consulte los horarios antes de eliminar clases que tengan reservas.
                             </p>
 
@@ -204,7 +202,7 @@ const ScheduleCards: React.FC = () =>  {
                             </button>
 
                             <button
-                            onClick={() => handlerDelete(scheduleId)}
+                            onClick={() => {handlerDelete(scheduleId), setIconDelete(false)}}
                             className="px-5 py-2 rounded-xl bg-red-600/90 hover:bg-red-700 text-white font-medium transition duration-200"
                             >
                             Eliminar
@@ -216,15 +214,10 @@ const ScheduleCards: React.FC = () =>  {
                 )}        
 
             {modal && (
-                <div className="fixed inset-0 bg-[rgba(0,0,0,0.3)] flex items-center justify-center z-50 
-                  
-                ">
+                <div className="fixed inset-0 bg-[rgba(0,0,0,0.3)] flex items-center justify-center z-50">
 
                 <div
-                style={{
-                     background: "rgba(70, 70, 70, 1)"
-                }}
-                className="rounded-2xl p-8 w-11/12 max-w-md relative border-none"
+                className="bg-(--secondary) rounded-2xl p-8 w-11/12 max-w-md relative border-none"
                 onClick={(e) => e.stopPropagation()}
                 >
             
@@ -235,7 +228,7 @@ const ScheduleCards: React.FC = () =>  {
                     &times;
                 </button>
 
-                <h2 className="text-2xl font-semibold text-white mb-6 text-center">
+                <h2 className="text-2xl font-bold text-(--primary) mb-6 text-center">
                     Datos para la Clase
                 </h2>
 
@@ -257,7 +250,7 @@ const ScheduleCards: React.FC = () =>  {
                         >
                         <option value="">Selecciona un día</option>
                         {days.map((d) => (
-                            <option key={d} value={d}>
+                            <option key={d} value={d} >
                             {d}
                             </option>
                         ))}
@@ -292,7 +285,7 @@ const ScheduleCards: React.FC = () =>  {
 
                     {/* Entrenador (ENUM DESDE BACKEND) */}
                     <div>
-                        <label className="block text-sm font-medium text-white mb-1">
+                        <label className="block text-sm font-medium text-(--foreground) mb-1">
                         Entrenador
                         </label>
 
@@ -332,7 +325,8 @@ const ScheduleCards: React.FC = () =>  {
 
                     <button
                         type="submit"
-                        className="mt-2 bg-white text-black font-medium px-4 py-2 rounded-lg hover:bg-gray-300 transition"
+                        className="mt-2 bg-(--primary)/85 text-black font-semibold text-md px-2 py-2 rounded-lg hover:bg-(--primary) transition
+                        hover:shadow-xl/65 hover:shadow-black/80"
                     >
                         Crear Clase
                     </button>
