@@ -6,7 +6,7 @@ export interface IUser {
   email: string;
   plan?: string;
   payment?: [{ plan: string; status: string }];
-  trainer?: string;
+  trainer?: string | null;
   isAdmin?: boolean;
   profilePicture?: string;
   status?: string;

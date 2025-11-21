@@ -1,17 +1,19 @@
 'use clinet'
 
 import { getAllUsers } from "@/services/userService";
-import { Search, CheckCircle, Ban, Timer, UserCheck2Icon, UserX2 } from "lucide-react";
+import { Search, CheckCircle, Timer, UserCheck2Icon, UserX2, Ban } from "lucide-react";
 import { useEffect, useState } from "react";
-import { userStatus, filterUser } from "@/services/adminServices";
+import { usersStatus, filterUser, searchUser } from "@/services/adminServices";
 import { toast } from "sonner";
 import { IUser } from "@/interfaces/User";
+import { IoIosOptions } from "react-icons/io";
 
 const UserStatsCard: React.FC = () => {
   const [active, setActive] = useState(false);
   const [inactive, setInactive] = useState(false);
   const [users, setUsers] = useState<IUser[] | null>([]);
   const [userId, setUserId] = useState<string>("");
+  const [searchTerm, setSearchTerm] = useState<string>("")
 
 
   // PAGINADO
@@ -28,12 +30,13 @@ const UserStatsCard: React.FC = () => {
   const startLoading = () => setLoading(true);
   const stopLoading = () => setLoading(false);
   const [activeFilter, setActiveFilter] = useState<string>("all");
+  const [userStatus, setUserStatus] = useState<string | null>("");
 
   useEffect(() => {
     const fetchData = async () => {
       try {
         startLoading();
-        setActiveFilter(status);
+        setActiveFilter(activeFilter);
         const Alluser = await getAllUsers();
         setUsers(Alluser);
       } catch (error) {
@@ -45,17 +48,26 @@ const UserStatsCard: React.FC = () => {
     fetchData();
   }, []);
 
+  const handlerSearch = async () => {
+    try {
+      const response = await searchUser(searchTerm)
+      setUsers(response);
+    } catch (error) {
+      
+    }
+  }
+
   const handlerUserStatus = async () => {
     try {
       startLoading();
-      const response = await userStatus(userId);
+      const response = await usersStatus(userId, userStatus ?? "");
       if (response?.status === 200) {
         toast.success("Estado del usuario modificado");
-        return response;
+        handlerAllUser(); // refresca los usuarios
       }
     } catch (error: any) {
       if (error.response?.status === 401) {
-        toast.error("No posees los permisos necesarios para realizar esta acción");
+        toast.error("No posees los permisos necesarios");
       }
     } finally {
       stopLoading();
@@ -63,6 +75,8 @@ const UserStatsCard: React.FC = () => {
   };
 
   const hanlderFilter = async (status: string) => {
+    if (status !== "active" && status !== "inactive") return;
+    
     try {
       startLoading();
       const response = await filterUser(status);
@@ -98,7 +112,7 @@ const UserStatsCard: React.FC = () => {
       {/* BOTONES DE FILTRADO */}
       <div className="flex justify-around items-center w-md bg-(--secondary) py-3 rounded-2xl">
       <button
-          onClick={() => {hanlderFilter(""), setActiveFilter("all")}}
+          onClick={() => {handlerAllUser(), setActiveFilter("all")}}
           className={`px-4 py-2 rounded-xl 
           ${activeFilter === "all" ? "bg-orange-500 text-black" : "bg-(--card)"}`}
       >
@@ -142,6 +156,7 @@ const UserStatsCard: React.FC = () => {
                 <input
                   type="text"
                   placeholder="Buscar..."
+                  onChange={(e) => {setSearchTerm(e.target.value), handlerSearch()}}
                   className="pr-4 py-2 w-full rounded-lg border bg-white/5 text-white placeholder-gray-400"
                   style={{ paddingLeft: "2.9rem" }}
                 />
@@ -179,9 +194,9 @@ const UserStatsCard: React.FC = () => {
               <div>Estado</div>
             </div>
 
-            {currentUsers?.map((e, i) => (
+            {currentUsers?.map((e, id) => (
               <div
-                key={i}
+                key={id}
                 className="grid grid-cols-1 lg:grid-cols-5 gap-4 text-white p-4 border-b border-white/10 bg-white/5 rounded-lg lg:rounded-none lg:bg-transparent lg:border-none"
               >
                 {/* USUARIO */}
@@ -229,10 +244,10 @@ const UserStatsCard: React.FC = () => {
                       <UserCheck2Icon className="text-green-400" />
                       <span className="text-green-400 text-sm">{e.status}</span>
                       <button
-                        onClick={() => { setActive(true); setUserId(e.id); }}
+                        onClick={() => { setUserStatus(e.status ?? null), setUserId(e.id), setActive(true)}}
                         className="p-1 hover:bg-white/10 rounded-full"
                       >
-                        <Ban className="w-5 h-5 text-gray-300 hover:text-white" />
+                        <IoIosOptions className="w-5 h-5 text-gray-300 hover:text-white" />
                       </button>
                     </>
                   )}
@@ -242,10 +257,10 @@ const UserStatsCard: React.FC = () => {
                       <UserX2 className="text-red-400" />
                       <span className="text-red-400 text-sm">{e.status}</span>
                       <button
-                        onClick={() => setInactive(true)}
+                        onClick={() => {setUserId(e.id), setUserStatus(e.status ?? null),setInactive(true)}}
                         className="p-1 hover:bg-white/10 rounded-full"
                       >
-                        <Ban className="w-5 h-5 text-gray-300 hover:text-white" />
+                        <IoIosOptions className="w-5 h-5 text-gray-300 hover:text-white" />
                       </button>
                     </>
                   )}
@@ -275,7 +290,7 @@ const UserStatsCard: React.FC = () => {
 
               <button
                 className="px-5 py-2 rounded-xl bg-red-600 text-white"
-                onClick={() => { handlerUserStatus(); setActive(false); }}
+                onClick={() => { handlerUserStatus; setActive(false); }}
               >
                 Inhabilitar
               </button>
