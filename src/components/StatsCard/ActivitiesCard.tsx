@@ -90,10 +90,8 @@ const ActivitiesCard: React.FC = () =>  {
                 { activities?.map((e) => {
                 
                 // const requires = e.requiresReservation === "true" || e.requiresReservation === true
-                return(
-                            
+                return(      
                     <div
-                    
                         className="bg-[hsl(var(--secondary))] 
                                 border border-white/10 
                                 rounded-2xl p-6 
@@ -162,7 +160,7 @@ const ActivitiesCard: React.FC = () =>  {
 
                      {iconDelete && (
                     <div className="fixed inset-0 bg-gradient-to-b from-black/0 to-black/100 flex items-center justify-center z-50">
-                        <div className="relative bg-[hsl(var(--secondary))] bg-black/100 bg-blend-overlay border border-white/10 rounded-2xl p-8 w-11/12 max-w-md shadow-lg animate-fadeIn">
+                        <div className="relative bg-(--card) border border-white/10 rounded-2xl p-8 w-11/12 max-w-md shadow-lg animate-fadeIn">
                         <div className="flex flex-col items-center text-center gap-6">
                             <h2 className="text-2xl font-semibold text-white">
                             Borrar Actividad
@@ -180,7 +178,7 @@ const ActivitiesCard: React.FC = () =>  {
                             </button>
 
                             <button
-                            onClick={()=> handlerDelete(activityId)}
+                            onClick={()=> {handlerDelete(activityId), setIconDelete(false)}}
                             className="px-5 py-2 rounded-xl bg-red-600/90 hover:bg-red-700 text-white font-medium transition duration-200"
                             >
                             Eliminar
@@ -196,21 +194,18 @@ const ActivitiesCard: React.FC = () =>  {
                 <div className="fixed inset-0 bg-[rgba(0,0,0,0.7)] flex items-center justify-center z-50">
 
                 <div
-                style={{
-                    background: "rgba(70, 70, 70, 1)"
-                }}
-                className=" rounded-2xl shadow-xl p-8 w-11/12 max-w-md relative border-none"
+                className="bg-(--secondary) rounded-2xl shadow-xl p-8 w-11/12 max-w-md relative border-none"
                 onClick={(e) => e.stopPropagation()}
                 >
             
                 <button
                     onClick={() => setModal(false)}
-                    className="absolute top-3 right-3 text-white hover:text-gray-800 transition"
+                    className="absolute top-3 right-3 text-white hover:text-black/50 text-4xl transition"
                 >
                     &times;
                 </button>
 
-                <h2 className="text-2xl font-semibold text-white mb-6 text-center">
+                <h2 className="text-2xl font-bold text-(--primary) mb-6 text-center">
                     Nueva Actividad
                 </h2>
 
@@ -218,36 +213,26 @@ const ActivitiesCard: React.FC = () =>  {
                 onSubmit={handlerCreate}>
               
                     <div>
-                    <label className="block text-sm font-medium text-white mb-1">
+                    <label className="block text-sm font-medium text-white/80 mb-1">
                         Imagen de la actividad
                     </label>
                     <input
                         type="file"
                         name="imageUrl"
-                        style={{
-                    color: 'black',
-                    background: 'rgba(255, 255, 255, 1)',
-                    border: '1px solid rgba(255, 253, 253, 1)',
-                }}
-                        className="w-full border border-gray-300 rounded-lg px-3 py-2 text-gray-700 cursor-pointer bg-gray-50 hover:bg-gray-100 focus:outline-none focus:ring-2"
+                        className="w-full border border-gray-300 rounded-lg px-3 py-2 text-(--foreground) cursor-pointer bg-gray-50 hover:bg-gray-100 focus:outline-none focus:ring-2"
                         onChange={(e) => setImageUrl(e.target.value)}
                     />
                     </div>
 
                     <div>
-                    <label className="block text-sm font-medium text-white mb-1">
+                    <label className="block text-sm font-medium text-white/80 mb-1">
                         Nombre
                     </label>
                     <input
                         type="text"
                         name="name"
-                        style={{
-                    color: 'black',
-                    background: 'rgba(255, 255, 255, 1)',
-                    border: '1px solid rgba(255, 253, 253, 1)',
-                }}
                         placeholder="Ej: Yoga, Crossfit, Zumba..."
-                        className="w-full border border-gray-300 rounded-lg px-3 py-2 text-gray-700 cursor-pointer bg-gray-50 hover:bg-gray-100 focus:outline-none focus:ring-2"
+                        className="w-full border border-gray-300 rounded-lg px-3 py-2 text-red-500 cursor-pointer bg-gray-50 hover:bg-gray-100 focus:outline-none focus:ring-2"
                         onChange={(e) => setName(e.target.value)}
                     />
                     </div>
@@ -258,11 +243,6 @@ const ActivitiesCard: React.FC = () =>  {
                         Descripción
                     </label>
                     <textarea
-                    style={{
-                    color: 'black',
-                    background: 'rgba(255, 255, 255, 1)',
-                    border: '1px solid rgba(255, 253, 253, 1)',
-                }}
                         placeholder="Breve descripción de la actividad"
                         name="description"
                         className="w-full border  rounded-lg px-3 py-2 text-black focus:outline-none focus:ring-2  min-h-[100px]"
@@ -279,7 +259,7 @@ const ActivitiesCard: React.FC = () =>  {
                         onChange={(e) => setRequieresReservation(e.target.checked)}
                         className="w-5 h-5 accent-blue-600"
                     />
-                    <label htmlFor="requiresReservation" className="text-white text-sm">
+                    <label htmlFor="requiresReservation" className="text-white font-medium text-sm">
                         Requiere reservación
                     </label>
                     </div>
@@ -287,16 +267,11 @@ const ActivitiesCard: React.FC = () =>  {
                 
                     <div>
                     <label className="block text-sm font-medium text-white mb-1">
-                        Máximo de capacidad
+                        Capacidad maxima
                     </label>
                     <input
                         type="number"
                         name="maxCapacity"
-                        style={{
-                    color: 'black',
-                    background: 'rgba(255, 255, 255, 1)',
-                    border: '1px solid rgba(255, 253, 253, 1)',
-                }}
                         className="w-full border border-gray-300 rounded-lg px-3 py-2 text-gray-700 cursor-pointer bg-gray-50 hover:bg-gray-100 focus:outline-none focus:ring-2"
                         min="0"
                         placeholder="Ej: 20"
@@ -306,8 +281,8 @@ const ActivitiesCard: React.FC = () =>  {
 
                     <button
                     type="submit"
-                    className="mt-2 bg-white text-black font-medium px-4 py-2 rounded-lg 
-                    hover:bg-gray-300 transition active:scale-[0.98]"
+                    className="mt-2 bg-(--primary)/85 hover:bg-(--primary) text-black font-bold px-3 py-2 rounded-lg transition active:scale-[0.98]
+                    hover:shadow-xl/65 hover:shadow-black"
                 >Crear Actividad</button>
             </form>
         </div>
