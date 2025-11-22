@@ -1,36 +1,54 @@
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
+🏋️‍♂️ TrainX — Plataforma Web de Entrenamiento y Reservas
 
-## Getting Started
+📌 Descripción
 
-First, run the development server:
+TrainX es una aplicación diseñada para ayudar al usuario a mantener la constancia en su entrenamiento, ofreciendo una interfaz dinámica, moderna y amigable.
+Permite gestionar fácilmente:
 
-```bash
+Sus reservas de clases
+
+Su entrenador personal
+
+El plan adquirido
+
+Su experiencia dentro del gimnasio
+
+El objetivo principal es que cada usuario pueda alcanzar sus metas de forma simple, ordenada y motivadora.
+
+⚙️ Tecnologías utilizadas
+
+- React 19
+- Next.js 15 (estructura con carpeta `app`)
+- Tailwind CSS
+- Axios
+- Formik + Yup
+- Sonner (alertas y notificaciones)
+- Mapbox GL
+- @react-google-maps/api
+- Lucide React
+- React Icons
+
+🚀 Cómo arrancar el proyecto
+1️⃣ Clonar el repositorio
+git clone https://github.com/trainxproject/trainx-front.git
+cd trainx-front
+
+2️⃣ Instalar dependencias
+npm install
+
+3️⃣ Configurar variables de entorno
+
+Crear un archivo .env.local en la raíz con:
+
+NEXT_PUBLIC_API_URL=your_api_url
+NEXT_PUBLIC_MAPBOX_TOKEN=your_mapbox_token
+
+4️⃣ Ejecutar en modo desarrollo
 npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
-```
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+🌐 Deploy
 
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
+El proyecto está desplegado en Vercel, permitiendo una carga rápida, optimización automática y actualizaciones instantáneas con cada push a producción.
 
-This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
+🔗 Deploy: https://trainx-front.vercel.app/
 
-## Learn More
-
-To learn more about Next.js, take a look at the following resources:
-
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
-
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js) - your feedback and contributions are welcome!
-
-## Deploy on Vercel
-
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
-
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
