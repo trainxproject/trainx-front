@@ -17,27 +17,16 @@ El objetivo principal es que cada usuario pueda alcanzar sus metas de forma simp
 
 ⚙️ Tecnologías utilizadas
 
-⚛️ React 19
-
-🧭 Next.js 15 (estructura con carpeta app)
-
-🎨 Tailwind CSS
-
-🗄️ Axios
-
-📝 Formik + Yup
-
-🔔 Sonner (alertas y notificaciones)
-
-🗺️ Mapas
-
-🗺️ Mapbox GL
-
-🌍 @react-google-maps/api
-
-🧰 Lucide React
-
-🌟 React Icons
+- React 19
+- Next.js 15 (estructura con carpeta `app`)
+- Tailwind CSS
+- Axios
+- Formik + Yup
+- Sonner (alertas y notificaciones)
+- Mapbox GL
+- @react-google-maps/api
+- Lucide React
+- React Icons
 
 🚀 Cómo arrancar el proyecto
 1️⃣ Clonar el repositorio
