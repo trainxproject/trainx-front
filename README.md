@@ -34,7 +34,7 @@ git clone https://github.com/trainxproject/trainx-front.git
 cd trainx-front
 
 2️⃣ Instalar dependencias
-npm install
+## npm install
 
 3️⃣ Configurar variables de entorno
 
@@ -44,7 +44,7 @@ NEXT_PUBLIC_API_URL=your_api_url
 NEXT_PUBLIC_MAPBOX_TOKEN=your_mapbox_token
 
 4️⃣ Ejecutar en modo desarrollo
-npm run dev
+## npm run dev
 
 🌐 Deploy
 
