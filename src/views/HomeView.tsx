@@ -1,6 +1,6 @@
 'use client';
 
-import { useState, useEffect } from "react";
+import {  useEffect } from "react";
 import { ArrowRight,Check, CheckCircle, Calendar, Clock, Users, Trophy, Zap } from "lucide-react";
 import Image from "next/image";
 import { toast } from "sonner";
@@ -12,6 +12,7 @@ import { useRouter } from "next/navigation";
 import { useAuth } from "@/context/AuthContext";
 import { getAllUsers } from "@/services/adminServices";
 import { IUser } from "@/interfaces/User";
+import { useAuthModal } from "@/context/AuthModalContext";
 
 const Icons = {
   Calendar,
@@ -23,9 +24,10 @@ const Icons = {
 
 
 export default function HomeView() {
-  const [showLogin, setShowLogin] = useState(false);
   const { user, loading } = useAuth();
   const router = useRouter();
+  
+  const { openLogin } = useAuthModal();
 
 useEffect(() => {
   if (!loading && user) {
@@ -36,9 +38,11 @@ useEffect(() => {
  if (loading) {
     return <p className="text-center mt-10">Cargando...</p>;
   }
-  const handleOpenLogin = () => {
-    setShowLogin(true);
-    toast.info("Inicia sesión", { description: "Debes iniciar sesión para acceder a esta función" });
+    const handleOpenLogin = () => {
+    openLogin(); 
+    toast.info("Inicia sesión", {
+      description: "Debes iniciar sesión para acceder a esta función",
+    });
   };
 
   return (
@@ -246,7 +250,7 @@ useEffect(() => {
           </div>
         </section>
 
-        {showLogin && <LoginForm onClose={() => setShowLogin(false)} />}
+       
     
     </div>
   );
