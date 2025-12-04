@@ -63,7 +63,7 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
     setToken(response.access_token);
     localStorage.setItem("user", JSON.stringify(userData));
     localStorage.setItem("token", response.access_token);
-    router.push("/dashboard/user");
+    
   };
 
   // 🔹 Registro

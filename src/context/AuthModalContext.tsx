@@ -27,12 +27,12 @@ export function AuthModalProvider({ children }: { children: ReactNode }) {
 
       {activeForm === "login" && (
         <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/60 backdrop-blur-sm">
-          <LoginForm onClose={closeModal} />
+          <LoginForm  />
         </div>
       )}
       {activeForm === "register" && (
         <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/60 backdrop-blur-sm">
-          <RegisterForm onClose={closeModal} />
+          <RegisterForm  />
         </div>
       )}
     </AuthModalContext.Provider>

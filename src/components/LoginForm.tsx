@@ -10,8 +10,8 @@ import { useAuth } from "@/context/AuthContext";
 import { useRouter } from "next/navigation";
 import { toast } from "sonner";
 import { useEffect, useState } from "react";
-export default function LoginForm({ onClose }: { onClose?: () => void }) {
-const { openRegister } = useAuthModal();
+export default function LoginForm() {
+const { openRegister, closeModal } = useAuthModal();
   const { login, user, loginWithGoogle, loading: authLoading, isAdmin } = useAuth();
   const router = useRouter();
   const [loading, setLoading] = useState(false);
@@ -23,11 +23,22 @@ const { openRegister } = useAuthModal();
     onSubmit: async (values) => {
       try {
         setLoading(true);
-        await login({ email: values.email, password: values.password });
-        toast.success("Login exitoso");
-        onClose?.();
-        if (isAdmin) router.push("/dashboard/admin");
-        else router.push("/dashboard/user");
+
+    await login({
+      email: values.email,
+      password: values.password,
+    });
+
+    toast.success("Login exitoso");
+    closeModal();
+
+    setTimeout(() => {
+      if (isAdmin) {
+        router.push("/dashboard/admin");
+      } else {
+        router.push("/dashboard/user");
+      }
+    }, 0);
       } catch (error: any) {
         console.error(error);
         const message = error?.response?.data?.message || "Error en login, revisa tus credenciales";
@@ -50,7 +61,7 @@ const { openRegister } = useAuthModal();
       <div className="bg-(--card) rounded-3xl shadow-2xl w-full max-w-md mx-4 p-8 relative animate-fadeIn">
         {/* Botón cerrar */}
         <button
-          onClick={onClose}
+          onClick={closeModal} 
           className="absolute top-4 right-4 text-(--muted-foreground) hover:text-(--foreground) transition"
           aria-label="Cerrar"
         >

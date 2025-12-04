@@ -9,8 +9,8 @@ import { useAuth } from "@/context/AuthContext";
 import { useRouter } from "next/navigation";
 import { toast } from "sonner";
 
-export default function RegisterForm({ onClose }: { onClose?: () => void }) {
-const { openLogin } = useAuthModal();
+export default function RegisterForm() {
+const { openLogin, closeModal } = useAuthModal();
 const { register} = useAuth();
 
 const router = useRouter();
@@ -28,7 +28,7 @@ const formik = useFormik<RegisterFormValues>({
         confirmPassword: values.confirmPassword
       });
       toast.success("Registro exitoso");
-      onClose?.();
+      closeModal();
        setTimeout(() => {
         router.push("/login");
       }, 100);
@@ -49,7 +49,7 @@ const formik = useFormik<RegisterFormValues>({
       <div className="bg-(--card) rounded-3xl shadow-2xl w-full max-w-md max-h-[90vh] overflow-y-auto p-8 animate-fadeIn scrollbar-thin relative">
   {/* Botón cerrar */}
   <button
-    onClick={onClose}
+    onClick={closeModal}
     className="absolute top-4 right-4 text-(--muted-foreground) hover:text-(--foreground) transition z-10"
     aria-label="Cerrar"
   >
