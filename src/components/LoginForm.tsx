@@ -24,7 +24,7 @@ const { openRegister, closeModal } = useAuthModal();
       try {
         setLoading(true);
 
-    const loggedUser = await login({
+    await login({
       email: values.email,
       password: values.password,
     });
