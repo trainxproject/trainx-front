@@ -318,7 +318,7 @@ const UserStatsCard: React.FC = () => {
               </button>
 
               <button className="px-5 py-2 rounded-xl bg-emerald-600 text-white"
-              onClick={() => {handlerUserStatus(); setActive(false);}}>
+              onClick={() => {handlerUserStatus(); setInactive(false);}}>
                 Reactivar
               </button>
             </div>
