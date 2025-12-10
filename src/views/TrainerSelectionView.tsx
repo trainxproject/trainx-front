@@ -8,7 +8,7 @@ import { FaRegStar } from "react-icons/fa";
 import { useAuth } from "@/context/AuthContext";
 
 interface TrainerSelectionProps {
-  selectedTrainer?: string | null;      // 👈 ahora sí se usa correctamente
+  selectedTrainer?: string | null;
   onTrainerAssigned: (trainerId: string) => void;
 }
 
@@ -22,7 +22,6 @@ const TrainerSelection = ({ selectedTrainer, onTrainerAssigned }: TrainerSelecti
   const { user } = useAuth();
   const userId = user?.id;
 
-  // 👇 SINCRONIZA EL VALOR PROVENIENTE DEL PADRE
   useEffect(() => {
     setSelectedTrainerId(selectedTrainer ?? null);
   }, [selectedTrainer]);
@@ -58,8 +57,8 @@ const TrainerSelection = ({ selectedTrainer, onTrainerAssigned }: TrainerSelecti
     try {
       await selectTrainer(userId, trainerId);
 
-      onTrainerAssigned(trainerId);         // avisa al padre
-      setSelectedTrainerId(trainerId);      // actualiza el hijo
+      onTrainerAssigned(trainerId);
+      setSelectedTrainerId(trainerId);
 
       toast.success("Entrenador asignado correctamente");
     } catch (error: any) {
