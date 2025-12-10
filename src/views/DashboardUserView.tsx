@@ -16,7 +16,13 @@ export default function DashboardUserView() {
     const { user } = useAuth();
     const userId = user?.id;
 
+    const [userTrainerId, setUserTrainerId] = useState<string | null>(null);
 
+    useEffect(() => {
+        if (!user) return;
+    
+        setUserTrainerId(user.trainerId ?? null);
+    }, [user]);
 
     const handleTrainerAssigned = (trainerId: string) => {
         console.log("Entrenador asignado:", trainerId);
@@ -58,6 +64,7 @@ export default function DashboardUserView() {
 
                 {tabSelected === "coach" && userId && (
     <TrainerSelection
+        selectedTrainer={userTrainerId}
         onTrainerAssigned={handleTrainerAssigned}
     />
 )}
